@@ -330,7 +330,6 @@ export class Circuit
                     sprite.spriteRef.setPosition(destX, destY);
                     sprite.spriteRef.setDisplaySize(destW, destH);
                     sprite.spriteRef.setDepth(spriteScale * 10);
-                    if (sprite.type != "obstacle") console.log(destY);
 
                     if (sprite.type == "obstacle")
                         sprite.spriteRef.setScale((spriteScale * 20000));
