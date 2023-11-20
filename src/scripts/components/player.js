@@ -24,7 +24,6 @@ export class Player
         this.horizontalSpeed = 500;
 
         this.playerBody;
-        this.score = 0;
         this.havePackage = false;
         this.currentRoadPos = 1;
         this.playerState = 'idle';
