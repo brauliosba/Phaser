@@ -83,7 +83,7 @@ export class Player
             */
         }
 
-        this.updateVelocity();
+        this.updateScore();
     }
 
     restart (){
@@ -169,5 +169,9 @@ export class Player
                 if (delivery.zone != "undone") delivery.zone = "done";
             }
         }
+    }
+
+    updateScore(){
+        
     }
 }
