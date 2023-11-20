@@ -52,6 +52,7 @@ export class Player
         this.limitBound = this.screen.w/3.2;
 
         //mobile contorls
+        console.log(this.scene.data.get('IS_TOUCH'));
         if (this.scene.data.get('IS_TOUCH')) {
             this.deliveryButton = this.scene.add.image(0, 0,'deliveryButton').setInteractive();
             this.deliveryButton.setDisplaySize(100, 100);
@@ -62,7 +63,7 @@ export class Player
             this.leftButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.leftButton.setDisplaySize(500, 500);
             this.leftButton.setPosition(this.screen.x / 2, this.scene.data.get('screen') - 250);
-            this.leftButton.on('pointerdown', () => this.playerState = 'left');
+            this.leftButton.on('pointerdown', () => { this.playerState = 'left', console.log("izq")});
             this.leftButton.on('pointerup', () => this.playerState = 'idle');
             this.leftButton.setDepth(4.9);
             this.leftButton.alpha = 0.001;
@@ -82,6 +83,9 @@ export class Player
             this.scene.input.on('pointerup', () => this.playerState = 'idle');
             */
         }
+
+        this.deliveryText = this.scene.add.text(100, 50, 'Tienes un paquete', { fontSize : 50, fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+        this.deliveryText.setVisible(false);
     }
 
     restart (){
@@ -98,12 +102,10 @@ export class Player
 
     updateScore(){
         this.score += 1;
-        console.log(this.score);
     }
 
     update(dt){
         var circuit = this.scene.circuit;
-        this.playerState = 'idle';
 
         this.z += this.speed * dt;
         if (this.z >= circuit.roadLength) {this.z -= circuit.roadLength; this.currentRoadPos = 1; circuit.addRandomSprites(2 * this.totalCircuitSegments / 3, this.totalCircuitSegments);}
@@ -125,7 +127,8 @@ export class Player
         if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
-        this.updateSpeed();
+        if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
+        //this.updateSpeed();
     }
 
     movePlayerLeft(dt){
@@ -158,15 +161,17 @@ export class Player
             if (inPos)
             {
                 if (delivery.zone == "green"){
-                    this.scene.scoreboard.score += 30;
+                    this.score += 30;
                     this.havePackage = !this.havePackage;
                 }
                 else if (delivery.zone == "orange"){
-                    this.scene.scoreboard.score += 20;
+                    this.score += 20;
                     this.havePackage = !this.havePackage;
                 }
 
                 if (delivery.zone != "undone") delivery.zone = "done";
+
+                this.deliveryText.setVisible(this.havePackage);
             }
         }
     }
