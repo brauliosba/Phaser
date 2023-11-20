@@ -3,7 +3,6 @@ export class Scoreboard
     constructor(scene){
         // reference to the main scene
         this.scene = scene;
-        this.score = 0;
         this.startCounter = 3;
         this.timedEvent = undefined;
         this.startAnim = true;
@@ -24,7 +23,7 @@ export class Scoreboard
     }
 
     update(){
-        this.scoreText.setText('Puntaje: ' + this.score);
+        this.scoreText.setText('Puntaje: ' + this.scene.player.score);
         if (this.scoreText.width > 350) 
             this.scoreText.setPosition(this.scene.data.get('screen') - this.scoreText.width - 50, 50);
     }

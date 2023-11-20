@@ -14,8 +14,8 @@ export class Player
         this.screen = {x:0, y:0, w:0, h:0};
 
         // max speed (to avoid moving for more than 1 road segment, assuming fps = 60)
-        this.maxSpeed = ((scene.circuit.segmentLength / 2) / (1/60)) * 3;
-        this.playerSpeeds = [3000, 4000, 5000, 6000, 9000]
+        this.maxSpeed = ((scene.circuit.segmentLength / 2) / (1/60));
+        this.playerSpeeds = [this.maxSpeed/3, 2*this.maxSpeed/3, this.maxSpeed, 2*this.maxSpeed, 3*this.maxSpeed]
         this.currentSpeed = 0;
         this.scoresSpeedChanges = [100, 500, 2000, 10000, 100000];
 
@@ -28,6 +28,7 @@ export class Player
         this.havePackage = false;
         this.currentRoadPos = 1;
         this.playerState = 'idle';
+        this.score = 0;
     }
 
     init(){
@@ -91,8 +92,7 @@ export class Player
         this.y = 0;
         this.z = 0;
 
-        //this.speed = this.playerSpeeds[this.currentSpeed];
-        this.speed = this.maxSpeed;
+        this.speed = this.playerSpeeds[this.currentSpeed];
         this.totalCircuitSegments = this.scene.circuit.total_segments;
 
         //Each 1000 ms call onEvent
@@ -100,7 +100,7 @@ export class Player
     }
 
     updateScore(){
-        this.scene.scoreboard.score += 1;
+        this.score += 1;
     }
 
     update(dt){
@@ -172,6 +172,11 @@ export class Player
     }
 
     updateScore(){
-
+        if (this.currentSpeed + 1 < this.scoresSpeedChanges.length){
+            if (this.score >= this.scoresSpeedChanges[this.currentSpeed + 1]){ 
+                this.currentSpeed += 1;
+                this.speed = this.playerSpeeds[this.currentSpeed];
+            }
+        }
     }
 }
