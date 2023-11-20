@@ -14,7 +14,7 @@ export class Player
         this.screen = {x:0, y:0, w:0, h:0};
 
         // max speed (to avoid moving for more than 1 road segment, assuming fps = 60)
-        this.maxSpeed = ((scene.circuit.segmentLength / 2) / (1/60)) * 2;
+        this.maxSpeed = ((scene.circuit.segmentLength / 2) / (1/60)) * 3;
         this.playerSpeeds = [3000, 4000, 5000, 6000, 9000]
         this.currentSpeed = 0;
         this.scoresSpeedChanges = [100, 500, 2000, 10000, 100000];
@@ -144,7 +144,7 @@ export class Player
         this.speed = 0;
         this.playerBody.stop();
         this.scene.data.set('state', "game_over");
-        //console.log("colisiono");
+        console.log("colisiono");
     }
 
     checkDelivery(){
@@ -172,6 +172,6 @@ export class Player
     }
 
     updateScore(){
-        
+
     }
 }
