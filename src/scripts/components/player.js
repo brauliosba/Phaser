@@ -82,8 +82,6 @@ export class Player
             this.scene.input.on('pointerup', () => this.playerState = 'idle');
             */
         }
-
-        this.updateScore();
     }
 
     restart (){
@@ -100,6 +98,7 @@ export class Player
 
     updateScore(){
         this.score += 1;
+        console.log(this.score);
     }
 
     update(dt){
@@ -125,6 +124,8 @@ export class Player
 
         if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
+
+        this.updateSpeed();
     }
 
     movePlayerLeft(dt){
@@ -170,7 +171,7 @@ export class Player
         }
     }
 
-    updateScore(){
+    updateSpeed(){
         if (this.currentSpeed + 1 < this.scoresSpeedChanges.length){
             if (this.score >= this.scoresSpeedChanges[this.currentSpeed + 1]){ 
                 this.currentSpeed += 1;
