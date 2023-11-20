@@ -14,9 +14,11 @@ export class Player
         this.screen = {x:0, y:0, w:0, h:0};
 
         // max speed (to avoid moving for more than 1 road segment, assuming fps = 60)
-        //this.maxSpeed = (scene.circuit.segmentLength / 2) / (1/60);
-        this.maxSpeed = 3000;
-        console.log(this.maxSpeed);
+        this.maxSpeed = ((scene.circuit.segmentLength / 2) / (1/60)) * 2;
+        this.playerSpeeds = [3000, 4000, 5000, 6000, 9000]
+        this.currentSpeed = 0;
+        this.scoresSpeedChanges = [100, 500, 2000, 10000, 100000];
+
         // driving contorl parameters
         this.speed = 0;
         this.horizontalSpeed = 500;
@@ -80,6 +82,8 @@ export class Player
             this.scene.input.on('pointerup', () => this.playerState = 'idle');
             */
         }
+
+        this.updateVelocity();
     }
 
     restart (){
@@ -87,6 +91,7 @@ export class Player
         this.y = 0;
         this.z = 0;
 
+        //this.speed = this.playerSpeeds[this.currentSpeed];
         this.speed = this.maxSpeed;
         this.totalCircuitSegments = this.scene.circuit.total_segments;
 
