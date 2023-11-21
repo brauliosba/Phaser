@@ -128,7 +128,7 @@ export class Player
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
         if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
-        //this.updateSpeed();
+        this.updateSpeed();
     }
 
     movePlayerLeft(dt){

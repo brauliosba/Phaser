@@ -148,8 +148,8 @@ export class Circuit
 
     addSegmentObstacle(n, spriteKey, offset){
         let sprite = this.scene.physics.add.sprite(0, 0, spriteKey);
-        this.scene.physics.add.collider(sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
-        this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "obstacle" });
+        var obstacleCollider = this.scene.physics.add.collider(sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
+        this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "obstacle", collider: obstacleCollider});
         sprite.setVisible(false);
     }
 
@@ -341,6 +341,9 @@ export class Circuit
                     sprite.spriteRef.setVisible(true);
                 }
                 else{
+                    if (sprite.type == "obstacle")
+                        this.scene.physics.world.removeCollider(sprite.collider);
+                    
                     sprite.spriteRef.setVisible(false);
                 }
             }
