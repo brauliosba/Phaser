@@ -26,7 +26,7 @@ export class Circuit
         this.roadLanes = 2;
 
         // road width (actually half of the road)
-        this.roadWidth = 3500;
+        this.roadWidth = 4000;
 
         // total road length
         this.roadLength = null;
@@ -42,6 +42,8 @@ export class Circuit
             {name: 'building3.png', offset1: 4.1, offset2: -2.5},
             {name: 'building4.png', offset1: 4.1, offset2: -1.8}
         ]
+
+        this.carOffsets = [-0.5, 0, 0.6]
     }
 
     create(){
@@ -148,6 +150,8 @@ export class Circuit
 
     addSegmentObstacle(n, spriteKey, offset){
         let sprite = this.scene.physics.add.sprite(0, 0, spriteKey);
+        sprite.body.setSize(75,30);
+        sprite.body.setOffset(0,10);
         var obstacleCollider = this.scene.physics.add.collider(sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
         this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "obstacle", collider: obstacleCollider});
         sprite.setVisible(false);
@@ -213,11 +217,12 @@ export class Circuit
     generateRandomObstacles(start, limit){
         for (var i = 0; i < 3; i++){
             var position = Phaser.Math.Between(start, limit - 10);
-            var offset = position % 2 == 0 ? -0.3 : 0.5;
+            var randomOff = Phaser.Math.Between(0, 2);
+            var offset = this.carOffsets[randomOff];
             var deliveryZone = this.currentDelivery.lastSegment;
             
             if (position < deliveryZone - 8 && position > deliveryZone){
-                this.addSegmentObstacle(position, 'car', this.currentDelivery.alignment > 0 ? -0.3 : 0.5);
+                this.addSegmentObstacle(position, 'car', this.currentDelivery.alignment > 0 ? -0.5 : 0.6);
             }
             else{
                 this.addSegmentObstacle(position, 'car', offset);
@@ -331,8 +336,10 @@ export class Circuit
                     sprite.spriteRef.setDisplaySize(destW, destH);
                     sprite.spriteRef.setDepth(spriteScale * 10);
 
-                    if (sprite.type == "obstacle")
+                    if (sprite.type == "obstacle"){
                         sprite.spriteRef.setScale((spriteScale * 20000));
+                        sprite.spriteRef.enableBody();
+                    }
                     else
                         sprite.spriteRef.setScale((spriteScale * 20000));
 
@@ -341,8 +348,9 @@ export class Circuit
                     sprite.spriteRef.setVisible(true);
                 }
                 else{
-                    if (sprite.type == "obstacle")
-                        this.scene.physics.world.removeCollider(sprite.collider);
+                    if (sprite.type == "obstacle") {
+                        sprite.spriteRef.disableBody(false, false);
+                    }
                     
                     sprite.spriteRef.setVisible(false);
                 }
@@ -359,8 +367,8 @@ export class Circuit
         this.drawPolygon(x1-w1, y1, x1+w1, y1, x2+w2, y2, x2-w2, y2, color.road);
 
         // draw sidewalk strips
-        var sidewalk_w1 = w1;
-        var sidewalk_w2 = w2;
+        var sidewalk_w1 = w1/1.5;
+        var sidewalk_w2 = w2/1.5;
         // left
         this.drawPolygon(x1-w1-sidewalk_w1, y1, x1-w1, y1, x2-w2, y2, x2-w2-sidewalk_w2, y2, color.sidewalk);
         // right
@@ -382,6 +390,7 @@ export class Circuit
         newX4 = x2+w2+rumble_w2+rumble_w2/4;
         this.drawPolygon(newX1, y1, newX2, y1, newX3, y2, newX4, y2, color.rumble);
 
+        /*
         //draw lanes
         if (color.lane){
             var line_w1 = (w1/20);
@@ -406,6 +415,7 @@ export class Circuit
                 );
             }
         }
+        */
 
         if (delivery[0]){
             var playerScreenPosY = this.scene.player.screen.y + this.scene.player.screen.h/2;

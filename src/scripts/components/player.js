@@ -49,7 +49,7 @@ export class Player
         this.playerBody.body.setSize(150,150,true);
         this.playerBody.setVisible(false);
 
-        this.limitBound = this.screen.w/3.2;
+        this.limitBound = this.screen.w/6;
 
         //mobile contorls
         console.log(this.scene.data.get('IS_TOUCH'));

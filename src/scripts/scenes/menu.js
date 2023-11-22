@@ -41,6 +41,8 @@ export class MenuScene extends Phaser.Scene
         this.optionsButton = this.add.image(dim/2 + 150, dim - 200,'optionsButton');
         this.optionsButton.setDisplaySize(100, 100);
         */
+
+        //Instructions Panel
         var instructionsPanel = this.add.nineslice(dim/2, dim/2, 'panel', 0, 800, 900, 50, 50, 50, 50);
         var instructionsText = this.add.text(instructionsPanel.width/2, 150, '¿Cómo jugar?', { fontSize : 50, fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
         var closeImage = this.add.image(dim - 170, 120, 'close').setInteractive();
