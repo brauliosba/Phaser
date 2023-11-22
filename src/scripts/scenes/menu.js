@@ -9,12 +9,12 @@ export class MenuScene extends Phaser.Scene
     }
     
     preload(){
-        this.load.image('menuBG', 'src/images/menu_pantalla.png');
-        this.load.image('playButton', 'src/images/menu_botones_play.png');
-        this.load.image('helpButton', 'src/images/menu_botones_help.png');
-        this.load.image('optionsButton', 'src/images/menu_botones_options.png');
-        this.load.image('panel', 'src/images/panel_bg.png');
-        this.load.image('close', 'src/images/close.png');
+        this.load.image('menuBG', 'src/images/UI/menu_pantalla.png');
+        this.load.image('playButton', 'src/images/UI/menu_botones_play.png');
+        this.load.image('helpButton', 'src/images/UI/menu_botones_help.png');
+        this.load.image('optionsButton', 'src/images/UI/menu_botones_options.png');
+        this.load.image('panel', 'src/images/UI/panel_bg.png');
+        this.load.image('close', 'src/images/UI/close.png');
     }
 
     create(){
