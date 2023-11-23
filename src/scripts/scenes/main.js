@@ -16,11 +16,12 @@ export class MainScene extends Phaser.Scene
     preload(){
         this.load.image('imgBack', 'src/images/img_back.png');
         this.load.spritesheet('playerAnim', 'src/images/playerAnim.png', { frameWidth: 754, frameHeight: 816});
-        this.load.image('car', 'src/images/carSingle.png');
+        //this.load.image('car', 'src/images/carSingle.png');
         this.load.atlas('buildings', 'src/images/buildings.png', 'src/images/buildings.json');
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
         this.load.image('buildTemp', 'src/images/edificio_1.png');
         this.load.image('buildTemp2', 'src/images/casaa (1).png');
+        this.load.atlas('car', 'src/images/car.png', 'src/images/car.json');
     }
 
     init(data){

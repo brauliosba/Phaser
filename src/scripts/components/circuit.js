@@ -43,7 +43,7 @@ export class Circuit
             {name: 'building4.png', offset1: 4.1, offset2: -1.8}
         ]
 
-        this.carOffsets = [-0.5, 0, 0.6]
+        this.carOffsets = [-0.2, 0, 0.5]
     }
 
     create(){
@@ -149,9 +149,9 @@ export class Circuit
     }
 
     addSegmentObstacle(n, spriteKey, offset){
-        let sprite = this.scene.physics.add.sprite(0, 0, spriteKey);
+        let sprite = this.scene.physics.add.sprite(0, 0, 'car', spriteKey);
         sprite.body.setSize(75,30);
-        sprite.body.setOffset(0,10);
+        sprite.body.setOffset(0,50);
         var obstacleCollider = this.scene.physics.add.collider(sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
         this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "obstacle", collider: obstacleCollider});
         sprite.setVisible(false);
@@ -168,6 +168,7 @@ export class Circuit
 
         if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
         this.generateRandomBuildings(start == 0 ? start + 40 : start, limit);
+        //this.addSegmentObstacle(50, 'AutoPrueba2_00', -0.2);
         this.generateRandomObstacles(start == 0 ? start + 20 : start, limit);
     }
     
@@ -222,10 +223,10 @@ export class Circuit
             var deliveryZone = this.currentDelivery.lastSegment;
             
             if (position < deliveryZone - 8 && position > deliveryZone){
-                this.addSegmentObstacle(position, 'car', this.currentDelivery.alignment > 0 ? -0.5 : 0.6);
+                this.addSegmentObstacle(position, 'AutoPrueba2_00', this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2]);
             }
             else{
-                this.addSegmentObstacle(position, 'car', offset);
+                this.addSegmentObstacle(position, 'AutoPrueba2_00', offset);
             }
         }
     }
@@ -337,21 +338,26 @@ export class Circuit
                     sprite.spriteRef.setDepth(spriteScale * 10);
 
                     if (sprite.type == "obstacle"){
-                        sprite.spriteRef.setScale((spriteScale * 20000));
+                        var number = Phaser.Math.RoundTo(destH/25, 0) <= 6 ? Phaser.Math.RoundTo(destH/25, 0) : 6;
+                        var spriteName = "AutoPrueba2_0" + number + '.png'; 
+                        console.log(spriteName);
+                        console.log("=============")
+                        if (sprite.offset != 0) sprite.spriteRef.setTexture('car', spriteName);
+                        sprite.spriteRef.setScale((spriteScale * 15000));
                         sprite.spriteRef.enableBody();
+                        if (sprite.offset > 0) sprite.spriteRef.flipX = true;
                     }
-                    else
+                    else {
                         sprite.spriteRef.setScale((spriteScale * 20000));
-
-                    if (sprite.offset < 0 && sprite.type != "obstacle") sprite.spriteRef.flipX = true;
+                        if (sprite.offset < 0) sprite.spriteRef.flipX = true;
+                    }
 
                     sprite.spriteRef.setVisible(true);
                 }
                 else{
                     if (sprite.type == "obstacle") {
                         sprite.spriteRef.disableBody(false, false);
-                    }
-                    
+                    }            
                     sprite.spriteRef.setVisible(false);
                 }
             }
