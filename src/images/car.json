@@ -1,45 +1,50 @@
 {
 "frames": {
-	"AutoPrueba2_00.png": {
-		"frame": {"x":187, "y":170, "w":91, "h":84},
-		"spriteSourceSize": {"x":47,"y":20,"w":188,"h":125},
-		"sourceSize": {"w":188,"h":125}
+	"TurboDelivery_Car_A_00.png": {
+		"frame": {"x":1455, "y":0, "w":718, "h":585},
+		"spriteSourceSize": {"x":72,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
 	},
-	"AutoPrueba2_01.png": {
-		"frame": {"x":94, "y":170, "w":92, "h":84},
-		"spriteSourceSize": {"x":46,"y":20,"w":188,"h":125},
-		"sourceSize": {"w":188,"h":125}
+	"TurboDelivery_Car_A_01.png": {
+		"frame": {"x":1454, "y":1172, "w":720, "h":585},
+		"spriteSourceSize": {"x":70,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
 	},
-	"AutoPrueba2_02.png": {
-		"frame": {"x":95, "y":0, "w":92, "h":84},
-		"spriteSourceSize": {"x":46,"y":20,"w":188,"h":125},
-		"sourceSize": {"w":188,"h":125}
+	"TurboDelivery_Car_A_02.png": {
+		"frame": {"x":732, "y":0, "w":722, "h":585},
+		"spriteSourceSize": {"x":68,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
 	},
-	"AutoPrueba2_03.png": {
-		"frame": {"x":0, "y":85, "w":93, "h":84},
-		"spriteSourceSize": {"x":45,"y":20,"w":188,"h":125},
-		"sourceSize": {"w":188,"h":125}
+	"TurboDelivery_Car_A_03.png": {
+		"frame": {"x":730, "y":586, "w":724, "h":585},
+		"spriteSourceSize": {"x":66,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
 	},
-	"AutoPrueba2_04.png": {
-		"frame": {"x":94, "y":85, "w":93, "h":84},
-		"spriteSourceSize": {"x":45,"y":20,"w":188,"h":125},
-		"sourceSize": {"w":188,"h":125}
+	"TurboDelivery_Car_A_04.png": {
+		"frame": {"x":728, "y":1172, "w":725, "h":585},
+		"spriteSourceSize": {"x":65,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
 	},
-	"AutoPrueba2_05.png": {
-		"frame": {"x":0, "y":170, "w":93, "h":84},
-		"spriteSourceSize": {"x":45,"y":20,"w":188,"h":125},
-		"sourceSize": {"w":188,"h":125}
+	"TurboDelivery_Car_A_05.png": {
+		"frame": {"x":0, "y":1172, "w":727, "h":585},
+		"spriteSourceSize": {"x":63,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
 	},
-	"AutoPrueba2_06.png": {
-		"frame": {"x":0, "y":0, "w":94, "h":84},
-		"spriteSourceSize": {"x":44,"y":20,"w":188,"h":125},
-		"sourceSize": {"w":188,"h":125}
+	"TurboDelivery_Car_A_06.png": {
+		"frame": {"x":0, "y":586, "w":729, "h":585},
+		"spriteSourceSize": {"x":61,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
+	},
+	"TurboDelivery_Car_A_07.png": {
+		"frame": {"x":0, "y":0, "w":731, "h":585},
+		"spriteSourceSize": {"x":59,"y":87,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 279, "h": 255},
+	"size": {"w": 2175, "h": 1758},
 	"scale": "1"
 }
 }

@@ -43,7 +43,7 @@ export class Circuit
             {name: 'building4.png', offset1: 4.1, offset2: -1.8}
         ]
 
-        this.carOffsets = [-0.2, 0, 0.5]
+        this.carOffsets = [-1, 0, 1]
     }
 
     create(){
@@ -150,8 +150,8 @@ export class Circuit
 
     addSegmentObstacle(n, spriteKey, offset){
         let sprite = this.scene.physics.add.sprite(0, 0, 'car', spriteKey);
-        sprite.body.setSize(75,30);
-        sprite.body.setOffset(0,50);
+        sprite.body.setCircle(350);
+        sprite.disableBody(false, false);
         var obstacleCollider = this.scene.physics.add.collider(sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
         this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "obstacle", collider: obstacleCollider});
         sprite.setVisible(false);
@@ -338,18 +338,23 @@ export class Circuit
                     sprite.spriteRef.setDepth(spriteScale * 10);
 
                     if (sprite.type == "obstacle"){
-                        var number = Phaser.Math.RoundTo(destH/25, 0) <= 6 ? Phaser.Math.RoundTo(destH/25, 0) : 6;
+                        sprite.spriteRef.setPosition(spriteX, spriteY);
+                        var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
                         var spriteName = "AutoPrueba2_0" + number + '.png'; 
                         console.log(spriteName);
                         console.log("=============")
                         if (sprite.offset != 0) sprite.spriteRef.setTexture('car', spriteName);
-                        sprite.spriteRef.setScale((spriteScale * 15000));
+
+                        sprite.spriteRef.setScale((spriteScale * 2800));
                         sprite.spriteRef.enableBody();
+
                         if (sprite.offset > 0) sprite.spriteRef.flipX = true;
+                        else sprite.spriteRef.flipX = false;
                     }
                     else {
                         sprite.spriteRef.setScale((spriteScale * 20000));
                         if (sprite.offset < 0) sprite.spriteRef.flipX = true;
+                        else sprite.spriteRef.flipX = false;
                     }
 
                     sprite.spriteRef.setVisible(true);
