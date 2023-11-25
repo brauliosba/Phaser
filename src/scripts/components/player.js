@@ -34,7 +34,7 @@ export class Player
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.keyLeft = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 
-        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'runAnim').play('idle');
+        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerAnim').play('idle');
 
         // set the player screen size
         this.screen.w = this.playerBody.width;
