@@ -82,7 +82,7 @@ export class MenuScene extends Phaser.Scene
         this.instructionsText.setWordWrapWidth(instructionsPanel.width - 600);
 
         this.instructionsContainer = this.add.container(0, 0, [instructionsPanel, intructionsTitle, this.instructionsText, closeImage, okayButton, leftArrow, rightArrow]);
-        //this.instructionsContainer.setVisible(false);
+        this.instructionsContainer.setVisible(false);
     }
 
     leftArrowClicked(){
