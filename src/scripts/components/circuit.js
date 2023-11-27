@@ -128,10 +128,12 @@ export class Circuit
         this.currentDelivery.lastSegment = n+4;
 
         for (var i = n-4; i <= n+4; i++){
-            if (i >= n-1 && i < n+2)
-                this.segments[i].delivery = [true,'0x429352'];
+            if (i < n-1)
+                this.segments[i].delivery = [true,'0xF6B26B']
+            else if (i > n+1)
+                this.segments[i].delivery = [true,'0xF8C189'];
             else
-                this.segments[i].delivery = [true,'0xF6B26B'];
+                this.segments[i].delivery = [true,'0x429352'];
         }
         
         for (var i = n - 5; i <= n+5; i++){
@@ -150,11 +152,16 @@ export class Circuit
 
     addSegmentObstacle(n, spriteKey, offset){
         let sprite;
-        if (offset != 0)
+        if (offset != 0) {
             sprite = this.scene.physics.add.sprite(0, 0, 'carA', spriteKey);
-        else
+            if (offset > 0) sprite.body.setOffset(50, 0);
+            else sprite.body.setOffset(30, 0);
+        }
+        else {
             sprite = this.scene.physics.add.sprite(0, 0, 'carACentral').play('carIdle');
-        sprite.body.setCircle(350);
+            sprite.body.setOffset(70, 0);
+        }
+        sprite.body.setCircle(300);
         sprite.disableBody(false, false);
         var obstacleCollider = this.scene.physics.add.collider(sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
         this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "obstacle", collider: obstacleCollider});
@@ -435,12 +442,9 @@ export class Circuit
 
             if (this.currentDelivery.zone != "done") {
                 if (playerScreenPosY >= y2 &&  playerScreenPosY <= y1){       
-                    if (delivery[1] == '0x429352'){
-                        this.currentDelivery.zone = "green";
-                    }
-                    else if (delivery[1] == '0xF6B26B'){
-                        this.currentDelivery.zone = "orange";
-                    }
+                    if (delivery[1] == '0x429352') this.currentDelivery.zone = "green";
+                    else if (delivery[1] == '0xF6B26B') this.currentDelivery.zone = "orange";
+                    else if (delivery[1] == '0xF8C189') this.currentDelivery.zone = "orange2";
                 }
             }
 

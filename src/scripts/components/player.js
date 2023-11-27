@@ -168,6 +168,10 @@ export class Player
                     this.score += 20;
                     this.havePackage = !this.havePackage;
                 }
+                else if (delivery.zone == "orange2"){
+                    this.score += 10;
+                    this.havePackage = !this.havePackage;
+                }
 
                 if (delivery.zone != "undone") delivery.zone = "done";
 
