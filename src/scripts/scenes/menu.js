@@ -76,9 +76,9 @@ export class MenuScene extends Phaser.Scene
         okayButton.on('pointerdown', () => this.hideInstructions());
 
         this.instructionsText = this.add.text(dim/2, dim/2, this.instructionsDesktopContent[this.instructionIndex], { 
-            fontSize : 60, fontFamily: 'Montserrat, sans-serif', align: 'center' }).setOrigin(0.5);
-        this.instructionsText.setStroke('#ff0000', 13);
-        this.instructionsText.setShadow(2, 2, '#333333', 2, true, false);
+            fontSize : 60, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+        this.instructionsText.setStroke('#2D1935', 13);
+        this.instructionsText.setShadow(2, 2, '#000000', 2, true, false);
         this.instructionsText.setWordWrapWidth(instructionsPanel.width - 600);
 
         this.instructionsContainer = this.add.container(0, 0, [instructionsPanel, intructionsTitle, this.instructionsText, closeImage, okayButton, leftArrow, rightArrow]);
