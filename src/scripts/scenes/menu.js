@@ -1,7 +1,6 @@
 // -------------------------------------------
 // Menu Scene
 // -------------------------------------------
-
 export class MenuScene extends Phaser.Scene
 {
     constructor(){
@@ -51,6 +50,22 @@ export class MenuScene extends Phaser.Scene
         //music.play({loop: true });
         
         //Instructions Panel
+        this.createInstructionsPanel(dim);
+
+        //OptionsPanel
+        this.createOptionsPanel(dim);
+    }
+
+    AddCropResizeMethod = function (gameObject) {
+        gameObject.resize = function (width, height) {
+            gameObject.setCrop(0, 0, width, height);
+            return gameObject;
+        }
+    
+        return gameObject;
+    }
+
+    createInstructionsPanel(dim){
         this.instructionsDesktopContent = ["Flecha izquierda o derecha para moverte.", 
         "Barra espaciadora para recibir/entregar paquetes.", 
         "Evita los obstáculos y sé el mejor repartidor de la ciudad."];
@@ -87,8 +102,9 @@ export class MenuScene extends Phaser.Scene
 
         this.instructionsContainer = this.add.container(0, 0, [instructionsPanel, intructionsTitle, this.instructionsText, closeImage, okayButton, leftArrow, rightArrow]);
         this.instructionsContainer.setVisible(false);
+    }
 
-        //OptionsPanel
+    createOptionsPanel(dim){
         var optionsPanel = this.add.nineslice(dim/2, dim/2, 'panel', 0, 1200, 1200, 200, 200, 200, 200);
         var optionsTitle = this.add.image(dim/2, 250, 'panelUI', 'cartel_opciones.png');
         optionsTitle.setDisplaySize(500,117);
@@ -145,15 +161,6 @@ export class MenuScene extends Phaser.Scene
 
         this.optionsContainer = this.add.container(0, 0, [optionsPanel, optionsTitle, closeImage, sfxSlider, sfxTitle, musicTitle, musicSlider]);
         this.optionsContainer.setVisible(false);
-    }
-
-    AddCropResizeMethod = function (gameObject) {
-        gameObject.resize = function (width, height) {
-            gameObject.setCrop(0, 0, width, height);
-            return gameObject;
-        }
-    
-        return gameObject;
     }
 
     leftArrowClicked(){
