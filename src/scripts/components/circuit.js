@@ -1,3 +1,7 @@
+import {Obstacle} from './obstacle.js';
+import {Building} from './building.js';
+import {Delivery} from './delivery.js';
+
 export class Circuit
 {
     constructor(scene){
@@ -114,15 +118,16 @@ export class Circuit
 
     addSegmentSprite(n, spriteKey, offset){
         //let sprite = this.scene.add.sprite(0, 0, 'buildings', spriteKey);
-        let sprite = this.scene.add.sprite(0, 0, spriteKey);
-        this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "bg" });
+        let building = new Building(this.scene);
+        building.create(spriteKey, offset);
+        this.segments[n].sprites.push({ object: building, type: "bg" });
         this.segments[n].delivery = false;
-        sprite.setVisible(false);
     }
 
     addSegmentDelivery(n, spriteKey, offset){
-        let sprite = this.scene.add.sprite(0, 0, 'sprites', spriteKey);
-        this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "delivery" });
+        let delivery = new Delivery(this.scene);
+        delivery.create(spriteKey, offset);
+        this.segments[n].sprites.push({ object: delivery, type: "delivery" });
         this.currentDelivery.alignment = offset;
         this.currentDelivery.zone = "undone";
         this.currentDelivery.lastSegment = n+4;
@@ -135,43 +140,30 @@ export class Circuit
             else
                 this.segments[i].delivery = [true,'0x429352'];
         }
-        
+               
         for (var i = n - 5; i <= n+5; i++){
             for (var j = 0; j < this.segments[i].sprites.length; j++){
                 if (this.segments[i].sprites[j].type == "obstacle"){
-                    if (this.segments[i].sprites[j].offset > 0 == offset > 0){
-                        this.segments[i].sprites[j].offset = this.currentDelivery.alignment > 0 ? -0.3 : 0.5;
+                    if (this.segments[i].sprites[j].object.offset > 0 == offset > 0){
+                        this.segments[i].sprites[j].object.offset = this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2];
                     }
                 }
             }
         }
-
-        sprite.setVisible(false);
-        sprite.setDepth(4);
     }
 
     addSegmentObstacle(n, spriteKey, offset){
-        let sprite;
-        if (offset != 0) {
-            sprite = this.scene.physics.add.sprite(0, 0, 'carA', spriteKey);
-            if (offset > 0) sprite.body.setOffset(50, 0);
-            else sprite.body.setOffset(30, 0);
-        }
-        else {
-            sprite = this.scene.physics.add.sprite(0, 0, 'carACentral').play('carIdle');
-            sprite.body.setOffset(70, 0);
-        }
-        sprite.body.setCircle(300);
-        sprite.disableBody(false, false);
-        var obstacleCollider = this.scene.physics.add.collider(sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
-        this.segments[n].sprites.push({ offset: offset, spriteRef: sprite, type: "obstacle", collider: obstacleCollider});
-        sprite.setVisible(false);
+        let obstacle = new Obstacle(this.scene);
+        obstacle.create(spriteKey, offset);
+        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
+        this.segments[n].sprites.push({ object: obstacle, type: "obstacle", collider: obstacleCollider});
     }
 
     addRandomSprites(start, limit){
         for (var i = start; i < limit; i++){
             for (var j = 0; j < this.segments[i].sprites.length; j++){
-                this.segments[i].sprites[j].spriteRef.destroy();
+                this.segments[i].sprites[j].object.destroy();
+                this.segments[i].sprites[j].object = null;
             }
             this.segments[i].sprites = [];
             this.segments[i].delivery = [false, '0x429352'];
@@ -234,10 +226,10 @@ export class Circuit
             
             if (position < deliveryZone - 8 && position > deliveryZone){
                 if (offset != 0)
-                    this.addSegmentObstacle(position, 'car_A_00.png', this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2]);
+                    this.addSegmentObstacle(position, 'carA', this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2]);
             }
             else{
-                this.addSegmentObstacle(position, 'car_A_00.png', offset);
+                this.addSegmentObstacle(position, 'carA', offset);
             }
         }
     }
@@ -333,46 +325,27 @@ export class Circuit
             for (var j = 0 ; j < currSegment.sprites.length ; j++){
                 var sprite = currSegment.sprites[j];
                 var spriteScale = currSegment.point.scale;
-                var spriteX = currSegment.point.screen.x + (spriteScale * sprite.offset * this.roadWidth * this.scene.data.get('screen')/2);
+                var spriteX = currSegment.point.screen.x + (spriteScale * sprite.object.offset * this.roadWidth * this.scene.data.get('screen')/2);
                 var spriteY = currSegment.point.screen.y;
+                
+                var destW  = (sprite.object.sprite.width * spriteScale * this.scene.data.get('screen')/2) * (0.00375 * this.roadWidth);
+                var destH  = (sprite.object.sprite.height * spriteScale * this.scene.data.get('screen')/2) * (0.00375 * this.roadWidth);
 
-                var destW  = (sprite.spriteRef.width * spriteScale * this.scene.data.get('screen')/2) * (0.00375 * this.roadWidth);
-                var destH  = (sprite.spriteRef.height * spriteScale * this.scene.data.get('screen')/2) * (0.00375 * this.roadWidth);
-
-                var destX = spriteX + (destW * ((sprite.offset < 0 ? -1 : 0) || 0));
+                var destX = spriteX + (destW * ((sprite.object.offset < 0 ? -1 : 0) || 0));
                 var destY = spriteY + (destH * (-1 || 0));
                 
                 var clipH = currSegment.clip ? Math.max(0, destY+destH-currSegment.clip) : 0;
                 if (clipH < destH) {
-                    sprite.spriteRef.setDisplaySize(destW, destH);
-                    sprite.spriteRef.setDepth(spriteScale * 10);
-
                     if (sprite.type == "obstacle"){
-                        sprite.spriteRef.setPosition(spriteX, spriteY);
-
-                        var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
-                        var spriteName = "car_A_0" + number + '.png'; 
-                        if (sprite.offset != 0) sprite.spriteRef.setTexture('carA', spriteName);
-
-                        sprite.spriteRef.setScale((spriteScale * 2800));
-                        sprite.spriteRef.enableBody();
-
-                        if (sprite.offset > 0) sprite.spriteRef.flipX = true;
-                        else sprite.spriteRef.flipX = false;
+                        sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
                     }
                     else {
-                        sprite.spriteRef.setPosition(destX, destY);
-                        sprite.spriteRef.setScale((spriteScale * 20000));
-
-                        if (sprite.offset < 0) sprite.spriteRef.flipX = true;
-                        else sprite.spriteRef.flipX = false;
+                        sprite.object.draw(destW, destH, destX, destY, spriteScale);
                     }
 
-                    sprite.spriteRef.setVisible(true);
                 }
                 else{
-                    if (sprite.type == "obstacle") sprite.spriteRef.disableBody(false, false);           
-                    sprite.spriteRef.setVisible(false);
+                    sprite.object.disable();
                 }
             }
         }
