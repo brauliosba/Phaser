@@ -8,6 +8,7 @@ import {MenuScene} from './scripts/scenes/menu.js';
 // game configuration
 var config = {
     type: Phaser.AUTO,
+    parent: 'phaser',
     width: 1080,
     height: 1080,
 
@@ -15,14 +16,16 @@ var config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-
+    dom: {
+        createContainer: true
+    },
     scene: [MenuScene, MainScene],
 
     physics: {
         default: 'arcade',
         arcade: {
             gravity: {y:0},
-            debug: false
+            debug: true
         }
     }
 }
