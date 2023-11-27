@@ -342,7 +342,6 @@ export class Circuit
                     else {
                         sprite.object.draw(destW, destH, destX, destY, spriteScale);
                     }
-
                 }
                 else{
                     sprite.object.disable();

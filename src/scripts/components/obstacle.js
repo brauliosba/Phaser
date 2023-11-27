@@ -32,7 +32,7 @@ export class Obstacle
         var spriteName = this.spriteSheet + '_0' + number + '.png'; 
         if (this.offset != 0) this.sprite.setTexture('carA', spriteName);
 
-        this.sprite.setScale((spriteScale * 2800));
+        this.sprite.setScale((spriteScale * 2400));
         this.sprite.enableBody();
 
         if (this.offset > 0) this.sprite.flipX = true;
