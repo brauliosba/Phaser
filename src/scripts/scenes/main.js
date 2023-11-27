@@ -29,6 +29,8 @@ export class MainScene extends Phaser.Scene
         //Obstacles
         this.load.atlas('carA', 'src/images/obstacles/car_A.png', 'src/images/obstacles/car_A.json');
         this.load.spritesheet('carACentral', 'src/images/obstacles/car_A_Central.png', { frameWidth: 741, frameHeight: 597});
+
+        this.load.css('fonts', 'src/styles/fonts.css');
     }
 
     init(data){

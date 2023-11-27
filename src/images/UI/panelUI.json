@@ -1,0 +1,40 @@
+{
+"frames": {
+	"boton_der.png": {
+		"frame": {"x":0, "y":516, "w":153, "h":156},
+		"spriteSourceSize": {"x":0,"y":0,"w":153,"h":157},
+		"sourceSize": {"w":153,"h":157}
+	},
+	"boton_izq.png": {
+		"frame": {"x":154, "y":516, "w":153, "h":157},
+		"spriteSourceSize": {"x":0,"y":0,"w":153,"h":157},
+		"sourceSize": {"w":153,"h":157}
+	},
+	"boton_okey.png": {
+		"frame": {"x":0, "y":352, "w":463, "h":163},
+		"spriteSourceSize": {"x":0,"y":0,"w":463,"h":163},
+		"sourceSize": {"w":463,"h":163}
+	},
+	"cartel_instrucciones.png": {
+		"frame": {"x":0, "y":0, "w":752, "h":175},
+		"spriteSourceSize": {"x":0,"y":0,"w":752,"h":176},
+		"sourceSize": {"w":752,"h":176}
+	},
+	"cartel_opciones.png": {
+		"frame": {"x":0, "y":176, "w":752, "h":175},
+		"spriteSourceSize": {"x":0,"y":0,"w":752,"h":176},
+		"sourceSize": {"w":752,"h":176}
+	},
+	"close.png": {
+		"frame": {"x":308, "y":516, "w":106, "h":110},
+		"spriteSourceSize": {"x":0,"y":0,"w":106,"h":110},
+		"sourceSize": {"w":106,"h":110}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 753, "h": 674},
+	"scale": "1"
+}
+}
