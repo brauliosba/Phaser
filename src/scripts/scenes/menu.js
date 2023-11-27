@@ -15,6 +15,11 @@ export class MenuScene extends Phaser.Scene
         this.load.image('optionsButton', 'src/images/UI/menu_botones_options.png');
         this.load.image('panel', 'src/images/UI/panel.png');
         this.load.atlas('panelUI', 'src/images/UI/panelUI.png', 'src/images/UI/panelUI.json');
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        });
     }
 
     create(){
@@ -37,11 +42,14 @@ export class MenuScene extends Phaser.Scene
         this.helpButton.setDisplaySize(100, 100);
         this.helpButton.on('pointerdown', () => this.showInstructions());
 
-        /*
-        this.optionsButton = this.add.image(dim/2 + 150, dim - 200,'optionsButton');
+        this.optionsButton = this.add.image(dim/2 + 150, dim - 200,'optionsButton').setInteractive();
         this.optionsButton.setDisplaySize(100, 100);
-        */
+        this.optionsButton.on('pointerdown', () => this.showOptions());
 
+        //Audio
+        //let music = this.sound.add();
+        //music.play({loop: true });
+        
         //Instructions Panel
         this.instructionsDesktopContent = ["Flecha izquierda o derecha para moverte.", 
         "Barra espaciadora para recibir/entregar paquetes.", 
@@ -79,6 +87,73 @@ export class MenuScene extends Phaser.Scene
 
         this.instructionsContainer = this.add.container(0, 0, [instructionsPanel, intructionsTitle, this.instructionsText, closeImage, okayButton, leftArrow, rightArrow]);
         this.instructionsContainer.setVisible(false);
+
+        //OptionsPanel
+        var optionsPanel = this.add.nineslice(dim/2, dim/2, 'panel', 0, 1200, 1200, 200, 200, 200, 200);
+        var optionsTitle = this.add.image(dim/2, 250, 'panelUI', 'cartel_opciones.png');
+        optionsTitle.setDisplaySize(500,117);
+
+        var closeImage = this.add.image(dim - 170, 250, 'panelUI', 'close.png').setInteractive();
+        closeImage.setDisplaySize(70,70);
+        closeImage.on('pointerdown', () => this.hideOptions());
+
+        var sfxTitle = this.add.text(dim/2, dim/2 - 130, 'Sonido', { 
+            fontSize : 40, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+        sfxTitle.setStroke('#2D1935', 13);
+        sfxTitle.setShadow(2, 2, '#000000', 2, true, false);
+
+        var sfxSlider = this.rexUI.add.slider({
+            x: dim/2,
+            y: dim/2 - 70,
+            width: 400,
+            height: 20,
+            orientation: 'x',
+
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x260e04'),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x4e342e'),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 20, '0x2D1935'),
+
+            input: 'click', // 'drag'|'click'
+            valuechangeCallback: function (value) {
+                //sound.volume = value; // set volume between 0 - 1
+            },
+
+        }).layout();
+
+        var musicTitle = this.add.text(dim/2, dim/2 + 30, 'Música', { 
+            fontSize : 40, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+        musicTitle.setStroke('#2D1935', 13);
+        musicTitle.setShadow(2, 2, '#000000', 2, true, false);
+        
+        var musicSlider = this.rexUI.add.slider({
+            x: dim/2,
+            y: dim/2 + 100,
+            width: 400,
+            height: 20,
+            orientation: 'x',
+
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x260e04'),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x4e342e'),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 20, '0x2D1935'),
+
+            input: 'click', // 'drag'|'click'
+            valuechangeCallback: function (value) {
+                //sound.volume = value; // set volume between 0 - 1
+            },
+
+        }).layout();
+
+        this.optionsContainer = this.add.container(0, 0, [optionsPanel, optionsTitle, closeImage, sfxSlider, sfxTitle, musicTitle, musicSlider]);
+        this.optionsContainer.setVisible(false);
+    }
+
+    AddCropResizeMethod = function (gameObject) {
+        gameObject.resize = function (width, height) {
+            gameObject.setCrop(0, 0, width, height);
+            return gameObject;
+        }
+    
+        return gameObject;
     }
 
     leftArrowClicked(){
@@ -103,5 +178,13 @@ export class MenuScene extends Phaser.Scene
 
     hideInstructions(){
         this.instructionsContainer.setVisible(false);
+    }
+
+    showOptions(){
+        this.optionsContainer.setVisible(true);
+    }
+
+    hideOptions(){
+        this.optionsContainer.setVisible(false);
     }
 }
