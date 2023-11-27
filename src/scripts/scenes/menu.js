@@ -19,6 +19,7 @@ export class MenuScene extends Phaser.Scene
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
             sceneKey: 'rexUI'
         });
+        this.load.plugin('rextexteditplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js', true);
     }
 
     create(){
@@ -27,6 +28,9 @@ export class MenuScene extends Phaser.Scene
         this.data.set('screen', dim);
         this.data.set('screen_c', dim/2);
         this.data.set('state', "init");
+        this.data.set('initialSpeed', 3000);
+        this.data.set('horizontalSpeed', 500);
+        //this.data.set('acceleration', "init");
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
@@ -54,6 +58,44 @@ export class MenuScene extends Phaser.Scene
 
         //OptionsPanel
         this.createOptionsPanel(dim);
+
+        var printText = this.add.text(200, 300, "Velocidad Inicial: " + this.data.get('initialSpeed'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 400,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        this.plugins.get('rextexteditplugin').add(printText, {
+            type: 'textarea',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setInitialSpeed(text); },
+            selectAll: true,
+            enterClose: false
+        });
+        
+        var printText2 = this.add.text(200, 350, "Velocidad Lateral: " + this.data.get('horizontalSpeed'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 400,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        this.plugins.get('rextexteditplugin').add(printText2, {
+            type: 'textarea',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setHorizontalSpeed(text); },
+            selectAll: true,
+            enterClose: false
+        });
+    }
+
+    setInitialSpeed(speed){
+        this.data.set('initialSpeed', speed)
+    }
+
+    setHorizontalSpeed(speed){
+        this.data.set('horizontalSpeed', speed)
     }
 
     AddCropResizeMethod = function (gameObject) {

@@ -21,7 +21,7 @@ export class Player
 
         // driving contorl parameters
         this.speed = 0;
-        this.horizontalSpeed = 500;
+        this.horizontalSpeed = this.scene.data.get('horizontalSpeed');
 
         this.playerBody;
         this.havePackage = false;
@@ -93,7 +93,9 @@ export class Player
         this.y = 0;
         this.z = 0;
 
-        this.speed = this.playerSpeeds[this.currentSpeed];
+        this.speed = this.scene.data.get('initialSpeed');
+        console.log('Velocidad Inicial: ' + this.speed);
+        console.log('Velocidad Horizotal: ' + this.horizontalSpeed);
         this.totalCircuitSegments = this.scene.circuit.total_segments;
 
         //Each 1000 ms call onEvent
