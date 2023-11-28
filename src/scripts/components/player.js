@@ -21,6 +21,7 @@ export class Player
 
         // driving contorl parameters
         this.speed = 0;
+        this.acceleration = this.scene.data.get('acceleration');
         this.horizontalSpeed = this.scene.data.get('horizontalSpeed');
 
         this.playerBody;
@@ -52,7 +53,6 @@ export class Player
         this.limitBound = this.screen.w/6;
 
         //mobile contorls
-        console.log(this.scene.data.get('IS_TOUCH'));
         if (this.scene.data.get('IS_TOUCH')) {
             this.deliveryButton = this.scene.add.image(0, 0,'deliveryButton').setInteractive();
             this.deliveryButton.setDisplaySize(100, 100);
@@ -86,6 +86,9 @@ export class Player
 
         this.deliveryText = this.scene.add.text(100, 50, 'Tienes un paquete', { fontSize : 50, fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
         this.deliveryText.setVisible(false);
+
+        this.speedText = this.scene.add.text(50, 200, 'Velocidad actual: ' + this.speed, { fontSize : 30, color: '0x000000' });
+        this.scene.add.text(50, 230, 'Velocidad horizontal: ' + this.horizontalSpeed, { fontSize : 30, color: '0x000000' });
     }
 
     restart (){
@@ -99,11 +102,18 @@ export class Player
         this.totalCircuitSegments = this.scene.circuit.total_segments;
 
         //Each 1000 ms call onEvent
-        this.timedEvent = this.scene.time.addEvent({ delay: 1000, callback: this.updateScore, callbackScope: this, loop: true });
+        this.scoreEvent = this.scene.time.addEvent({ delay: 1000, callback: this.updateScore, callbackScope: this, loop: true });
+        //Each 100 ms call onEvent
+        this.speedEvent = this.scene.time.addEvent({ delay: 100, callback: this.updateSpeed, callbackScope: this, loop: true });
     }
 
     updateScore(){
         this.score += 1;
+    }
+
+    updateSpeed(){
+        this.speed += this.acceleration;
+        this.speedText.setText('Velocidad actual: ' + this.speed);
     }
 
     update(dt){
@@ -130,7 +140,6 @@ export class Player
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
         if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
-        this.updateSpeed();
     }
 
     movePlayerLeft(dt){
@@ -149,6 +158,8 @@ export class Player
         this.speed = 0;
         this.playerBody.stop();
         this.scene.data.set('state', "game_over");
+        this.speedEvent.remove(false);
+        this.scoreEvent.remove(false);
         console.log("colisiono");
     }
 
@@ -178,15 +189,6 @@ export class Player
                 if (delivery.zone != "undone") delivery.zone = "done";
 
                 this.deliveryText.setVisible(this.havePackage);
-            }
-        }
-    }
-
-    updateSpeed(){
-        if (this.currentSpeed + 1 < this.scoresSpeedChanges.length){
-            if (this.score >= this.scoresSpeedChanges[this.currentSpeed + 1]){ 
-                this.currentSpeed += 1;
-                this.speed = this.playerSpeeds[this.currentSpeed];
             }
         }
     }

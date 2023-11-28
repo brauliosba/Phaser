@@ -30,7 +30,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('state', "init");
         this.data.set('initialSpeed', 3000);
         this.data.set('horizontalSpeed', 500);
-        //this.data.set('acceleration', "init");
+        this.data.set('acceleration', 10);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
@@ -68,13 +68,12 @@ export class MenuScene extends Phaser.Scene
         }).setOrigin(0.5)
 
         this.plugins.get('rextexteditplugin').add(printText, {
-            type: 'textarea',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setInitialSpeed(text); },
+            type: 'text',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('initialSpeed', text); },
             selectAll: true,
-            enterClose: false
         });
         
-        var printText2 = this.add.text(200, 350, "Velocidad Lateral: " + this.data.get('horizontalSpeed'), {
+        var printText2 = this.add.text(200, 360, "Velocidad Lateral: " + this.data.get('horizontalSpeed'), {
             color: 'yellow',
             fontSize: '24px',
             fixedWidth: 400,
@@ -83,19 +82,28 @@ export class MenuScene extends Phaser.Scene
         }).setOrigin(0.5)
 
         this.plugins.get('rextexteditplugin').add(printText2, {
-            type: 'textarea',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setHorizontalSpeed(text); },
+            type: 'text',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('horizontalSpeed', text); },
             selectAll: true,
-            enterClose: false
+        });
+
+        var printText3 = this.add.text(200, 420, "Aceleración: " + this.data.get('acceleration'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 400,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        this.plugins.get('rextexteditplugin').add(printText3, {
+            type: 'text',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('acceleration', text); },
+            selectAll: true,
         });
     }
 
-    setInitialSpeed(speed){
-        this.data.set('initialSpeed', speed)
-    }
-
-    setHorizontalSpeed(speed){
-        this.data.set('horizontalSpeed', speed)
+    setData(key, speed){
+        this.data.set(key, parseInt(speed))
     }
 
     AddCropResizeMethod = function (gameObject) {
