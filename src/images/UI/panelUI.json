@@ -1,40 +1,55 @@
 {
 "frames": {
+	"barra_relleno.png": {
+		"frame": {"x":0, "y":430, "w":609, "h":45},
+		"spriteSourceSize": {"x":10,"y":19,"w":628,"h":77},
+		"sourceSize": {"w":628,"h":77}
+	},
+	"barra_vacia.png": {
+		"frame": {"x":0, "y":352, "w":628, "h":77},
+		"spriteSourceSize": {"x":0,"y":0,"w":628,"h":77},
+		"sourceSize": {"w":628,"h":77}
+	},
 	"boton_der.png": {
-		"frame": {"x":0, "y":516, "w":153, "h":156},
-		"spriteSourceSize": {"x":0,"y":0,"w":153,"h":157},
-		"sourceSize": {"w":153,"h":157}
+		"frame": {"x":464, "y":476, "w":153, "h":156},
+		"spriteSourceSize": {"x":0,"y":0,"w":153,"h":156},
+		"sourceSize": {"w":153,"h":156}
 	},
 	"boton_izq.png": {
-		"frame": {"x":154, "y":516, "w":153, "h":157},
+		"frame": {"x":618, "y":430, "w":153, "h":157},
 		"spriteSourceSize": {"x":0,"y":0,"w":153,"h":157},
 		"sourceSize": {"w":153,"h":157}
 	},
 	"boton_okey.png": {
-		"frame": {"x":0, "y":352, "w":463, "h":163},
+		"frame": {"x":0, "y":476, "w":463, "h":163},
 		"spriteSourceSize": {"x":0,"y":0,"w":463,"h":163},
 		"sourceSize": {"w":463,"h":163}
 	},
 	"cartel_instrucciones.png": {
 		"frame": {"x":0, "y":0, "w":752, "h":175},
-		"spriteSourceSize": {"x":0,"y":0,"w":752,"h":176},
-		"sourceSize": {"w":752,"h":176}
+		"spriteSourceSize": {"x":0,"y":0,"w":752,"h":175},
+		"sourceSize": {"w":752,"h":175}
 	},
 	"cartel_opciones.png": {
 		"frame": {"x":0, "y":176, "w":752, "h":175},
-		"spriteSourceSize": {"x":0,"y":0,"w":752,"h":176},
-		"sourceSize": {"w":752,"h":176}
+		"spriteSourceSize": {"x":0,"y":0,"w":752,"h":175},
+		"sourceSize": {"w":752,"h":175}
 	},
 	"close.png": {
-		"frame": {"x":308, "y":516, "w":106, "h":110},
+		"frame": {"x":0, "y":640, "w":106, "h":110},
 		"spriteSourceSize": {"x":0,"y":0,"w":106,"h":110},
 		"sourceSize": {"w":106,"h":110}
+	},
+	"thumb.png": {
+		"frame": {"x":107, "y":640, "w":69, "h":92},
+		"spriteSourceSize": {"x":0,"y":0,"w":69,"h":92},
+		"sourceSize": {"w":69,"h":92}
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 753, "h": 674},
+	"size": {"w": 772, "h": 751},
 	"scale": "1"
 }
 }

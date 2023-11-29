@@ -125,15 +125,6 @@ export class MenuScene extends Phaser.Scene
         this.data.set(key, parseInt(speed))
     }
 
-    AddCropResizeMethod = function (gameObject) {
-        gameObject.resize = function (width, height) {
-            gameObject.setCrop(0, 0, width, height);
-            return gameObject;
-        }
-    
-        return gameObject;
-    }
-
     createInstructionsPanel(dim){
         this.instructionsDesktopContent = ["Flecha izquierda o derecha para moverte.", 
         "Barra espaciadora para recibir/entregar paquetes.", 
@@ -143,24 +134,24 @@ export class MenuScene extends Phaser.Scene
         "Evita los obstáculos y sé el mejor repartidor de la ciudad."];
         this.instructionIndex = 0;
 
-        var instructionsPanel = this.add.nineslice(dim/2, dim/2, 'panel', 0, 1200, 1200, 200, 200, 200, 200);
+        var instructionsPanel = this.add.nineslice(dim/2, dim/2, 'panel', 0, 1210, 1230, 200, 200, 200, 200);
         var intructionsTitle = this.add.image(dim/2, 250, 'panelUI', 'cartel_instrucciones.png');
-        intructionsTitle.setDisplaySize(500,117);
+        intructionsTitle.setDisplaySize(560,130);
 
-        var closeImage = this.add.image(dim - 170, 250, 'panelUI', 'close.png').setInteractive();
-        closeImage.setDisplaySize(70,70);
+        var closeImage = this.add.image(dim - 150, 240, 'panelUI', 'close.png').setInteractive();
+        closeImage.setDisplaySize(80,80);
         closeImage.on('pointerdown', () => this.hideInstructions());
 
         var leftArrow = this.add.image(150, dim/2, 'panelUI', 'boton_izq.png').setInteractive();
-        leftArrow.setDisplaySize(100,100);
+        leftArrow.setDisplaySize(120,120);
         leftArrow.on('pointerdown', () => this.leftArrowClicked());
 
         var rightArrow = this.add.image(dim - 150, dim/2, 'panelUI', 'boton_der.png').setInteractive();
-        rightArrow.setDisplaySize(100,100);
+        rightArrow.setDisplaySize(120,120);
         rightArrow.on('pointerdown', () => this.rightArrowClicked());
 
-        var okayButton = this.add.image(dim/2, dim - 250, 'panelUI', 'boton_okey.png').setInteractive();
-        okayButton.setDisplaySize(300,106);
+        var okayButton = this.add.image(dim/2, dim - 245, 'panelUI', 'boton_okey.png').setInteractive();
+        okayButton.setDisplaySize(340,120);
         okayButton.on('pointerdown', () => this.hideInstructions());
 
         this.instructionsText = this.add.text(dim/2, dim/2, this.instructionsDesktopContent[this.instructionIndex], { 
@@ -174,62 +165,72 @@ export class MenuScene extends Phaser.Scene
     }
 
     createOptionsPanel(dim){
-        var optionsPanel = this.add.nineslice(dim/2, dim/2, 'panel', 0, 1200, 1200, 200, 200, 200, 200);
+        var optionsPanel = this.add.nineslice(dim/2, dim/2, 'panel', 0, 1210, 1230, 200, 200, 200, 200);
         var optionsTitle = this.add.image(dim/2, 250, 'panelUI', 'cartel_opciones.png');
-        optionsTitle.setDisplaySize(500,117);
+        optionsTitle.setDisplaySize(560,130);
 
-        var closeImage = this.add.image(dim - 170, 250, 'panelUI', 'close.png').setInteractive();
-        closeImage.setDisplaySize(70,70);
+        var closeImage = this.add.image(dim - 150, 240, 'panelUI', 'close.png').setInteractive();
+        closeImage.setDisplaySize(80,80);
         closeImage.on('pointerdown', () => this.hideOptions());
 
-        var sfxTitle = this.add.text(dim/2, dim/2 - 130, 'Sonido', { 
-            fontSize : 40, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        sfxTitle.setStroke('#2D1935', 13);
-        sfxTitle.setShadow(2, 2, '#000000', 2, true, false);
-
-        var sfxSlider = this.rexUI.add.slider({
-            x: dim/2,
-            y: dim/2 - 70,
-            width: 400,
-            height: 20,
-            orientation: 'x',
-
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x260e04'),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x4e342e'),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 20, '0x2D1935'),
-
-            input: 'click', // 'drag'|'click'
-            valuechangeCallback: function (value) {
-                //sound.volume = value; // set volume between 0 - 1
-            },
-
-        }).layout();
-
-        var musicTitle = this.add.text(dim/2, dim/2 + 30, 'Música', { 
+        var musicTitle = this.add.text(dim/2, dim/2 - 140, 'Música', { 
             fontSize : 40, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         musicTitle.setStroke('#2D1935', 13);
         musicTitle.setShadow(2, 2, '#000000', 2, true, false);
-        
+
         var musicSlider = this.rexUI.add.slider({
             x: dim/2,
-            y: dim/2 + 100,
-            width: 400,
-            height: 20,
+            y: dim/2 - 70,
+            width: 460,
+            height: 70,
             orientation: 'x',
+            value:1,
 
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x260e04'),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, '0x4e342e'),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 20, '0x2D1935'),
+            track: this.add.sprite(0,0,'panelUI','barra_vacia.png'),
+            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'panelUI','barra_relleno.png').setDisplaySize(600,35)),
+            thumb: this.add.sprite(0,0,'panelUI','thumb.png').setDisplaySize(55,70),
 
-            input: 'click', // 'drag'|'click'
+            input: 'drag'|'click',
             valuechangeCallback: function (value) {
                 //sound.volume = value; // set volume between 0 - 1
             },
 
         }).layout();
 
+        var sfxTitle = this.add.text(dim/2, dim/2 + 50, 'Sonido', { 
+            fontSize : 40, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+        sfxTitle.setStroke('#2D1935', 13);
+        sfxTitle.setShadow(2, 2, '#000000', 2, true, false);
+        
+        var sfxSlider = this.rexUI.add.slider({
+            x: dim/2,
+            y: dim/2 + 120,
+            width: 460,
+            height: 70,
+            orientation: 'x',
+            value:1,
+
+            track: this.add.sprite(0,0,'panelUI','barra_vacia.png'),
+            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'panelUI','barra_relleno.png').setDisplaySize(600,35)),
+            thumb: this.add.sprite(0,0,'panelUI','thumb.png').setDisplaySize(55,70),
+
+            input: 'drag'|'click',
+            valuechangeCallback: function (value) {
+                //sound.volume = value; // set volume between 0 - 1
+            },
+
+        }).layout();
         this.optionsContainer = this.add.container(0, 0, [optionsPanel, optionsTitle, closeImage, sfxSlider, sfxTitle, musicTitle, musicSlider]);
         this.optionsContainer.setVisible(false);
+    }
+
+    addCropResizeMethod = function (gameObject) {
+        gameObject.resize = function (width, height) {
+            gameObject.setCrop(0, 0, width, height);
+            return gameObject;
+        }
+    
+        return gameObject;
     }
 
     leftArrowClicked(){
