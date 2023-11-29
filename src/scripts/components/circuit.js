@@ -48,6 +48,8 @@ export class Circuit
         ]
 
         this.carOffsets = [-1, 0, 1]
+
+        this.waveDelay = this.scene.data.get('waveDelay');
     }
 
     create(){
@@ -116,49 +118,6 @@ export class Circuit
         });
     }
 
-    addSegmentSprite(n, spriteKey, offset){
-        //let sprite = this.scene.add.sprite(0, 0, 'buildings', spriteKey);
-        let building = new Building(this.scene);
-        building.create(spriteKey, offset);
-        this.segments[n].sprites.push({ object: building, type: "bg" });
-        this.segments[n].delivery = false;
-    }
-
-    addSegmentDelivery(n, spriteKey, offset){
-        let delivery = new Delivery(this.scene);
-        delivery.create(spriteKey, offset);
-        this.segments[n].sprites.push({ object: delivery, type: "delivery" });
-        this.currentDelivery.alignment = offset;
-        this.currentDelivery.zone = "undone";
-        this.currentDelivery.lastSegment = n+4;
-
-        for (var i = n-4; i <= n+4; i++){
-            if (i < n-1)
-                this.segments[i].delivery = [true,'0xF6B26B']
-            else if (i > n+1)
-                this.segments[i].delivery = [true,'0xF8C189'];
-            else
-                this.segments[i].delivery = [true,'0x429352'];
-        }
-               
-        for (var i = n - 5; i <= n+5; i++){
-            for (var j = 0; j < this.segments[i].sprites.length; j++){
-                if (this.segments[i].sprites[j].type == "obstacle"){
-                    if (this.segments[i].sprites[j].object.offset > 0 == offset > 0){
-                        this.segments[i].sprites[j].object.offset = this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2];
-                    }
-                }
-            }
-        }
-    }
-
-    addSegmentObstacle(n, spriteKey, offset){
-        let obstacle = new Obstacle(this.scene);
-        obstacle.create(spriteKey, offset);
-        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
-        this.segments[n].sprites.push({ object: obstacle, type: "obstacle", collider: obstacleCollider});
-    }
-
     addRandomSprites(start, limit){
         for (var i = start; i < limit; i++){
             for (var j = 0; j < this.segments[i].sprites.length; j++){
@@ -171,7 +130,7 @@ export class Circuit
 
         if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
         this.generateRandomBuildings(start == 0 ? start + 40 : start, limit);
-        this.generateRandomObstacles(start == 0 ? start + 20 : start, limit);
+        this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
     }
     
     generateRandomBuildings(start, limit){
@@ -211,27 +170,97 @@ export class Circuit
         this.addSegmentSprite(15, 'buildTemp2', -3.2);
     }
 
+    addSegmentSprite(n, spriteKey, offset){
+        //let sprite = this.scene.add.sprite(0, 0, 'buildings', spriteKey);
+        let building = new Building(this.scene);
+        building.create(spriteKey, offset);
+        this.segments[n].sprites.push({ object: building, type: "bg" });
+        this.segments[n].delivery = false;
+    }
+
     generateRandomDelivery(limit){
-        var position = Phaser.Math.Between(limit + 40, this.total_segments - 10);
+        var position = Phaser.Math.Between(limit + 50, this.total_segments - 10);
         var offset = position % 2 == 0 ? 2 : -2;
         this.addSegmentDelivery(position, 'sprites_09.png', offset)
     }
 
-    generateRandomObstacles(start, limit){
-        for (var i = 0; i < 3; i++){
-            var position = Phaser.Math.Between(start, limit - 10);
-            var randomOff = Phaser.Math.Between(0, 2);
-            var offset = this.carOffsets[randomOff];
-            var deliveryZone = this.currentDelivery.lastSegment;
-            
-            if (position < deliveryZone - 8 && position > deliveryZone){
-                if (offset != 0)
-                    this.addSegmentObstacle(position, 'carA', this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2]);
-            }
-            else{
-                this.addSegmentObstacle(position, 'carA', offset);
+    addSegmentDelivery(n, spriteKey, offset){
+        let delivery = new Delivery(this.scene);
+        delivery.create(spriteKey, offset);
+        this.segments[n].sprites.push({ object: delivery, type: "delivery" });
+        this.currentDelivery.alignment = offset;
+        this.currentDelivery.zone = "undone";
+        this.currentDelivery.lastSegment = n+4;
+
+        for (var i = n-4; i <= n+4; i++){
+            if (i < n-1)
+                this.segments[i].delivery = [true,'0xF6B26B']
+            else if (i > n+1)
+                this.segments[i].delivery = [true,'0xF8C189'];
+            else
+                this.segments[i].delivery = [true,'0x429352'];
+        }
+               
+        for (var i = n - 5; i <= n+5; i++){
+            for (var j = 0; j < this.segments[i].sprites.length; j++){
+                if (this.segments[i].sprites[j].type == "obstacle"){
+                    if (this.segments[i].sprites[j].object.offset > 0 == offset > 0){
+                        this.segments[i].sprites[j].object.offset = this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2];
+                    }
+                }
             }
         }
+    }
+
+    generateRandomObstacles(start, limit){
+        for (var i = start; i < limit - 1; i+=this.waveDelay){
+            var position = i;
+            var waveType = Phaser.Math.Between(0, 1);
+            switch (waveType) {
+                case 0:
+                    var lane = Phaser.Math.Between(0, 2);
+
+                    if (this.checkExistingDelivery()){
+                        if (this.currentDelivery.alignment > 0) {
+                            lane = Phaser.Math.Between(0, 1);
+                        } else {
+                            lane = Phaser.Math.Between(1, 2);
+                        }
+                    }
+                    this.addSegmentObstacle(position, 'carA', this.carOffsets[lane]);
+                    break;
+                case 1:
+                    var lane = Phaser.Math.Between(0, 2);
+                    if (this.checkExistingDelivery()){
+                        if (this.currentDelivery.alignment > 0) {
+                            lane = 2;
+                        }else{
+                            lane = 0;
+                        }
+                    }
+                    for (var j = 0; j < 3; j++){
+                        if (j != lane) this.addSegmentObstacle(position, 'carA', this.carOffsets[j]);
+                    }
+                    break;
+                default:
+                    break;
+            }    
+        }
+    }
+
+    checkExistingDelivery(position){
+        var deliveryZone = this.currentDelivery.lastSegment;
+        if (position < deliveryZone - 8 && position > deliveryZone){
+            return true
+        }
+        return false
+    }
+
+    addSegmentObstacle(n, spriteKey, offset){
+        let obstacle = new Obstacle(this.scene);
+        obstacle.create(spriteKey, offset);
+        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
+        this.segments[n].sprites.push({ object: obstacle, type: "obstacle", collider: obstacleCollider});
     }
 
     getSegment(positionZ){
@@ -316,7 +345,7 @@ export class Circuit
             }
         }
 
-        for (var i=this.visible_segments; i>0; i--){
+        for (var i=this.visible_segments - 20; i>0; i--){
             // get the current segment
             var currIndex = (baseIndex + i) % this.total_segments;
             var currSegment = this.segments[currIndex];

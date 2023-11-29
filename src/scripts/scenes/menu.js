@@ -31,6 +31,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('initialSpeed', 3000);
         this.data.set('horizontalSpeed', 500);
         this.data.set('acceleration', 10);
+        this.data.set('waveDelay', 20);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
@@ -59,6 +60,10 @@ export class MenuScene extends Phaser.Scene
         //OptionsPanel
         this.createOptionsPanel(dim);
 
+        this.exposedVariables();
+    }
+
+    exposedVariables(){
         var printText = this.add.text(200, 300, "Velocidad Inicial: " + this.data.get('initialSpeed'), {
             color: 'yellow',
             fontSize: '24px',
@@ -98,6 +103,20 @@ export class MenuScene extends Phaser.Scene
         this.plugins.get('rextexteditplugin').add(printText3, {
             type: 'text',
             onTextChanged: (textObject, text) => { textObject.text = text; this.setData('acceleration', text); },
+            selectAll: true,
+        });
+
+        var printText4 = this.add.text(200, 480, "Espacio entre oleadas: " + this.data.get('waveDelay'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 400,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        this.plugins.get('rextexteditplugin').add(printText4, {
+            type: 'text',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('waveDelay', text); },
             selectAll: true,
         });
     }

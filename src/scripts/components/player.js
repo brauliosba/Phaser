@@ -45,7 +45,7 @@ export class Player
         this.screen.x = this.scene.data.get('screen_c');
         this.screen.y = this.scene.data.get('screen') - this.screen.h/4 - 50;
 
-        this.playerBody.setDepth(4.5);
+        this.playerBody.setDepth(3);
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBody.body.setSize(150,150,true);
         this.playerBody.setVisible(false);
@@ -88,7 +88,11 @@ export class Player
         this.deliveryText.setVisible(false);
 
         this.speedText = this.scene.add.text(50, 200, 'Velocidad actual: ' + this.speed, { fontSize : 30, color: '0x000000' });
-        this.scene.add.text(50, 230, 'Velocidad horizontal: ' + this.horizontalSpeed, { fontSize : 30, color: '0x000000' });
+        this.speedText.setDepth(5);
+        var txt = this.scene.add.text(50, 230, 'Velocidad horizontal: ' + this.horizontalSpeed, { fontSize : 30, color: '0x000000' });
+        txt.setDepth(5);
+        txt = this.scene.add.text(50, 260, 'Espacio entre oleadas: ' + this.scene.data.get('waveDelay'), { fontSize : 30, color: '0x000000' });
+        txt.setDepth(5);
     }
 
     restart (){

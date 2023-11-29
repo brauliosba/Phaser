@@ -25,7 +25,7 @@ export class Obstacle
 
     draw(destW, destH, spriteX, spriteY, spriteScale){
         this.sprite.setDisplaySize(destW, destH);
-        this.sprite.setDepth(spriteScale * 10);
+        this.sprite.setDepth(spriteScale * 20000);
         this.sprite.setPosition(spriteX, spriteY);
 
         var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
