@@ -2,6 +2,7 @@ import {Circuit} from '../components/circuit.js';
 import {Camera} from '../components/camera.js';
 import {Player} from '../components/player.js';
 import {Scoreboard} from '../components/scoreboard.js';
+import {Panel} from '../components/panel.js';
 
 // -------------------------------------------
 // Main Scene
@@ -19,6 +20,8 @@ export class MainScene extends Phaser.Scene
 
         //UI
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
+        this.load.image('panel', 'src/images/UI/panel.png');
+        this.load.atlas('panelUI', 'src/images/UI/panelUI.png', 'src/images/UI/panelUI.json');
 
         //Buildings
         this.load.atlas('buildings', 'src/images/buildings.png', 'src/images/buildings.json');
@@ -27,6 +30,13 @@ export class MainScene extends Phaser.Scene
         //Obstacles
         this.load.atlas('carA', 'src/images/obstacles/car_A.png', 'src/images/obstacles/car_A.json');
         this.load.spritesheet('carACentral', 'src/images/obstacles/car_A_Central.png', { frameWidth: 741, frameHeight: 597});
+
+        //Plugins
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        });
     }
 
     init(data){
@@ -83,6 +93,7 @@ export class MainScene extends Phaser.Scene
         this.camera = new Camera(this);
         this.player = new Player(this);
         this.scoreboard = new Scoreboard(this);
+        this.panel = new Panel(this);
     }
 
     update(time, deltaTime){
@@ -98,6 +109,10 @@ export class MainScene extends Phaser.Scene
                         this.circuit.create();
                         this.scoreboard.create();
                         this.circuit.render3D();
+
+                        this.panel.create(this.data.get('screen'));
+                        this.panel.createPausePanel(this.data.get('screen'));
+                        this.panel.createOptionsPanel(this.data.get('screen'));
                     }
                     if (!this.scoreboard.startAnim) {
                         this.player.restart();
@@ -122,11 +137,21 @@ export class MainScene extends Phaser.Scene
             this.player.checkDelivery();
         }
         if (Phaser.Input.Keyboard.JustDown(this.keyPause)){
-            this.isPaused = !this.isPaused
-            this.player.pause(this.isPaused);
-            
-            if (this.isPaused) this.anims.pauseAll();
-            else this.anims.resumeAll();
+            this.pauseGame();
+        }
+    }
+
+    pauseGame(){
+        this.isPaused = !this.isPaused
+        this.player.pause(this.isPaused);
+
+        if (this.isPaused){
+            this.anims.pauseAll();
+            this.panel.showPause();
+        }
+        else{ 
+            this.anims.resumeAll();
+            this.panel.hidePause();
         }
     }
 }
