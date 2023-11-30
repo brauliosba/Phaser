@@ -186,8 +186,8 @@ export class MenuScene extends Phaser.Scene
             orientation: 'x',
             value:1,
 
-            track: this.add.sprite(0,0,'panelUI','barra_vacia.png'),
-            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'panelUI','barra_relleno.png').setDisplaySize(600,35)),
+            track: this.add.sprite(0,0,'panelUI','slider_bg.png'),
+            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'panelUI','slider_relleno.png').setDisplaySize(600,35)),
             thumb: this.add.sprite(0,0,'panelUI','thumb.png').setDisplaySize(55,70),
 
             input: 'drag'|'click',
@@ -210,8 +210,8 @@ export class MenuScene extends Phaser.Scene
             orientation: 'x',
             value:1,
 
-            track: this.add.sprite(0,0,'panelUI','barra_vacia.png'),
-            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'panelUI','barra_relleno.png').setDisplaySize(600,35)),
+            track: this.add.sprite(0,0,'panelUI','slider_bg.png'),
+            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'panelUI','slider_relleno.png').setDisplaySize(600,35)),
             thumb: this.add.sprite(0,0,'panelUI','thumb.png').setDisplaySize(55,70),
 
             input: 'drag'|'click',

@@ -8,7 +8,7 @@ export class Building
     create(spriteSheet, offset){
         this.spriteSheet = spriteSheet;
         this.offset = offset;
-        this.sprite = this.scene.add.sprite(0, 0, spriteSheet);
+        this.sprite = this.scene.add.sprite(0, 0, 'buildings', spriteSheet);
         this.sprite.setVisible(false);
     }
 
@@ -18,7 +18,7 @@ export class Building
         this.sprite.setPosition(destX, destY);
         this.sprite.setScale((spriteScale * 20000));
 
-        if (this.offset < 0) this.sprite.flipX = true;
+        if (this.offset > 0) this.sprite.flipX = true;
         else this.sprite.flipX = false;
         this.sprite.setVisible(true);
     }

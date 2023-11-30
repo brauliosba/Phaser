@@ -16,15 +16,13 @@ export class MainScene extends Phaser.Scene
     preload(){
         this.load.image('imgBack', 'src/images/img_back.png');
         this.load.spritesheet('playerAnim', 'src/images/playerAnim.png', { frameWidth: 754, frameHeight: 816});
-        //this.load.image('car', 'src/images/carSingle.png');
 
         //UI
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
 
         //Buildings
         this.load.atlas('buildings', 'src/images/buildings.png', 'src/images/buildings.json');
-        this.load.image('buildTemp', 'src/images/edificio_1.png');
-        this.load.image('buildTemp2', 'src/images/casaa (1).png');
+        this.load.image('buildTemp', 'src/images/casa1.png');
 
         //Obstacles
         this.load.atlas('carA', 'src/images/obstacles/car_A.png', 'src/images/obstacles/car_A.json');
@@ -45,7 +43,8 @@ export class MainScene extends Phaser.Scene
         ]
 
         // inputs
-        this.keyObj = this.input.keyboard.addKey('Space');
+        this.keyDelivery = this.input.keyboard.addKey('SPACE');
+        this.keyPause = this.input.keyboard.addKey('ESC');
 
         //Player animations
         this.anims.create({
@@ -77,6 +76,8 @@ export class MainScene extends Phaser.Scene
             repeat: -1
         });
         
+        this.isPaused = false;
+
         // instances
         this.circuit = new Circuit(this);
         this.camera = new Camera(this);
@@ -85,36 +86,47 @@ export class MainScene extends Phaser.Scene
     }
 
     update(time, deltaTime){
-        switch(this.data.get('state')){
-            case "init":
-                this.camera.init();
-                this.player.init();
-                this.data.set('state', "restart");
-                break;
-            case "restart":
-                if (this.scoreboard.timedEvent == undefined && this.scoreboard.startAnim){
-                    this.circuit.create();
-                    this.scoreboard.create();
+        if (!this.isPaused){
+            switch(this.data.get('state')){
+                case "init":
+                    this.camera.init();
+                    this.player.init();
+                    this.data.set('state', "restart");
+                    break;
+                case "restart":
+                    if (this.scoreboard.timedEvent == undefined && this.scoreboard.startAnim){
+                        this.circuit.create();
+                        this.scoreboard.create();
+                        this.circuit.render3D();
+                    }
+                    if (!this.scoreboard.startAnim) {
+                        this.player.restart();
+                        this.data.set('state', "play");
+                    }
+                    break;
+                case "play":
+                    var dt = Math.min(1, deltaTime/1000);
+                    this.player.update(dt);
+                    this.scoreboard.update();
+                    this.camera.update();
                     this.circuit.render3D();
-                }
-                if (!this.scoreboard.startAnim) {
-                    this.player.restart();
-                    this.data.set('state', "play");
-                }
-                break;
-            case "play":
-                var dt = Math.min(1, deltaTime/1000);
-                this.player.update(dt);
-                this.scoreboard.update();
-                this.camera.update();
-                this.circuit.render3D();
-                break;
-            case "game_over":
-                break;
+                    break;
+                case "game_over":
+                    this.anims.pauseAll();
+                    this.isPaused = true;
+                    break;
+            }
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.keyObj)){
+        if (Phaser.Input.Keyboard.JustDown(this.keyDelivery)){
             this.player.checkDelivery();
+        }
+        if (Phaser.Input.Keyboard.JustDown(this.keyPause)){
+            this.isPaused = !this.isPaused
+            this.player.pause(this.isPaused);
+            
+            if (this.isPaused) this.anims.pauseAll();
+            else this.anims.resumeAll();
         }
     }
 }

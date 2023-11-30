@@ -41,10 +41,8 @@ export class Circuit
         this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0};
 
         this.buildings = [
-            {name: 'building1.png', offset1: 4, offset2: -2.5}, 
-            {name: 'building2.png', offset1: 4.1, offset2: -2.2},
-            {name: 'building3.png', offset1: 4.1, offset2: -2.5},
-            {name: 'building4.png', offset1: 4.1, offset2: -1.8}
+            {name: 'casa1.png', offset1: 2.9, offset2: -1.9}, 
+            {name: 'casa2.png', offset1: 2.9, offset2: -1.9},
         ]
 
         this.carOffsets = [-1, 0, 1]
@@ -129,45 +127,20 @@ export class Circuit
         }
 
         if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
-        this.generateRandomBuildings(start == 0 ? start + 40 : start, limit);
+        this.generateRandomBuildings(start == 0 ? start + 10 : start, limit);
         this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
     }
     
     generateRandomBuildings(start, limit){
         var value = 0;
+        var multi = -1;
         
         for (var i = limit - 5; i >= start; i-=5){
-            value = Phaser.Math.Between(0, 3);
-            //this.addSegmentSprite(i, this.buildings[value].name, this.buildings[value].offset1);
-            this.addSegmentSprite(i, 'buildTemp2', 4.3);
-            value = Phaser.Math.Between(0, 3);
-            //this.addSegmentSprite(i, this.buildings[value].name, this.buildings[value].offset2);
-            this.addSegmentSprite(i, 'buildTemp2', -3.2);
+            this.addSegmentSprite(i, this.buildings[value].name, this.buildings[value].offset1);
+            this.addSegmentSprite(i, this.buildings[value].name, this.buildings[value].offset2);
+            multi *= -1;
+            value += multi;
         }
-        /*
-        this.addSegmentSprite(30, 'building1.png', 4);
-        this.addSegmentSprite(30, 'building2.png', -2.2);
-        this.addSegmentSprite(20, 'building4.png', -1.8);
-        this.addSegmentSprite(20, 'building3.png', 4.1);
-        this.addSegmentSprite(10, 'building4.png', 4.1);
-        this.addSegmentSprite(10, 'building1.png', -4.3);
-        */
-        this.addSegmentSprite(40, 'buildTemp2', 4.3);
-        this.addSegmentSprite(40, 'buildTemp2', -3.2);
-        this.addSegmentSprite(30, 'buildTemp2', 4.3);
-        this.addSegmentSprite(30, 'buildTemp2', -3.2);
-        this.addSegmentSprite(20, 'buildTemp2', 4.3);
-        this.addSegmentSprite(20, 'buildTemp2', -3.2);
-        this.addSegmentSprite(10, 'buildTemp2', 4.3);
-        this.addSegmentSprite(10, 'buildTemp2', -3.2);
-        this.addSegmentSprite(45, 'buildTemp2', 4.3);
-        this.addSegmentSprite(45, 'buildTemp2', -3.2);
-        this.addSegmentSprite(35, 'buildTemp2', 4.3);
-        this.addSegmentSprite(35, 'buildTemp2', -3.2);
-        this.addSegmentSprite(25, 'buildTemp2', 4.3);
-        this.addSegmentSprite(25, 'buildTemp2', -3.2);
-        this.addSegmentSprite(15, 'buildTemp2', 4.3);
-        this.addSegmentSprite(15, 'buildTemp2', -3.2);
     }
 
     addSegmentSprite(n, spriteKey, offset){

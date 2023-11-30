@@ -33,7 +33,6 @@ export class Player
 
     init(){
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-        this.keyLeft = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 
         this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerAnim').play('idle');
 
@@ -161,10 +160,11 @@ export class Player
     playerCollision(){
         this.speed = 0;
         this.playerBody.stop();
+        this.playerBody.disableBody(false, false);
         this.scene.data.set('state', "game_over");
         this.speedEvent.remove(false);
         this.scoreEvent.remove(false);
-        console.log("colisiono");
+        console.log('colisiono')
     }
 
     checkDelivery(){
@@ -195,5 +195,10 @@ export class Player
                 this.deliveryText.setVisible(this.havePackage);
             }
         }
+    }
+
+    pause(isPaused){
+        this.scoreEvent.paused = isPaused;
+        this.speedEvent.paused = isPaused;
     }
 }
