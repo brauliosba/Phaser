@@ -17,7 +17,6 @@ export class Player
         this.maxSpeed = ((scene.circuit.segmentLength / 2) / (1/60));
         this.playerSpeeds = [this.maxSpeed/3, 2*this.maxSpeed/3, this.maxSpeed, 2*this.maxSpeed, 3*this.maxSpeed]
         this.currentSpeed = 0;
-        this.scoresSpeedChanges = [100, 500, 2000, 10000, 100000];
 
         // driving contorl parameters
         this.speed = 0;
@@ -34,7 +33,13 @@ export class Player
     init(){
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
-        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerAnim').play('idle');
+        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerRun').play('idle');
+        this.playerBody.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'receive', function () {
+            this.playerBody.play('idle');
+        }, this);
+        this.playerBody.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'send', function () {
+            this.playerBody.play('idle');
+        }, this);
 
         // set the player screen size
         this.screen.w = this.playerBody.width;
@@ -42,14 +47,14 @@ export class Player
         
         // set the player screen position
         this.screen.x = this.scene.data.get('screen_c');
-        this.screen.y = this.scene.data.get('screen') - this.screen.h/4 - 50;
+        this.screen.y = this.scene.data.get('screen') - this.screen.h/5 - 50;
 
         this.playerBody.setDepth(3);
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBody.body.setSize(150,150,true);
         this.playerBody.setVisible(false);
 
-        this.limitBound = this.screen.w/6;
+        this.limitBound = this.screen.w/8;
 
         //mobile contorls
         if (this.scene.data.get('IS_TOUCH')) {
@@ -136,24 +141,31 @@ export class Player
         
         if (this.cursors.left.isUp && this.cursors.right.isUp)
         {
-            if (this.playerBody.anims.getName() != 'idle') this.playerBody.play('idle');
+            if (this.playerState != 'receive') this.playerState = 'idle';
         }
 
-        if(this.playerState == 'left') this.movePlayerLeft(dt);
+        if (this.playerState == 'idle') this.playerBody.play('idle', true);
+        else if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
-        if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
+        //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
     }
 
     movePlayerLeft(dt){
         var newPosX = this.screen.x - this.horizontalSpeed * dt;
-        if (this.playerBody.anims.getName() != 'leftTack') this.playerBody.play('leftTack');
+        if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
+            this.playerBody.setFlipX(false);
+            this.playerBody.play('tack', true); 
+        }
         this.screen.x = (newPosX > this.limitBound ) ?  newPosX : this.limitBound;
     }
 
     movePlayerRight(dt){
         var newPosX = this.screen.x + this.horizontalSpeed * dt;
-        if (this.playerBody.anims.getName() != 'rightTack') this.playerBody.play('rightTack');
+        if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
+            this.playerBody.setFlipX(true); 
+            this.playerBody.play('tack', true); 
+        }
         this.screen.x = (newPosX < this.scene.data.get('screen') - this.limitBound) ?  newPosX : this.scene.data.get('screen') - this.limitBound;
     }
 
@@ -178,14 +190,17 @@ export class Player
             if (inPos)
             {
                 if (delivery.zone == "green"){
+                    this.playDeliveryAnimation(delivery.alignment);
                     this.score += 30;
                     this.havePackage = !this.havePackage;
                 }
                 else if (delivery.zone == "orange"){
+                    this.playDeliveryAnimation(delivery.alignment);
                     this.score += 20;
                     this.havePackage = !this.havePackage;
                 }
                 else if (delivery.zone == "orange2"){
+                    this.playDeliveryAnimation(delivery.alignment);
                     this.score += 10;
                     this.havePackage = !this.havePackage;
                 }
@@ -194,6 +209,17 @@ export class Player
 
                 this.deliveryText.setVisible(this.havePackage);
             }
+        }
+    }
+
+    playDeliveryAnimation(alignment){
+        if (this.havePackage) {
+            this.playerBody.setFlipX(alignment > 0);
+            this.playerBody.play('send', true);
+            this.playerState = 'receive';
+        } else {
+            this.playerBody.play('receive', true);
+            this.playerState = 'receive';
         }
     }
 

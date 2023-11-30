@@ -16,7 +16,10 @@ export class MainScene extends Phaser.Scene
     
     preload(){
         this.load.image('imgBack', 'src/images/img_back.png');
-        this.load.spritesheet('playerAnim', 'src/images/playerAnim.png', { frameWidth: 754, frameHeight: 816});
+        this.load.spritesheet('playerRun', 'src/images/playerRun.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerTack', 'src/images/playerTack.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerReceive', 'src/images/playerReceive.png', { frameWidth: 1500, frameHeight: 1200});
+        this.load.spritesheet('playerSend', 'src/images/playerSend.png', { frameWidth: 1500, frameHeight: 1200});
 
         //UI
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
@@ -59,23 +62,30 @@ export class MainScene extends Phaser.Scene
         //Player animations
         this.anims.create({
             key: 'idle',
-            frames: this.anims.generateFrameNumbers('playerAnim', { start: 3, end: 5, first: 0 }),
+            frames: this.anims.generateFrameNumbers('playerRun', { start: 0, end: 2, first: 0 }),
             frameRate: 20,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'leftTack',
-            frames: this.anims.generateFrameNumbers('playerAnim', { start: 6, end: 8, first: 0 }),
+            key: 'tack',
+            frames: this.anims.generateFrameNumbers('playerTack', { start: 0, end: 2, first: 0 }),
             frameRate: 20,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'rightTack',
-            frames: this.anims.generateFrameNumbers('playerAnim', { start: 0, end: 2, first: 0 }),
-            frameRate: 20,
-            repeat: -1
+            key: 'receive',
+            frames: this.anims.generateFrameNumbers('playerReceive', { start: 0, end: 2, first: 0 }),
+            frameRate: 10,
+            repeat: 0
+        });
+        
+        this.anims.create({
+            key: 'send',
+            frames: this.anims.generateFrameNumbers('playerSend', { start: 0, end: 2, first: 0 }),
+            frameRate: 10,
+            repeat: 0
         });
 
         //Obstacles animations
