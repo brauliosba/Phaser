@@ -32,7 +32,6 @@ export class MenuScene extends Phaser.Scene
 
         this.data.set('screen', dim);
         this.data.set('screen_c', dim/2);
-        this.data.set('state', "init");
         this.data.set('initialSpeed', 3000);
         this.data.set('horizontalSpeed', 500);
         this.data.set('acceleration', 10);

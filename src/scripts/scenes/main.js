@@ -48,6 +48,7 @@ export class MainScene extends Phaser.Scene
     }
 
     create(){
+        this.data.set('state', "init");
         this.dim = this.data.get('screen');
 
         // backgrounds
@@ -60,6 +61,7 @@ export class MainScene extends Phaser.Scene
         // inputs
         this.keyDelivery = this.input.keyboard.addKey('SPACE');
         this.keyPause = this.input.keyboard.addKey('ESC');
+        this.keyRestart = this.input.keyboard.addKey('R');
 
         //Player animations
         this.anims.create({
@@ -154,6 +156,9 @@ export class MainScene extends Phaser.Scene
         }
         if (Phaser.Input.Keyboard.JustDown(this.keyPause) && !this.startAnim){
             this.pauseGame();
+        }
+        if (Phaser.Input.Keyboard.JustDown(this.keyRestart)){
+            this.scene.start('MainScene', this.data);
         }
     }
 
