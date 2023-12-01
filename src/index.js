@@ -1,5 +1,6 @@
 import {MainScene} from './scripts/scenes/main.js';
 import {MenuScene} from './scripts/scenes/menu.js';
+import {BootScene} from './scripts/scenes/boot.js';
 
 // -------------------------------------------
 // Initializing Phaser Game
@@ -19,7 +20,7 @@ var config = {
     dom: {
         createContainer: true
     },
-    scene: [MenuScene, MainScene],
+    scene: [BootScene, MenuScene, MainScene],
 
     physics: {
         default: 'arcade',

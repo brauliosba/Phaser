@@ -74,7 +74,7 @@ export class Panel
         okayButton.on('pointerdown', () => this.hideInstructions());
 
         this.instructionsText = this.scene.add.text(dim/2, dim/2, this.instructionsDesktopContent[this.instructionIndex], { 
-            fontSize : 60, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+            font: '600 60px Montserrat', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         this.instructionsText.setStroke('#2D1935', 13);
         this.instructionsText.setShadow(2, 2, '#000000', 2, true, false);
         this.instructionsText.setWordWrapWidth(this.panel.width - 600);
@@ -93,7 +93,7 @@ export class Panel
         closeImage.on('pointerdown', () => this.hideOptions());
 
         var musicTitle = this.scene.add.text(dim/2, dim/2 - 140, 'Música', { 
-            fontSize : 40, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+            font: '800 40px Montserrat', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         musicTitle.setStroke('#2D1935', 13);
         musicTitle.setShadow(2, 2, '#000000', 2, true, false);
 
@@ -117,7 +117,7 @@ export class Panel
         }).layout();
 
         var sfxTitle = this.scene.add.text(dim/2, dim/2 + 50, 'Sonido', { 
-            fontSize : 40, fontFamily: 'Montserrat, sans-serif', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+            font: '800 40px Montserrat', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         sfxTitle.setStroke('#2D1935', 13);
         sfxTitle.setShadow(2, 2, '#000000', 2, true, false);
         

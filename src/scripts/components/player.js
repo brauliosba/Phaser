@@ -88,7 +88,7 @@ export class Player
             */
         }
 
-        this.deliveryText = this.scene.add.text(100, 50, 'Tienes un paquete', { fontSize : 50, fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+        this.deliveryText = this.scene.add.text(100, 50, 'Tienes un paquete', { font: '600 50px Montserrat' });
         this.deliveryText.setVisible(false);
 
         this.speedText = this.scene.add.text(50, 200, 'Velocidad actual: ' + this.speed, { fontSize : 30, color: '0x000000' });

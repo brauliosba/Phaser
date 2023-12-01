@@ -7,6 +7,7 @@ export class MenuScene extends Phaser.Scene
 {
     constructor(){
         super({key: 'MenuScene'})
+        this.ready = false;
     }
     
     preload(){
@@ -60,11 +61,7 @@ export class MenuScene extends Phaser.Scene
         
         this.panel = new Panel(this);
         this.panel.create(dim);
-
-        //Instructions Panel
         this.panel.createInstructionsPanel(dim);
-
-        //OptionsPanel
         this.panel.createOptionsPanel(dim);
 
         this.exposedVariables();

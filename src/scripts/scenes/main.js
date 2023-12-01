@@ -160,7 +160,7 @@ export class MainScene extends Phaser.Scene
     start(){
         this.startCounter = 3;
 
-        this.startText = this.add.text(0, 0, this.startCounter, { fontSize : 400, fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+        this.startText = this.add.text(0, 0, this.startCounter, { font: '600 400px Montserrat' });
         this.startText.setPosition(this.dim/2 - this.startText.width/2, this.dim/2 - this.startText.height/1.5);
         this.startText.setFill("black");
         this.startText.setDepth(11);
