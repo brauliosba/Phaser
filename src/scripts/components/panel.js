@@ -6,9 +6,16 @@ export class Panel
     }
 
     create(dim){
+        let bg = this.scene.add.image(dim/2, dim/2, 'panel').setInteractive();
+        bg.setTint('0x000000');
+        bg.setAlpha(0.1);
+        bg.setScale(2);
+
         this.panel = this.scene.add.nineslice(dim/2, dim/2, 'panel', 0, 1210, 1230, 200, 200, 200, 200);
-        this.panel.setVisible(false);
-        this.panel.setDepth(10);
+
+        this.panelContainer = this.scene.add.container(0, 0, [bg, this.panel]);
+        this.panelContainer.setDepth(10);
+        this.panelContainer.setVisible(false);
 
         this.pauseContainer;
     }
@@ -164,33 +171,33 @@ export class Panel
     showInstructions(){
         if(this.scene.data.get('IS_TOUCH')) this.instructionsText.setText(this.instructionsMobileContent[this.instructionIndex]);
         this.instructionsContainer.setVisible(true);
-        this.panel.setVisible(true);
+        this.panelContainer.setVisible(true);
     }
 
     hideInstructions(){
         this.instructionsContainer.setVisible(false);
-        this.panel.setVisible(false);
+        this.panelContainer.setVisible(false);
     }
 
     showOptions(){
         this.optionsContainer.setVisible(true);
-        this.panel.setVisible(true);
+        this.panelContainer.setVisible(true);
     }
 
     hideOptions(){
         this.optionsContainer.setVisible(false);
-        this.panel.setVisible(false);
+        this.panelContainer.setVisible(false);
 
         if (this.pauseContainer!= null) this.showPause();
     }
 
     showPause(){
         this.pauseContainer.setVisible(true);
-        this.panel.setVisible(true);
+        this.panelContainer.setVisible(true);
     }
 
     hidePause(){
         this.pauseContainer.setVisible(false);
-        this.panel.setVisible(false);
+        this.panelContainer.setVisible(false);
     }
 }

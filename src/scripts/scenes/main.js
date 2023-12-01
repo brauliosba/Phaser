@@ -18,11 +18,12 @@ export class MainScene extends Phaser.Scene
         this.load.image('imgBack', 'src/images/img_back.png');
         this.load.spritesheet('playerRun', 'src/images/playerRun.png', { frameWidth: 1500, frameHeight: 1000});
         this.load.spritesheet('playerTack', 'src/images/playerTack.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerReceive', 'src/images/playerReceive.png', { frameWidth: 1500, frameHeight: 1200});
-        this.load.spritesheet('playerSend', 'src/images/playerSend.png', { frameWidth: 1500, frameHeight: 1200});
+        this.load.spritesheet('playerReceive', 'src/images/playerReceive.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerSend', 'src/images/playerSend.png', { frameWidth: 1500, frameHeight: 1000});
 
         //UI
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
+        this.load.image('pauseButton', 'src/images/UI/boton_pausa.png');
         this.load.image('panel', 'src/images/UI/panel.png');
         this.load.atlas('panelUI', 'src/images/UI/panelUI.png', 'src/images/UI/panelUI.json');
 
@@ -47,13 +48,14 @@ export class MainScene extends Phaser.Scene
     }
 
     create(){
-        // backgrounds
-        this.sprBack = this.add.image(this.data.get('screen_c'), this.data.get('screen_c'), 'imgBack');
+        this.dim = this.data.get('screen');
 
-        // array of sprites that will be "manually" drawn on a rendering texture
-        // (that's why they must invisible after the creation)
-        this.sprites = [
-        ]
+        // backgrounds
+        let sprBack = this.add.image(this.dim/2, this.dim/2, 'imgBack');
+        let pauseButton = this.add.image(this.dim - 100, 130, 'pauseButton').setInteractive();
+        pauseButton.on('pointerdown', () => this.pauseGame());
+        pauseButton.setDepth(9)
+        pauseButton.setDisplaySize(50, 50);
 
         // inputs
         this.keyDelivery = this.input.keyboard.addKey('SPACE');
@@ -97,6 +99,8 @@ export class MainScene extends Phaser.Scene
         });
         
         this.isPaused = false;
+        this.startAnim = true;
+        this.startEvent = null;
 
         // instances
         this.circuit = new Circuit(this);
@@ -115,16 +119,18 @@ export class MainScene extends Phaser.Scene
                     this.data.set('state', "restart");
                     break;
                 case "restart":
-                    if (this.scoreboard.timedEvent == undefined && this.scoreboard.startAnim){
+                    if (this.startEvent == undefined && this.startAnim){
                         this.circuit.create();
                         this.scoreboard.create();
                         this.circuit.render3D();
 
-                        this.panel.create(this.data.get('screen'));
-                        this.panel.createPausePanel(this.data.get('screen'));
-                        this.panel.createOptionsPanel(this.data.get('screen'));
+                        this.start(this.dim);
+
+                        this.panel.create(this.dim);
+                        this.panel.createPausePanel(this.dim);
+                        this.panel.createOptionsPanel(this.dim);
                     }
-                    if (!this.scoreboard.startAnim) {
+                    if (!this.startAnim) {
                         this.player.restart();
                         this.data.set('state', "play");
                     }
@@ -146,8 +152,45 @@ export class MainScene extends Phaser.Scene
         if (Phaser.Input.Keyboard.JustDown(this.keyDelivery)){
             this.player.checkDelivery();
         }
-        if (Phaser.Input.Keyboard.JustDown(this.keyPause)){
+        if (Phaser.Input.Keyboard.JustDown(this.keyPause) && !this.startAnim){
             this.pauseGame();
+        }
+    }
+
+    start(){
+        this.startCounter = 3;
+
+        this.startText = this.add.text(0, 0, this.startCounter, { fontSize : 400, fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+        this.startText.setPosition(this.dim/2 - this.startText.width/2, this.dim/2 - this.startText.height/1.5);
+        this.startText.setFill("black");
+        this.startText.setDepth(11);
+
+        this.startBG = this.add.image(this.dim/2,this.dim/2, 'imgBack').setInteractive();
+        this.startBG.setAlpha(0.01);
+        this.startBG.setDepth(11);
+        this.startBG.setDisplaySize(this.dim, this.dim);
+
+        //Each 1000 ms call onEvent
+        this.startEvent = this.time.addEvent({ delay: 1000, callback: this.startAnimation, callbackScope: this, loop: true });
+    }
+
+    startAnimation(){
+        this.startCounter -= 1;
+
+        if (this.startCounter == 0){ 
+            this.startText.setFontSize(250);
+            this.startText.setText('Corre!');
+            this.startText.setPosition(this.dim/2 - this.startText.width/2, this.dim/2 - this.startText.height/1.5);
+        }
+        else if (this.startCounter > 0){
+            this.startText.setText(this.startCounter);
+        }
+        else{
+            this.startText.setVisible(false);
+            this.startBG.setVisible(false);
+            this.startAnim = false;
+            this.startEvent.destroy();
+            this.startEvent = undefined;
         }
     }
 
