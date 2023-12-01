@@ -1,20 +1,20 @@
 {
 "frames": {
 	"casa1.png": {
-		"frame": {"x":0, "y":0, "w":271, "h":351},
-		"spriteSourceSize": {"x":0,"y":0,"w":271,"h":351},
-		"sourceSize": {"w":271,"h":351}
+		"frame": {"x":265, "y":0, "w":264, "h":342},
+		"spriteSourceSize": {"x":0,"y":0,"w":264,"h":342},
+		"sourceSize": {"w":264,"h":342}
 	},
 	"casa2.png": {
-		"frame": {"x":272, "y":0, "w":271, "h":351},
-		"spriteSourceSize": {"x":0,"y":0,"w":271,"h":351},
-		"sourceSize": {"w":271,"h":351}
+		"frame": {"x":0, "y":0, "w":264, "h":342},
+		"spriteSourceSize": {"x":0,"y":0,"w":264,"h":342},
+		"sourceSize": {"w":264,"h":342}
 	}
 
 },
 "meta": {
-	"image": "sprites.png",
-	"size": {"w": 544, "h": 352},
+	"image": "buildings.png",
+	"size": {"w": 530, "h": 343},
 	"scale": "1"
 }
 }

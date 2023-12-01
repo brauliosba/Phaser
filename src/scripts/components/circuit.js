@@ -41,8 +41,8 @@ export class Circuit
         this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0};
 
         this.buildings = [
-            {name: 'casa1.png', offset1: 2.9, offset2: -1.9}, 
-            {name: 'casa2.png', offset1: 2.9, offset2: -1.9},
+            {name: 'casa1.png', offset1: 2.65, offset2: -1.65}, 
+            {name: 'casa2.png', offset1: 2.65, offset2: -1.65},
         ]
 
         this.carOffsets = [-1, 0, 1]
@@ -127,7 +127,7 @@ export class Circuit
         }
 
         if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
-        this.generateRandomBuildings(start == 0 ? start + 10 : start, limit);
+        this.generateRandomBuildings(start == 0 ? start + 10 : start, limit == 150 ?  limit - 5: limit);
         this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
     }
     
@@ -361,8 +361,8 @@ export class Circuit
         this.drawPolygon(x1-w1, y1, x1+w1, y1, x2+w2, y2, x2-w2, y2, color.road);
 
         // draw sidewalk strips
-        var sidewalk_w1 = w1/1.5;
-        var sidewalk_w2 = w2/1.5;
+        var sidewalk_w1 = w1/1.2;
+        var sidewalk_w2 = w2/1.2;
         // left
         this.drawPolygon(x1-w1-sidewalk_w1, y1, x1-w1, y1, x2-w2, y2, x2-w2-sidewalk_w2, y2, color.sidewalk);
         // right

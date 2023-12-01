@@ -16,7 +16,7 @@ export class Building
         this.sprite.setDisplaySize(destW, destH);
         this.sprite.setDepth(spriteScale * 10);
         this.sprite.setPosition(destX, destY);
-        this.sprite.setScale((spriteScale * 20000));
+        this.sprite.setScale((spriteScale * 18000));
 
         if (this.offset > 0) this.sprite.flipX = true;
         else this.sprite.flipX = false;
