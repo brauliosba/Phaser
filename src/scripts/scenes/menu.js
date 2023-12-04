@@ -68,10 +68,18 @@ export class MenuScene extends Phaser.Scene
     }
 
     exposedVariables(){
-        var printText = this.add.text(200, 300, "Velocidad Inicial: " + this.data.get('initialSpeed'), {
+        var label = this.add.text(170, 300, "Velocidad Inicial:", {
             color: 'yellow',
             fontSize: '24px',
-            fixedWidth: 400,
+            fixedWidth: 340,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        var printText = this.add.text(450, 300, this.data.get('initialSpeed'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 150,
             fixedHeight: 50,
             backgroundColor: '#333333',
         }).setOrigin(0.5)
@@ -82,10 +90,18 @@ export class MenuScene extends Phaser.Scene
             selectAll: true,
         });
         
-        var printText2 = this.add.text(200, 360, "Velocidad Lateral: " + this.data.get('horizontalSpeed'), {
+        var label2 = this.add.text(170, 360, "Velocidad Lateral:", {
             color: 'yellow',
             fontSize: '24px',
-            fixedWidth: 400,
+            fixedWidth: 340,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        var printText2 = this.add.text(450, 360, this.data.get('horizontalSpeed'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 150,
             fixedHeight: 50,
             backgroundColor: '#333333',
         }).setOrigin(0.5)
@@ -96,10 +112,18 @@ export class MenuScene extends Phaser.Scene
             selectAll: true,
         });
 
-        var printText3 = this.add.text(200, 420, "Aceleración: " + this.data.get('acceleration'), {
+        var label3 = this.add.text(170, 420, "Aceleración:", {
             color: 'yellow',
             fontSize: '24px',
-            fixedWidth: 400,
+            fixedWidth: 340,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        var printText3 = this.add.text(450, 420, this.data.get('acceleration'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 150,
             fixedHeight: 50,
             backgroundColor: '#333333',
         }).setOrigin(0.5)
@@ -110,10 +134,18 @@ export class MenuScene extends Phaser.Scene
             selectAll: true,
         });
 
-        var printText4 = this.add.text(200, 480, "Espacio entre oleadas: " + this.data.get('waveDelay'), {
+        var label4 = this.add.text(170, 480, "Espacio entre oleadas:", {
             color: 'yellow',
             fontSize: '24px',
-            fixedWidth: 400,
+            fixedWidth: 340,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        var printText4 = this.add.text(450, 480, this.data.get('waveDelay'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 150,
             fixedHeight: 50,
             backgroundColor: '#333333',
         }).setOrigin(0.5)
@@ -124,10 +156,18 @@ export class MenuScene extends Phaser.Scene
             selectAll: true,
         });
 
-        var printText5 = this.add.text(200, 540, "Tiempo de puntuación: " + this.data.get('scoringTime'), {
+        var label5 = this.add.text(170, 540, "Tiempo de puntuación:", {
             color: 'yellow',
             fontSize: '24px',
-            fixedWidth: 400,
+            fixedWidth: 340,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        var printText5 = this.add.text(450, 540, this.data.get('scoringTime'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 150,
             fixedHeight: 50,
             backgroundColor: '#333333',
         }).setOrigin(0.5)
