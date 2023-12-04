@@ -152,9 +152,12 @@ export class Circuit
     }
 
     generateRandomDelivery(limit){
-        var position = Phaser.Math.Between(limit + 50, this.total_segments - 10);
-        var offset = position % 2 == 0 ? 2 : -2;
-        this.addSegmentDelivery(position, 'sprites_09.png', offset)
+        if (this.currentDelivery.lastSegment != 0) {
+            var offset = this.currentDelivery.lastSegment % 2 == 0 ? 2 : -2;
+            this.addSegmentDelivery(this.currentDelivery.lastSegment, 'sjj', offset)
+        }
+
+        this.currentDelivery.lastSegment = Phaser.Math.Between(limit + 50, this.total_segments - 10);
     }
 
     addSegmentDelivery(n, spriteKey, offset){
@@ -183,7 +186,7 @@ export class Circuit
                 case 0:
                     var lane = Phaser.Math.Between(0, 2);
 
-                    if (this.checkExistingDelivery()){
+                    if (this.checkExistingDelivery(position)){
                         if (this.currentDelivery.alignment > 0) {
                             lane = Phaser.Math.Between(0, 1);
                         } else {
@@ -194,7 +197,7 @@ export class Circuit
                     break;
                 case 1:
                     var lane = Phaser.Math.Between(0, 2);
-                    if (this.checkExistingDelivery()){
+                    if (this.checkExistingDelivery(position)){
                         if (this.currentDelivery.alignment > 0) {
                             lane = 2;
                         }else{
@@ -222,7 +225,7 @@ export class Circuit
     addSegmentObstacle(n, spriteKey, offset){
         let obstacle = new Obstacle(this.scene);
         obstacle.create(spriteKey, offset);
-        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, obstacle.sprite, () => this.scene.player.playerCollision());
+        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle", collider: obstacleCollider});
     }
 

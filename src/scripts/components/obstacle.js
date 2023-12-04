@@ -1,13 +1,14 @@
-export class Obstacle
+import {Sprite} from './sprite.js';
+
+export class Obstacle extends Sprite
 {
     constructor(scene){
-        // reference to the game scene
-        this.scene = scene;
+        super(scene);
     }
 
     create(spriteSheet, offset){
-        this.spriteSheet = spriteSheet;
-        this.offset = offset;
+        super.create(spriteSheet, offset);
+
         if (offset != 0) {
             this.sprite = this.scene.physics.add.sprite(0, 0, spriteSheet, spriteSheet + '_00.png');
             if (offset > 0) this.sprite.body.setOffset(50, 0);
@@ -23,10 +24,11 @@ export class Obstacle
         this.sprite.setVisible(false);
     }
 
-    draw(destW, destH, spriteX, spriteY, spriteScale){
-        this.sprite.setDisplaySize(destW, destH);
+    draw(destW, destH, destX, destY, spriteScale){
+        super.draw(destW, destH, destX, destY);
+
         this.sprite.setDepth(spriteScale * 20000);
-        this.sprite.setPosition(spriteX, spriteY);
+
         if (spriteScale * 20000 <= 5) {
             var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
             var spriteName = this.spriteSheet + '_0' + number + '.png'; 
@@ -40,16 +42,11 @@ export class Obstacle
             this.sprite.setVisible(true);
         } else {
             this.disable();
-        }
+        }    
     }
 
     disable(){
+        super.disable();
         this.sprite.disableBody(false, false);
-        this.sprite.setVisible(false);
-    }
-
-    destroy(){
-        this.sprite.destroy();
-        this.sprite = null;
     }
 }

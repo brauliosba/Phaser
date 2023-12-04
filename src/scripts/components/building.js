@@ -1,34 +1,20 @@
-export class Building
+import {Sprite} from './sprite.js';
+
+export class Building extends Sprite
 {
     constructor(scene){
-        // reference to the game scene
-        this.scene = scene;
+        super(scene);
     }
 
     create(spriteSheet, offset){
-        this.spriteSheet = spriteSheet;
-        this.offset = offset;
+        super.create(spriteSheet, offset);
         this.sprite = this.scene.add.sprite(0, 0, 'buildings', spriteSheet);
         this.sprite.setVisible(false);
     }
 
     draw(destW, destH, destX, destY, spriteScale){
-        this.sprite.setDisplaySize(destW, destH);
-        this.sprite.setDepth(spriteScale * 10);
-        this.sprite.setPosition(destX, destY);
+        super.draw(destW, destH, destX, destY);
+        this.sprite.setDepth(spriteScale);
         this.sprite.setScale((spriteScale * 18000));
-
-        if (this.offset > 0) this.sprite.flipX = true;
-        else this.sprite.flipX = false;
-        this.sprite.setVisible(true);
-    }
-
-    disable(){
-        this.sprite.setVisible(false);
-    }
-
-    destroy(){
-        this.sprite.destroy();
-        this.sprite = null;
     }
 }
