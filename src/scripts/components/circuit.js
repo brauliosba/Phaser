@@ -328,17 +328,18 @@ export class Circuit
 
                 var destX = spriteX + (destW * ((sprite.object.offset < 0 ? -1 : 0) || 0));
                 var destY = spriteY + (destH * (-1 || 0));
-                
+
                 var clipH = currSegment.clip ? Math.max(0, destY+destH-currSegment.clip) : 0;
                 if (clipH < destH) {
                     if (sprite.type == "obstacle"){
-                        sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
+                        if (destY >= -50) sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
+                        else sprite.object.disable();
                     }
                     else {
                         sprite.object.draw(destW, destH, destX, destY, spriteScale);
                     }
-                }
-                else{
+                } 
+                else {
                     sprite.object.disable();
                 }
             }
