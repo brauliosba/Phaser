@@ -108,9 +108,10 @@ export class Player
         console.log('Velocidad Inicial: ' + this.speed);
         console.log('Velocidad Horizotal: ' + this.horizontalSpeed);
         this.totalCircuitSegments = this.scene.circuit.total_segments;
+        let scoringTime = this.scene.data.get('scoringTime');
 
         //Each 1000 ms call onEvent
-        this.scoreEvent = this.scene.time.addEvent({ delay: 1000, callback: this.updateScore, callbackScope: this, loop: true });
+        this.scoreEvent = this.scene.time.addEvent({ delay: scoringTime, callback: this.updateScore, callbackScope: this, loop: true });
         //Each 100 ms call onEvent
         this.speedEvent = this.scene.time.addEvent({ delay: 100, callback: this.updateSpeed, callbackScope: this, loop: true });
     }

@@ -36,6 +36,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('horizontalSpeed', 1800);
         this.data.set('acceleration', 28);
         this.data.set('waveDelay', 60);
+        this.data.set('scoringTime', 1000);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
@@ -120,6 +121,20 @@ export class MenuScene extends Phaser.Scene
         this.plugins.get('rextexteditplugin').add(printText4, {
             type: 'text',
             onTextChanged: (textObject, text) => { textObject.text = text; this.setData('waveDelay', text); },
+            selectAll: true,
+        });
+
+        var printText5 = this.add.text(200, 540, "Tiempo de puntuación: " + this.data.get('scoringTime'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 400,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        this.plugins.get('rextexteditplugin').add(printText5, {
+            type: 'text',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('scoringTime', text); },
             selectAll: true,
         });
     }
