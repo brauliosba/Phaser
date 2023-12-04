@@ -33,9 +33,9 @@ export class MenuScene extends Phaser.Scene
         this.data.set('screen', dim);
         this.data.set('screen_c', dim/2);
         this.data.set('initialSpeed', 3000);
-        this.data.set('horizontalSpeed', 500);
-        this.data.set('acceleration', 10);
-        this.data.set('waveDelay', 20);
+        this.data.set('horizontalSpeed', 1800);
+        this.data.set('acceleration', 28);
+        this.data.set('waveDelay', 60);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
