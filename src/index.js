@@ -28,7 +28,9 @@ var config = {
             gravity: {y:0},
             debug: true
         }
-    }
+    },
+
+    fps: { forceSetTimeOut: true, target: 60 }
 }
 
 // gama instance
