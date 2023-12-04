@@ -27,17 +27,20 @@ export class Obstacle
         this.sprite.setDisplaySize(destW, destH);
         this.sprite.setDepth(spriteScale * 20000);
         this.sprite.setPosition(spriteX, spriteY);
+        if (spriteScale * 20000 <= 5) {
+            var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
+            var spriteName = this.spriteSheet + '_0' + number + '.png'; 
+            if (this.offset != 0) this.sprite.setTexture('carA', spriteName);
 
-        var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
-        var spriteName = this.spriteSheet + '_0' + number + '.png'; 
-        if (this.offset != 0) this.sprite.setTexture('carA', spriteName);
+            this.sprite.setScale((spriteScale * 2400));
+            this.sprite.enableBody();
 
-        this.sprite.setScale((spriteScale * 2400));
-        this.sprite.enableBody();
-
-        if (this.offset > 0) this.sprite.flipX = true;
-        else this.sprite.flipX = false;
-        this.sprite.setVisible(true);
+            if (this.offset > 0) this.sprite.flipX = true;
+            else this.sprite.flipX = false;
+            this.sprite.setVisible(true);
+        } else {
+            this.disable();
+        }
     }
 
     disable(){

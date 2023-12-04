@@ -173,16 +173,6 @@ export class Circuit
             else
                 this.segments[i].delivery = [true,'0x429352'];
         }
-               
-        for (var i = n - 5; i <= n+5; i++){
-            for (var j = 0; j < this.segments[i].sprites.length; j++){
-                if (this.segments[i].sprites[j].type == "obstacle"){
-                    if (this.segments[i].sprites[j].object.offset > 0 == offset > 0){
-                        this.segments[i].sprites[j].object.offset = this.currentDelivery.alignment > 0 ? this.carOffsets[0] : this.carOffsets[2];
-                    }
-                }
-            }
-        }
     }
 
     generateRandomObstacles(start, limit){
@@ -232,7 +222,7 @@ export class Circuit
     addSegmentObstacle(n, spriteKey, offset){
         let obstacle = new Obstacle(this.scene);
         obstacle.create(spriteKey, offset);
-        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
+        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, obstacle.sprite, () => this.scene.player.playerCollision());
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle", collider: obstacleCollider});
     }
 
@@ -411,6 +401,7 @@ export class Circuit
         }
         */
 
+        //drawing delivery zone
         if (delivery[0]){
             var playerScreenPosY = this.scene.player.screen.y + this.scene.player.screen.h/2;
 
