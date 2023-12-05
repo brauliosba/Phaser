@@ -32,8 +32,10 @@ export class MainScene extends Phaser.Scene
         this.load.image('buildTemp', 'src/images/casa1.png');
 
         //Obstacles
-        this.load.atlas('carA', 'src/images/obstacles/car_A.png', 'src/images/obstacles/car_A.json');
-        this.load.spritesheet('carACentral', 'src/images/obstacles/car_A_Central.png', { frameWidth: 741, frameHeight: 597});
+        this.load.atlas('obstacle0', 'src/images/obstacles/obstacle_A.png', 'src/images/obstacles/obstacle_A.json');
+        this.load.spritesheet('obstacle0Central', 'src/images/obstacles/obstacle_A_Central.png', { frameWidth: 741, frameHeight: 597});
+        this.load.atlas('staticObstacles', 'src/images/obstacles/staticObstacles.png', 'src/images/obstacles/staticObstacles.json');
+
 
         //Plugins
         this.load.scenePlugin({
@@ -95,7 +97,7 @@ export class MainScene extends Phaser.Scene
         //Obstacles animations
         this.anims.create({
             key: 'carIdle',
-            frames: this.anims.generateFrameNumbers('carACentral', { start: 0, end: 2, first: 0 }),
+            frames: this.anims.generateFrameNumbers('obstacle0Central', { start: 0, end: 2, first: 0 }),
             frameRate: 20,
             repeat: -1
         });

@@ -1,41 +1,41 @@
 {
 "frames": {
-	"carA_00.png": {
+	"obstacle0_00.png": {
 		"frame": {"x":1455, "y":0, "w":718, "h":605},
 		"spriteSourceSize": {"x":72,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
 	},
-	"carA_01.png": {
+	"obstacle0_01.png": {
 		"frame": {"x":1454, "y":1217, "w":720, "h":605},
 		"spriteSourceSize": {"x":70,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
 	},
-	"carA_02.png": {
+	"obstacle0_02.png": {
 		"frame": {"x":732, "y":0, "w":722, "h":605},
 		"spriteSourceSize": {"x":68,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
 	},
-	"carA_03.png": {
+	"obstacle0_03.png": {
 		"frame": {"x":730, "y":610, "w":724, "h":606},
 		"spriteSourceSize": {"x":66,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
 	},
-	"carA_04.png": {
+	"obstacle0_04.png": {
 		"frame": {"x":728, "y":1220, "w":725, "h":606},
 		"spriteSourceSize": {"x":65,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
 	},
-	"carA_05.png": {
+	"obstacle0_05.png": {
 		"frame": {"x":0, "y":1220, "w":727, "h":609},
 		"spriteSourceSize": {"x":63,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
 	},
-	"carA_06.png": {
+	"obstacle0_06.png": {
 		"frame": {"x":0, "y":610, "w":729, "h":609},
 		"spriteSourceSize": {"x":61,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
 	},
-	"carA_07.png": {
+	"obstacle0_07.png": {
 		"frame": {"x":0, "y":0, "w":731, "h":609},
 		"spriteSourceSize": {"x":59,"y":87,"w":900,"h":700},
 		"sourceSize": {"w":900,"h":700}
@@ -43,7 +43,7 @@
 
 },
 "meta": {
-	"image": "sprites.png",
+	"image": "obstacle_A.png",
 	"size": {"w": 2175, "h": 1830},
 	"scale": "1"
 }

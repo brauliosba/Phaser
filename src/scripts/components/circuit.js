@@ -1,4 +1,5 @@
 import {Obstacle} from './obstacle.js';
+import {Car} from './car.js';
 import {Building} from './building.js';
 import {Delivery} from './delivery.js';
 
@@ -45,7 +46,7 @@ export class Circuit
             {name: 'casa2.png', offset1: 2.65, offset2: -1.65},
         ]
 
-        this.carOffsets = [-1, 0, 1]
+        this.obstaclesOffsets = [[-1, 0, 1], [-0.8, 0, 0.8], [-0.8, 0, 0.8]]
 
         this.waveDelay = this.scene.data.get('waveDelay');
     }
@@ -193,7 +194,7 @@ export class Circuit
                             lane = Phaser.Math.Between(1, 2);
                         }
                     }
-                    this.addSegmentObstacle(position, 'carA', this.carOffsets[lane]);
+                    this.addSegmentObstacle(position, 'obstacle', lane);
                     break;
                 case 1:
                     var lane = Phaser.Math.Between(0, 2);
@@ -205,7 +206,7 @@ export class Circuit
                         }
                     }
                     for (var j = 0; j < 3; j++){
-                        if (j != lane) this.addSegmentObstacle(position, 'carA', this.carOffsets[j]);
+                        if (j != lane) this.addSegmentObstacle(position, 'obstacle', j);
                     }
                     break;
                 default:
@@ -223,8 +224,16 @@ export class Circuit
     }
 
     addSegmentObstacle(n, spriteKey, offset){
-        let obstacle = new Obstacle(this.scene);
-        obstacle.create(spriteKey, offset);
+        let obstacle;
+        var type = Phaser.Math.Between(0, 2);
+        if (type != 0) { 
+            obstacle = new Obstacle(this.scene);
+            obstacle.create(spriteKey+type, type, this.obstaclesOffsets[type][offset]);
+        }
+        else {
+            obstacle = new Car(this.scene);
+            obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset]);
+        }
         var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle", collider: obstacleCollider});
     }

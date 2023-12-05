@@ -1,0 +1,20 @@
+{
+"frames": {
+	"obstacle1.png": {
+		"frame": {"x":0, "y":353, "w":341, "h":436},
+		"spriteSourceSize": {"x":269,"y":169,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
+	},
+	"obstacle2.png": {
+		"frame": {"x":0, "y":0, "w":640, "h":352},
+		"spriteSourceSize": {"x":115,"y":239,"w":900,"h":700},
+		"sourceSize": {"w":900,"h":700}
+	}
+
+},
+"meta": {
+	"image": "buildings.png",
+	"size": {"w": 641, "h": 790},
+	"scale": "1"
+}
+}
