@@ -7,8 +7,7 @@ export class Sprite
 
     create(spriteSheet, offset){
         this.spriteSheet = spriteSheet;
-        this.offset = offset;
-        
+        this.offset = offset;     
     }
 
     draw(destW, destH, destX, destY){

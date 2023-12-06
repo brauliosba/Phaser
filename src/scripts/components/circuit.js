@@ -2,6 +2,7 @@ import {Obstacle} from './obstacle.js';
 import {Car} from './car.js';
 import {Building} from './building.js';
 import {Delivery} from './delivery.js';
+import {PowerUp} from './powerUp.js';
 
 export class Circuit
 {
@@ -49,6 +50,10 @@ export class Circuit
         this.obstaclesOffsets = [[-1, 0, 1], [-0.8, 0, 0.8], [-0.8, 0, 0.8]]
 
         this.waveDelay = this.scene.data.get('waveDelay');
+
+        this.powerDelay = this.scene.data.get('powerDelay');
+        this.powerCounter = 0;
+        this.powersOffsets = [-0.7, 0, 0.7];
     }
 
     create(){
@@ -181,6 +186,7 @@ export class Circuit
 
     generateRandomObstacles(start, limit){
         for (var i = start; i < limit - 1; i+=this.waveDelay){
+            this.powerCounter++;
             var position = i;
             var waveType = Phaser.Math.Between(0, 1);
             switch (waveType) {
@@ -195,6 +201,14 @@ export class Circuit
                         }
                     }
                     this.addSegmentObstacle(position, 'obstacle', lane);
+
+                    if (this.powerCounter>this.powerDelay){
+                        var myArray = [0,1,2];
+                        let index = myArray.indexOf(lane);
+                        myArray.splice(index, 1);
+                        var powerOffset = Phaser.Math.RND.pick(myArray);
+                        this.generateRandomPower(position, powerOffset);
+                    }
                     break;
                 case 1:
                     var lane = Phaser.Math.Between(0, 2);
@@ -207,6 +221,10 @@ export class Circuit
                     }
                     for (var j = 0; j < 3; j++){
                         if (j != lane) this.addSegmentObstacle(position, 'obstacle', j);
+                    }
+
+                    if (this.powerCounter>this.powerDelay){
+                        this.generateRandomPower(position, lane);
                     }
                     break;
                 default:
@@ -235,7 +253,19 @@ export class Circuit
             obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset]);
         }
         var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => this.scene.player.playerCollision());
-        this.segments[n].sprites.push({ object: obstacle, type: "obstacle", collider: obstacleCollider});
+        this.segments[n].sprites.push({ object: obstacle, type: "obstacle"});
+    }
+
+    generateRandomPower(position, offset){
+        this.powerCounter = 0;
+        this.addSegmentPower(position, 'deliveryButton', this.powersOffsets[offset]);
+    }
+
+    addSegmentPower(n, spriteKey, offset){
+        var power = new PowerUp(this.scene);
+        power.create(spriteKey, offset);
+        var powerCollider = this.scene.physics.add.collider(power.sprite, this.scene.player.playerBody, () => { this.scene.player.playerPowerUp(); power.disable(); });
+        this.segments[n].sprites.push({ object: power, type: "power"});
     }
 
     getSegment(positionZ){
@@ -340,8 +370,8 @@ export class Circuit
 
                 var clipH = currSegment.clip ? Math.max(0, destY+destH-currSegment.clip) : 0;
                 if (clipH < destH) {
-                    if (sprite.type == "obstacle"){
-                        if (destY >= -50) sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
+                    if (sprite.type == "obstacle" || sprite.type == "power"){
+                        if (destY >= -200) sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
                         else sprite.object.disable();
                     }
                     else {

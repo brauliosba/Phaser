@@ -28,6 +28,7 @@ export class Player
         this.currentRoadPos = 1;
         this.playerState = 'idle';
         this.score = 0;
+        this.shielded = false;
     }
 
     init(){
@@ -171,13 +172,39 @@ export class Player
     }
 
     playerCollision(){
-        this.speed = 0;
-        this.playerBody.stop();
+        if (!this.shielded) {
+            this.speed = 0;
+            this.playerBody.stop();
+            this.playerBody.disableBody(false, false);
+            this.scene.data.set('state', "game_over");
+            this.speedEvent.remove(false);
+            this.scoreEvent.remove(false);
+            console.log('colisiono')
+        } else{
+            this.shildBreak();
+        }
+    }
+
+    shildBreak(){
+        this.shielded = false;
         this.playerBody.disableBody(false, false);
-        this.scene.data.set('state', "game_over");
-        this.speedEvent.remove(false);
-        this.scoreEvent.remove(false);
-        console.log('colisiono')
+        this.scene.tweens.add({
+            targets: this.playerBody,
+            ease: 'sine.inout',
+            duration: 500,
+            yoyo: true,
+            repeat: 1,
+            alpha: {
+                getStart: () => 1,
+                getEnd: () => 0.3
+            },
+        });
+        this.scene.time.addEvent({ delay: 500, callback: () => this.playerBody.enableBody() , callbackScope: this,});
+    }
+
+    playerPowerUp(){
+        this.shielded = true;
+        console.log('shielded');
     }
 
     checkDelivery(){

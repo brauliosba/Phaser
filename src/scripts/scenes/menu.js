@@ -37,6 +37,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('acceleration', 28);
         this.data.set('waveDelay', 60);
         this.data.set('scoringTime', 1000);
+        this.data.set('powerDelay', 20);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
@@ -175,6 +176,28 @@ export class MenuScene extends Phaser.Scene
         this.plugins.get('rextexteditplugin').add(printText5, {
             type: 'text',
             onTextChanged: (textObject, text) => { textObject.text = text; this.setData('scoringTime', text); },
+            selectAll: true,
+        });
+
+        var label6 = this.add.text(170, 600, "Espacio entre power up:", {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 340,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        var printText6 = this.add.text(450, 600, this.data.get('powerDelay'), {
+            color: 'yellow',
+            fontSize: '24px',
+            fixedWidth: 150,
+            fixedHeight: 50,
+            backgroundColor: '#333333',
+        }).setOrigin(0.5)
+
+        this.plugins.get('rextexteditplugin').add(printText6, {
+            type: 'text',
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('powerDelay', text); },
             selectAll: true,
         });
     }
