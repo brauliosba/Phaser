@@ -174,6 +174,10 @@ export class Circuit
         this.currentDelivery.zone = "undone";
         this.currentDelivery.lastSegment = n+4;
 
+        //this.generateRandomPower(n - 4, offset > 0 ? offset : offset + 2);
+        //this.generateRandomPower(n, offset > 0 ? offset : offset + 2);
+        //this.generateRandomPower(n + 2, offset > 0 ? offset : offset + 2);
+
         for (var i = n-4; i <= n+4; i++){
             if (i < n-1)
                 this.segments[i].delivery = [true,'0xF6B26B']
@@ -343,7 +347,9 @@ export class Circuit
                 // draw player
                 var player = this.scene.player;
                 player.playerBody.setPosition(player.screen.x, player.screen.y);
-                player.playerBody.setVisible(true); 
+                player.playerBody.setVisible(true);
+                player.playerBox.setPosition(player.screen.x, player.screen.y);
+                player.playerBox.setVisible(true);
                   
                 // move the clipping bottom line up
                 clipBottomLine = currBottomLine;
@@ -449,24 +455,20 @@ export class Circuit
             var playerScreenPosY = this.scene.player.screen.y + this.scene.player.screen.h/2;
 
             if (this.currentDelivery.zone != "done") {
-                if (playerScreenPosY >= y2 &&  playerScreenPosY <= y1){       
+                if (playerScreenPosY >= y2 &&  playerScreenPosY <= y1){     
                     if (delivery[1] == '0x429352') this.currentDelivery.zone = "green";
                     else if (delivery[1] == '0xF6B26B') this.currentDelivery.zone = "orange";
                     else if (delivery[1] == '0xF8C189') this.currentDelivery.zone = "orange2";
+                    
+                    if (segmentIndex >= this.currentDelivery.lastSegment) { if (y1 > playerScreenPosY) this.currentDelivery.zone = "lost";}
                 }
             }
-
-            if (segmentIndex == this.currentDelivery.lastSegment){
-                if (y1 > playerScreenPosY + 400) this.currentDelivery.zone = "lost";
-            }
-            
+       
             if (this.currentDelivery.alignment > 0)
                 this.drawPolygon(x1+w1/1.5, y1, x1+w1, y1, x2+w2, y2, x2+w2/1.5, y2, delivery[1]);
             else 
                 this.drawPolygon(x1-w1/1.5, y1, x1-w1, y1, x2-w2, y2, x2-w2/1.5, y2, delivery[1]);
-            
         }
-
         this.drawFog(0, y1, this.scene.data.get('screen'), y2-y1, fog)
     }
 

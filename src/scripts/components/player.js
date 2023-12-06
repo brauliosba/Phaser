@@ -42,6 +42,14 @@ export class Player
             this.playerBody.play('idle');
         }, this);
 
+        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxIdle');
+        this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxReceive', function () {
+            this.playerBox.play('boxIdle');
+        }, this);
+        this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxSend', function () {
+            this.playerBox.play('boxIdle');
+        }, this);
+
         // set the player screen size
         this.screen.w = this.playerBody.width;
         this.screen.h = this.playerBody.height;
@@ -54,6 +62,10 @@ export class Player
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBody.body.setSize(150,150,true);
         this.playerBody.setVisible(false);
+
+        this.playerBox.setDepth(3.2);
+        this.playerBox.setDisplaySize(this.screen.w/3, this.screen.h/3);
+        this.playerBox.setVisible(false);
 
         this.limitBound = this.screen.w/8;
 
@@ -146,7 +158,7 @@ export class Player
             if (this.playerState != 'receive') this.playerState = 'idle';
         }
 
-        if (this.playerState == 'idle') this.playerBody.play('idle', true);
+        if (this.playerState == 'idle') { this.playerBody.play('idle', true); this.playerBox.play('boxIdle', true); }
         else if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
@@ -157,7 +169,9 @@ export class Player
         var newPosX = this.screen.x - this.horizontalSpeed * dt;
         if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
             this.playerBody.setFlipX(false);
-            this.playerBody.play('tack', true); 
+            this.playerBody.play('tack', true);
+            this.playerBox.setFlipX(false);
+            this.playerBox.play('boxTack', true);
         }
         this.screen.x = (newPosX > this.limitBound ) ?  newPosX : this.limitBound;
     }
@@ -167,16 +181,18 @@ export class Player
         if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
             this.playerBody.setFlipX(true); 
             this.playerBody.play('tack', true); 
+            this.playerBox.setFlipX(true);
+            this.playerBox.play('boxTack', true);
         }
         this.screen.x = (newPosX < this.scene.data.get('screen') - this.limitBound) ?  newPosX : this.scene.data.get('screen') - this.limitBound;
     }
 
     playerCollision(){
         if (!this.shielded) {
+            this.scene.data.set('state', "game_over");
             this.speed = 0;
             this.playerBody.stop();
             this.playerBody.disableBody(false, false);
-            this.scene.data.set('state', "game_over");
             this.speedEvent.remove(false);
             this.scoreEvent.remove(false);
             console.log('colisiono')
@@ -205,6 +221,10 @@ export class Player
     playerPowerUp(){
         this.shielded = true;
         console.log('shielded');
+    }
+
+    playerDelivery(){
+        console.log('green');
     }
 
     checkDelivery(){
@@ -244,9 +264,11 @@ export class Player
         if (this.havePackage) {
             this.playerBody.setFlipX(alignment > 0);
             this.playerBody.play('send', true);
+            this.playerBox.play('boxSend', true);
             this.playerState = 'receive';
         } else {
             this.playerBody.play('receive', true);
+            this.playerBox.play('boxReceive', true);
             this.playerState = 'receive';
         }
     }

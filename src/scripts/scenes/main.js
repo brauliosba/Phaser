@@ -16,10 +16,16 @@ export class MainScene extends Phaser.Scene
     
     preload(){
         this.load.image('imgBack', 'src/images/img_back.png');
-        this.load.spritesheet('playerRun', 'src/images/playerRun.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerTack', 'src/images/playerTack.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerReceive', 'src/images/playerReceive.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerSend', 'src/images/playerSend.png', { frameWidth: 1500, frameHeight: 1000});
+
+        //player
+        this.load.spritesheet('playerRun', 'src/images/player/playerRun.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerTack', 'src/images/player/playerTack.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerReceive', 'src/images/player/playerReceive.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerSend', 'src/images/player/playerSend.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerBoxRun', 'src/images/player/playerBoxRun.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerBoxTack', 'src/images/player/playerBoxTack.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerBoxReceive', 'src/images/player/playerBoxReceive.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerBoxSend', 'src/images/player/playerBoxSend.png', { frameWidth: 1500, frameHeight: 1000});
 
         //UI
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
@@ -65,42 +71,7 @@ export class MainScene extends Phaser.Scene
         this.keyPause = this.input.keyboard.addKey('ESC');
         this.keyRestart = this.input.keyboard.addKey('R');
 
-        //Player animations
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('playerRun', { start: 0, end: 2, first: 0 }),
-            frameRate: 20,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'tack',
-            frames: this.anims.generateFrameNumbers('playerTack', { start: 0, end: 2, first: 0 }),
-            frameRate: 20,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'receive',
-            frames: this.anims.generateFrameNumbers('playerReceive', { start: 0, end: 2, first: 0 }),
-            frameRate: 10,
-            repeat: 0
-        });
-        
-        this.anims.create({
-            key: 'send',
-            frames: this.anims.generateFrameNumbers('playerSend', { start: 0, end: 2, first: 0 }),
-            frameRate: 10,
-            repeat: 0
-        });
-
-        //Obstacles animations
-        this.anims.create({
-            key: 'carIdle',
-            frames: this.anims.generateFrameNumbers('obstacle0Central', { start: 0, end: 2, first: 0 }),
-            frameRate: 20,
-            repeat: -1
-        });
+        this.createAnimations();
         
         this.isPaused = false;
         this.startAnim = true;
@@ -162,6 +133,73 @@ export class MainScene extends Phaser.Scene
         if (Phaser.Input.Keyboard.JustDown(this.keyRestart)){
             this.scene.start('MainScene', this.data);
         }
+    }
+
+    createAnimations(){
+        //Player animations
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('playerRun', { start: 0, end: 2, first: 0 }),
+            frameRate: 20,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'tack',
+            frames: this.anims.generateFrameNumbers('playerTack', { start: 0, end: 2, first: 0 }),
+            frameRate: 20,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'receive',
+            frames: this.anims.generateFrameNumbers('playerReceive', { start: 0, end: 2, first: 0 }),
+            frameRate: 10,
+            repeat: 0
+        });
+        
+        this.anims.create({
+            key: 'send',
+            frames: this.anims.generateFrameNumbers('playerSend', { start: 0, end: 2, first: 0 }),
+            frameRate: 10,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'boxIdle',
+            frames: this.anims.generateFrameNumbers('playerBoxRun', { start: 0, end: 2, first: 0 }),
+            frameRate: 20,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'boxTack',
+            frames: this.anims.generateFrameNumbers('playerBoxTack', { start: 0, end: 2, first: 0 }),
+            frameRate: 20,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'boxReceive',
+            frames: this.anims.generateFrameNumbers('playerBoxReceive', { start: 0, end: 2, first: 0 }),
+            frameRate: 10,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'boxSend',
+            frames: this.anims.generateFrameNumbers('playerBoxSend', { start: 0, end: 2, first: 0 }),
+            frameRate: 10,
+            repeat: 0
+        });
+
+        //Obstacles animations
+        this.anims.create({
+            key: 'carIdle',
+            frames: this.anims.generateFrameNumbers('obstacle0Central', { start: 0, end: 2, first: 0 }),
+            frameRate: 20,
+            repeat: -1
+        });
     }
 
     start(){

@@ -37,8 +37,7 @@ export class Car extends Sprite
             this.sprite.setScale((spriteScale * 2400));
             this.sprite.enableBody();
 
-            if (this.offset > 0) this.sprite.flipX = true;
-            else this.sprite.flipX = false;
+            this.sprite.flipX = (this.offset > 0);
             this.sprite.setVisible(true);
         } else {
             this.disable();
