@@ -209,7 +209,7 @@ export class Player
         this.scene.tweens.add({
             targets: this.playerBody,
             ease: 'sine.inout',
-            duration: 500,
+            duration: 250,
             yoyo: true,
             repeat: 1,
             alpha: {
@@ -217,7 +217,7 @@ export class Player
                 getEnd: () => 0.3
             },
         });
-        this.scene.time.addEvent({ delay: 500, callback: () => this.playerBody.enableBody() , callbackScope: this,});
+        this.scene.time.addEvent({ delay: 250, callback: () => this.playerBody.enableBody() , callbackScope: this,});
     }
 
     playerPowerUp(){

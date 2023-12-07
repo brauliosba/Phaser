@@ -75,6 +75,13 @@ export class Circuit
             this.segments[this.segments.length-1-i].color.sidewalk = this.segments[i].color.road;
             this.segments[this.segments.length-1-i].color.rumble = this.segments[i].color.road;
         }
+
+        /*
+        this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2 + 200, 'menuBG');
+        this.plane.viewPosition.z = 1.6;
+        this.plane.rotateX = 95;
+        this.plane.setScale(3.5);
+        */
     }
 
     createRoad(){
@@ -311,6 +318,8 @@ export class Circuit
         var baseSegment = this.getSegment(camera.z);
         var baseIndex = baseSegment.index;
 
+        //this.plane.uvScroll(0, 0.04);
+
         for (var i=0; i<this.visible_segments; i++){
             // get the current segment
             var currIndex = (baseIndex + i) % this.total_segments;
@@ -342,20 +351,21 @@ export class Circuit
                     currSegment.color,
                     currSegment.delivery,
                     currIndex
-                )
-
-                // draw player
-                var player = this.scene.player;
-                player.playerBody.setPosition(player.screen.x, player.screen.y);
-                player.playerBody.setVisible(true);
-                if (player.playerState != 'idle') {
-                    player.playerBox.setPosition(player.screen.x, player.screen.y);
-                    player.playerBox.setVisible(true);
-                }
+                )               
                   
                 // move the clipping bottom line up
                 clipBottomLine = currBottomLine;
             }
+
+            // draw player
+            
+            var player = this.scene.player;
+            player.playerBody.setPosition(player.screen.x, player.screen.y);
+            player.playerBody.setVisible(true);
+            if (player.playerState != 'idle') {
+                player.playerBox.setPosition(player.screen.x, player.screen.y);
+                player.playerBox.setVisible(true);
+            }    
         }
 
         for (var i=this.visible_segments - 20; i>0; i--){
