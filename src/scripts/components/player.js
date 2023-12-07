@@ -34,20 +34,20 @@ export class Player
     init(){
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
-        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerRun').play('idle');
+        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerIdle').play('idle');
         this.playerBody.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'receive', function () {
-            this.playerBody.play('idle');
+            this.playerBody.play('run');
         }, this);
         this.playerBody.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'send', function () {
-            this.playerBody.play('idle');
+            this.playerBody.play('run');
         }, this);
 
-        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxIdle');
+        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxRun');
         this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxReceive', function () {
-            this.playerBox.play('boxIdle');
+            this.playerBox.play('boxRun');
         }, this);
         this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxSend', function () {
-            this.playerBox.play('boxIdle');
+            this.playerBox.play('boxRun');
         }, this);
 
         // set the player screen size
@@ -81,7 +81,7 @@ export class Player
             this.leftButton.setDisplaySize(500, 500);
             this.leftButton.setPosition(this.screen.x / 2, this.scene.data.get('screen') - 250);
             this.leftButton.on('pointerdown', () => { this.playerState = 'left', console.log("izq")});
-            this.leftButton.on('pointerup', () => this.playerState = 'idle');
+            this.leftButton.on('pointerup', () => this.playerState = 'run');
             this.leftButton.setDepth(4.9);
             this.leftButton.alpha = 0.001;
 
@@ -89,7 +89,7 @@ export class Player
             this.rightButton.setDisplaySize(500, 500);
             this.rightButton.setPosition(3 * this.screen.x / 2, this.scene.data.get('screen') - 250);
             this.rightButton.on('pointerdown', () => this.playerState = 'right');
-            this.rightButton.on('pointerup', () => this.playerState = 'idle');
+            this.rightButton.on('pointerup', () => this.playerState = 'run');
             this.rightButton.setDepth(4.9);
             this.rightButton.alpha = 0.001;  
             /*
@@ -122,6 +122,8 @@ export class Player
         console.log('Velocidad Horizotal: ' + this.horizontalSpeed);
         this.totalCircuitSegments = this.scene.circuit.total_segments;
         let scoringTime = this.scene.data.get('scoringTime');
+        this.playerBody.play('run', true);
+        this.playerState = 'run';
 
         //Each 1000 ms call onEvent
         this.scoreEvent = this.scene.time.addEvent({ delay: scoringTime, callback: this.updateScore, callbackScope: this, loop: true });
@@ -155,10 +157,10 @@ export class Player
         
         if (this.cursors.left.isUp && this.cursors.right.isUp)
         {
-            if (this.playerState != 'receive') this.playerState = 'idle';
+            if (this.playerState != 'receive') this.playerState = 'run';
         }
 
-        if (this.playerState == 'idle') { this.playerBody.play('idle', true); this.playerBox.play('boxIdle', true); }
+        if (this.playerState == 'run') { this.playerBody.play('run', true); this.playerBox.play('boxRun', true); }
         else if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 

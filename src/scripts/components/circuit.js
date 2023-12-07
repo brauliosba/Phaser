@@ -348,8 +348,10 @@ export class Circuit
                 var player = this.scene.player;
                 player.playerBody.setPosition(player.screen.x, player.screen.y);
                 player.playerBody.setVisible(true);
-                player.playerBox.setPosition(player.screen.x, player.screen.y);
-                player.playerBox.setVisible(true);
+                if (player.playerState != 'idle') {
+                    player.playerBox.setPosition(player.screen.x, player.screen.y);
+                    player.playerBox.setVisible(true);
+                }
                   
                 // move the clipping bottom line up
                 clipBottomLine = currBottomLine;
