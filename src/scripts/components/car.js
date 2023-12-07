@@ -48,4 +48,8 @@ export class Car extends Sprite
         super.disable();
         this.sprite.disableBody(false, false);
     }
+
+    collisionAnim(){
+        
+    }
 }
