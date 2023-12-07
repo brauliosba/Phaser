@@ -33,4 +33,11 @@ export class Obstacle extends Sprite
         super.disable();
         this.sprite.disableBody(false, false);
     }
+
+    collisionAnim()
+    {
+        this.sprite.play(this.spriteSheet + 'Break');
+        this.sprite.on('animationcomplete', () => { this.sprite.setVisible(false); this.scene.anims.pauseAll() });
+        console.log(this.spriteSheet);
+    }
 }

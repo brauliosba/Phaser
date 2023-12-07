@@ -42,7 +42,8 @@ export class MainScene extends Phaser.Scene
         this.load.atlas('obstacle0', 'src/images/obstacles/obstacle_A.png', 'src/images/obstacles/obstacle_A.json');
         this.load.spritesheet('obstacle0Central', 'src/images/obstacles/obstacle_A_Central.png', { frameWidth: 741, frameHeight: 597});
         this.load.atlas('staticObstacles', 'src/images/obstacles/staticObstacles.png', 'src/images/obstacles/staticObstacles.json');
-
+        this.load.spritesheet('obstacle1Break', 'src/images/obstacles/obstacle1Anim.png', { frameWidth: 900, frameHeight: 700});
+        this.load.spritesheet('obstacle2Break', 'src/images/obstacles/obstacle2Anim.png', { frameWidth: 900, frameHeight: 1050});
 
         //Plugins
         this.load.scenePlugin({
@@ -119,7 +120,6 @@ export class MainScene extends Phaser.Scene
                     this.circuit.render3D();
                     break;
                 case "game_over":
-                    this.anims.pauseAll();
                     this.isPaused = true;
                     break;
             }
@@ -207,6 +207,20 @@ export class MainScene extends Phaser.Scene
             frames: this.anims.generateFrameNumbers('obstacle0Central', { start: 0, end: 2, first: 0 }),
             frameRate: 20,
             repeat: -1
+        });
+
+        this.anims.create({
+            key: 'obstacle1Break',
+            frames: this.anims.generateFrameNumbers('obstacle1Break', { start: 0, end: 2, first: 0 }),
+            frameRate: 20,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'obstacle2Break',
+            frames: this.anims.generateFrameNumbers('obstacle2Break', { start: 0, end: 2, first: 0 }),
+            frameRate: 20,
+            repeat: 0
         });
     }
 

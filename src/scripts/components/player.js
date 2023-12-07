@@ -194,6 +194,7 @@ export class Player
             this.scene.data.set('state', "game_over");
             this.speed = 0;
             this.playerBody.stop();
+            this.playerBox.stop();
             this.playerBody.disableBody(false, false);
             this.speedEvent.remove(false);
             this.scoreEvent.remove(false);
