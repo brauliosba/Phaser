@@ -141,7 +141,7 @@ export class Player
     }
 
     update(dt){
-        var circuit = this.scene.circuit;
+        let circuit = this.scene.circuit;
 
         this.z += this.speed * dt;
         if (this.z >= circuit.roadLength) {this.z -= circuit.roadLength; this.currentRoadPos = 1; circuit.addRandomSprites(2 * this.totalCircuitSegments / 3, this.totalCircuitSegments);}
@@ -168,7 +168,7 @@ export class Player
     }
 
     movePlayerLeft(dt){
-        var newPosX = this.screen.x - this.horizontalSpeed * dt;
+        let newPosX = this.screen.x - this.horizontalSpeed * dt;
         if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
             this.playerBody.setFlipX(false);
             this.playerBody.play('tack', true);
@@ -179,7 +179,7 @@ export class Player
     }
 
     movePlayerRight(dt){
-        var newPosX = this.screen.x + this.horizontalSpeed * dt;
+        let newPosX = this.screen.x + this.horizontalSpeed * dt;
         if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
             this.playerBody.setFlipX(true); 
             this.playerBody.play('tack', true); 
@@ -218,46 +218,58 @@ export class Player
                 getEnd: () => 0.3
             },
         });
-        this.scene.time.addEvent({ delay: 250, callback: () => this.playerBody.enableBody() , callbackScope: this,});
+        this.scene.time.addEvent({ delay: 250, callback: () => this.playerBody.enableBody() , callbackScope: this});
     }
 
-    playerPowerUp(){
+    playerPowerUpCollision(){
         this.shielded = true;
         console.log('shielded');
     }
 
-    playerDelivery(){
-        console.log('green');
+    checkDeliveryZone(){
+        let segment = this.scene.circuit.currentDelivery.lastSegment;
+
+        if (segment > 0) {
+            let yPos = this.scene.circuit.segments[segment].point.screen.y;
+            if (yPos >= 920) return 'lost';
+            else if (yPos >= 710) return 'orange2';
+            else if (yPos >= 645) return 'green';
+            else if (yPos >= 620) return 'orange';
+        }
     }
 
     checkDelivery(){
-        var delivery = this.scene.circuit.currentDelivery
-        if (delivery.zone != "lost") 
+        let delivery = this.scene.circuit.currentDelivery
+        if (delivery.zone == "undone") 
         {
-            var rightConditional = this.screen.x >= this.scene.data.get('screen') - this.limitBound - this.screen.w/4
-            var leftConditional = this.screen.x <= this.limitBound + this.screen.w/4
-            var inPos = delivery.alignment > 0 ?  rightConditional : leftConditional
+            let rightConditional = this.screen.x >= this.scene.data.get('screen') - this.limitBound - this.screen.w/4
+            let leftConditional = this.screen.x <= this.limitBound + this.screen.w/4
+            let inPos = delivery.alignment > 0 ?  rightConditional : leftConditional
 
             if (inPos)
             {
-                if (delivery.zone == "green"){
+                let zone = this.checkDeliveryZone();
+                if (zone == 'green'){
                     this.playDeliveryAnimation(delivery.alignment);
                     this.score += 30;
                     this.havePackage = !this.havePackage;
+                    delivery.zone = 'done';
                 }
-                else if (delivery.zone == "orange"){
+                else if (zone == 'orange'){
                     this.playDeliveryAnimation(delivery.alignment);
                     this.score += 20;
                     this.havePackage = !this.havePackage;
+                    delivery.zone = 'done';
                 }
-                else if (delivery.zone == "orange2"){
+                else if (zone == 'orange2'){
                     this.playDeliveryAnimation(delivery.alignment);
                     this.score += 10;
                     this.havePackage = !this.havePackage;
+                    delivery.zone = 'done';
                 }
-
-                if (delivery.zone != "undone") delivery.zone = "done";
-
+                else if (zone == 'lost'){
+                    delivery.zone = 'lost';
+                }
                 this.deliveryText.setVisible(this.havePackage);
             }
         }

@@ -40,7 +40,7 @@ export class Circuit
         // exponential fog density
         this.fogDensity = 20;
 
-        this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0};
+        this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0, nextPos:0};
 
         this.buildings = [
             {name: 'casa1.png', offset1: 2.65, offset2: -1.65}, 
@@ -165,12 +165,12 @@ export class Circuit
     }
 
     generateRandomDelivery(limit){
-        if (this.currentDelivery.lastSegment != 0) {
-            var offset = this.currentDelivery.lastSegment % 2 == 0 ? 2 : -2;
-            this.addSegmentDelivery(this.currentDelivery.lastSegment, 'sjj', offset)
+        if (this.currentDelivery.nextPos != 0) {
+            let offset = this.currentDelivery.nextPos % 2 == 0 ? 2 : -2;
+            this.addSegmentDelivery(this.currentDelivery.nextPos, 'sjj', offset)
         }
 
-        this.currentDelivery.lastSegment = Phaser.Math.Between(limit + 50, this.total_segments - 10);
+        this.currentDelivery.nextPos = Phaser.Math.Between(limit + 50, this.total_segments - 10);
     }
 
     addSegmentDelivery(n, spriteKey, offset){
@@ -180,10 +180,6 @@ export class Circuit
         this.currentDelivery.alignment = offset;
         this.currentDelivery.zone = "undone";
         this.currentDelivery.lastSegment = n+4;
-
-        //this.generateRandomPower(n - 4, offset > 0 ? offset : offset + 2);
-        //this.generateRandomPower(n, offset > 0 ? offset : offset + 2);
-        //this.generateRandomPower(n + 2, offset > 0 ? offset : offset + 2);
 
         for (var i = n-4; i <= n+4; i++){
             if (i < n-1)
@@ -263,7 +259,7 @@ export class Circuit
             obstacle = new Car(this.scene);
             obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset]);
         }
-        var obstacleCollider = this.scene.physics.add.overlap(obstacle.sprite, this.scene.player.playerBody, () => 
+        this.scene.physics.add.overlap(obstacle.sprite, this.scene.player.playerBody, () => 
             { this.scene.player.playerCollision(); obstacle.collisionAnim(); });
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle"});
     }
@@ -276,29 +272,29 @@ export class Circuit
     addSegmentPower(n, spriteKey, offset){
         var power = new PowerUp(this.scene);
         power.create(spriteKey, offset);
-        var powerCollider = this.scene.physics.add.overlap(power.sprite, this.scene.player.playerBody, () => { this.scene.player.playerPowerUp(); power.disable(); });
+        this.scene.physics.add.overlap(power.sprite, this.scene.player.playerBody, () => { this.scene.player.playerPowerUpCollision(); power.disable(); });
         this.segments[n].sprites.push({ object: power, type: "power"});
     }
 
     getSegment(positionZ){
         if (positionZ<0) positionZ += this.roadLength;
-        var index = Math.floor(positionZ / this.segmentLength) % this.total_segments;
+        let index = Math.floor(positionZ / this.segmentLength) % this.total_segments;
         return this.segments[index];
     }
 
     project3D(point, cameraX, cameraY, cameraZ, cameraDepth){
         // translating world coordinates to camera coordinates
-        var transX = point.world.x - cameraX;
-        var transY = point.world.y - cameraY;
-        var transZ = point.world.z - cameraZ;
+        let transX = point.world.x - cameraX;
+        let transY = point.world.y - cameraY;
+        let transZ = point.world.z - cameraZ;
         
         // scaling factor
         point.scale = cameraDepth/transZ;
         
         // projecting camera coordinates onto a normalized projection plane
-        var projectedX = point.scale * transX;
-        var projectedY = point.scale * transY;
-        var projectedW = point.scale * this.roadWidth;
+        let projectedX = point.scale * transX;
+        let projectedY = point.scale * transY;
+        let projectedW = point.scale * this.roadWidth;
 
         // scaling projected coordinates to the screen coordinates
         point.screen.x = Math.round((1 + projectedX) * this.scene.data.get('screen_c'));
@@ -358,8 +354,7 @@ export class Circuit
                 clipBottomLine = currBottomLine;
             }
 
-            // draw player
-            
+            // draw player       
             var player = this.scene.player;
             player.playerBody.setPosition(player.screen.x, player.screen.y);
             player.playerBody.setVisible(true);
@@ -413,21 +408,21 @@ export class Circuit
         this.drawPolygon(x1-w1, y1, x1+w1, y1, x2+w2, y2, x2-w2, y2, color.road);
 
         // draw sidewalk strips
-        var sidewalk_w1 = w1/1.2;
-        var sidewalk_w2 = w2/1.2;
+        let sidewalk_w1 = w1/1.2;
+        let sidewalk_w2 = w2/1.2;
         // left
         this.drawPolygon(x1-w1-sidewalk_w1, y1, x1-w1, y1, x2-w2, y2, x2-w2-sidewalk_w2, y2, color.sidewalk);
         // right
         this.drawPolygon(x1+w1+sidewalk_w1, y1, x1+w1, y1, x2+w2, y2, x2+w2+sidewalk_w2, y2, color.sidewalk);
 
         // draw rumble strips
-        var rumble_w1 = w1 / 10;
-        var rumble_w2 = w2 / 10;
+        let rumble_w1 = w1 / 10;
+        let rumble_w2 = w2 / 10;
         // left
-        var newX1 = x1-w1-rumble_w1-rumble_w1/4;
-        var newX2 = x1-w1-rumble_w1/4;
-        var newX3 = x2-w2-rumble_w2/4;
-        var newX4 = x2-w2-rumble_w2-rumble_w2/4;
+        let newX1 = x1-w1-rumble_w1-rumble_w1/4;
+        let newX2 = x1-w1-rumble_w1/4;
+        let newX3 = x2-w2-rumble_w2/4;
+        let newX4 = x2-w2-rumble_w2-rumble_w2/4;
         this.drawPolygon(newX1, y1, newX2, y1, newX3, y2, newX4, y2, color.rumble);
         // right
         newX1 = x1+w1+rumble_w1+rumble_w1/4;
@@ -465,18 +460,6 @@ export class Circuit
 
         //drawing delivery zone
         if (delivery[0]){
-            var playerScreenPosY = this.scene.player.screen.y + this.scene.player.screen.h/2;
-
-            if (this.currentDelivery.zone != "done") {
-                if (playerScreenPosY >= y2 &&  playerScreenPosY <= y1){     
-                    if (delivery[1] == '0x429352') this.currentDelivery.zone = "green";
-                    else if (delivery[1] == '0xF6B26B') this.currentDelivery.zone = "orange";
-                    else if (delivery[1] == '0xF8C189') this.currentDelivery.zone = "orange2";
-                    
-                    if (segmentIndex >= this.currentDelivery.lastSegment) { if (y1 > playerScreenPosY) this.currentDelivery.zone = "lost";}
-                }
-            }
-       
             if (this.currentDelivery.alignment > 0)
                 this.drawPolygon(x1+w1/1.5, y1, x1+w1, y1, x2+w2, y2, x2+w2/1.5, y2, delivery[1]);
             else 
