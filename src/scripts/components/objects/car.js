@@ -6,8 +6,10 @@ export class Car extends Sprite
         super(scene);
     }
 
-    create(spriteSheet, offset){
+    create(spriteSheet, offset, position){
         super.create(spriteSheet, offset);
+        this.position = position;
+        this.drawable = true;
 
         if (offset != 0) {
             this.sprite = this.scene.physics.add.sprite(0, 0, spriteSheet, spriteSheet + '_00.png');
@@ -24,14 +26,16 @@ export class Car extends Sprite
         this.sprite.body.pushable = false;
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
+
+        this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
     }
 
     draw(destW, destH, destX, destY, spriteScale){
-        super.draw(destW, destH, destX, destY);
+        if (this.drawable) {
+            super.draw(destW, destH, destX, destY);
 
-        this.sprite.setDepth(spriteScale * 20000);
+            this.sprite.setDepth(spriteScale * 20000);
 
-        if (spriteScale * 20000 <= 5) {
             var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
             var spriteName = this.spriteSheet + '_0' + number + '.png'; 
             if (this.offset != 0) this.sprite.setTexture(this.spriteSheet, spriteName);
@@ -41,18 +45,24 @@ export class Car extends Sprite
 
             this.sprite.flipX = (this.offset > 0);
             this.sprite.setVisible(true);
-        } else {
-            this.disable();
-        }    
+        }
     }
 
     disable(){
         super.disable();
         this.sprite.disableBody(false, false);
+        this.checkEvent.destroy();
+        this.drawable = false;
     }
 
     collisionAnim(){
         this.scene.anims.pauseAll();
         console.log(this.spriteSheet);
+    }
+
+    checkPosition(){
+        if(this.position - 3 < this.scene.circuit.baseIndex && this.scene.circuit.baseIndex - 3 < this.position + 20){
+            this.disable();
+        }
     }
 }

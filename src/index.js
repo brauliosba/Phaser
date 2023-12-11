@@ -31,7 +31,7 @@ var config = {
         }
     },
 
-    fps: { forceSetTimeOut: true, target: 60 }
+    fps: { forceSetTimeOut: true, target: 120 }
 }
 
 // gama instance

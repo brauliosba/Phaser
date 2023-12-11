@@ -253,11 +253,11 @@ export class Circuit
         var type = Phaser.Math.Between(0, 2);
         if (type != 0) { 
             obstacle = new Obstacle(this.scene);
-            obstacle.create(spriteKey+type, type, this.obstaclesOffsets[type][offset]);
+            obstacle.create(spriteKey+type, type, this.obstaclesOffsets[type][offset], n);
         }
         else {
             obstacle = new Car(this.scene);
-            obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset]);
+            obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset], n);
         }
         this.scene.physics.add.overlap(obstacle.sprite, this.scene.player.playerBody, () => 
             { this.scene.player.playerCollision(); obstacle.collisionAnim(); });
@@ -313,20 +313,20 @@ export class Circuit
 
         // get the base segment
         var baseSegment = this.getSegment(camera.z);
-        var baseIndex = baseSegment.index;
+        this.baseIndex = baseSegment.index;
 
         //this.plane.uvScroll(0, 0.04);
 
         for (var i=0; i<this.visible_segments; i++){
             // get the current segment
-            var currIndex = (baseIndex + i) % this.total_segments;
+            var currIndex = (this.baseIndex + i) % this.total_segments;
             var currSegment = this.segments[currIndex];
 
             currSegment.fog = this.exponentialFog(i / this.visible_segments, this.fogDensity);
             currSegment.clip = clipBottomLine;
 
             // get the camera offset-Z to loop back the road
-            var offsetZ = (currIndex < baseIndex) ? this.roadLength : 0;
+            var offsetZ = (currIndex < this.baseIndex) ? this.roadLength : 0;
 
             // project the segment to the screen space
             this.project3D(currSegment.point, camera.x, camera.y, camera.z-offsetZ, camera.distToPlane);
@@ -366,7 +366,7 @@ export class Circuit
 
         for (var i=this.visible_segments - 20; i>0; i--){
             // get the current segment
-            var currIndex = (baseIndex + i) % this.total_segments;
+            var currIndex = (this.baseIndex + i) % this.total_segments;
             var currSegment = this.segments[currIndex];
 
             // render roadside sprites
@@ -383,17 +383,13 @@ export class Circuit
                 var destY = spriteY + (destH * (-1 || 0));
 
                 var clipH = currSegment.clip ? Math.max(0, destY+destH-currSegment.clip) : 0;
-                if (clipH < destH) {
+                if (clipH < destH && (currIndex >= this.baseIndex || this.baseIndex >= currIndex + 10)) {
                     if (sprite.type == "obstacle" || sprite.type == "power"){
-                        if (destY >= -200) sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
-                        else sprite.object.disable();
+                        sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
                     }
                     else {
                         sprite.object.draw(destW, destH, destX, destY, spriteScale);
                     }
-                } 
-                else {
-                    sprite.object.disable();
                 }
             }
         }
