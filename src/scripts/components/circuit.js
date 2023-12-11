@@ -263,7 +263,7 @@ export class Circuit
             obstacle = new Car(this.scene);
             obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset]);
         }
-        var obstacleCollider = this.scene.physics.add.collider(obstacle.sprite, this.scene.player.playerBody, () => 
+        var obstacleCollider = this.scene.physics.add.overlap(obstacle.sprite, this.scene.player.playerBody, () => 
             { this.scene.player.playerCollision(); obstacle.collisionAnim(); });
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle"});
     }
@@ -276,7 +276,7 @@ export class Circuit
     addSegmentPower(n, spriteKey, offset){
         var power = new PowerUp(this.scene);
         power.create(spriteKey, offset);
-        var powerCollider = this.scene.physics.add.collider(power.sprite, this.scene.player.playerBody, () => { this.scene.player.playerPowerUp(); power.disable(); });
+        var powerCollider = this.scene.physics.add.overlap(power.sprite, this.scene.player.playerBody, () => { this.scene.player.playerPowerUp(); power.disable(); });
         this.segments[n].sprites.push({ object: power, type: "power"});
     }
 
