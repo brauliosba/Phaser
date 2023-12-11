@@ -29,6 +29,7 @@ export class Player
         this.playerState = 'idle';
         this.score = 0;
         this.shielded = false;
+        this.invulnerabilityTime = this.scene.data.get('invulnerability');
     }
 
     init(){
@@ -210,7 +211,7 @@ export class Player
         this.scene.tweens.add({
             targets: this.playerBody,
             ease: 'sine.inout',
-            duration: 250,
+            duration: this.invulnerabilityTime,
             yoyo: true,
             repeat: 1,
             alpha: {
@@ -218,7 +219,7 @@ export class Player
                 getEnd: () => 0.3
             },
         });
-        this.scene.time.addEvent({ delay: 250, callback: () => this.playerBody.enableBody() , callbackScope: this});
+        this.scene.time.addEvent({ delay: this.invulnerabilityTime, callback: () => this.playerBody.enableBody() , callbackScope: this});
     }
 
     playerPowerUpCollision(){

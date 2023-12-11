@@ -39,6 +39,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('waveDelay', 60);
         this.data.set('scoringTime', 1000);
         this.data.set('powerDelay', 20);
+        this.data.set('invulnerability', 250);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
@@ -69,16 +70,16 @@ export class MenuScene extends Phaser.Scene
         this.exposedVariables();
     }
 
-    exposedVariables(){
-        var label = this.add.text(170, 300, "Velocidad Inicial:", {
+    addVariable(y, label, key){
+        var label = this.add.text(200, y, label, {
             color: 'yellow',
             fontSize: '24px',
-            fixedWidth: 340,
+            fixedWidth: 400,
             fixedHeight: 50,
             backgroundColor: '#333333',
         }).setOrigin(0.5)
 
-        var printText = this.add.text(450, 300, this.data.get('initialSpeed'), {
+        var printText = this.add.text(480, y, this.data.get(key), {
             color: 'yellow',
             fontSize: '24px',
             fixedWidth: 150,
@@ -88,119 +89,19 @@ export class MenuScene extends Phaser.Scene
 
         this.plugins.get('rextexteditplugin').add(printText, {
             type: 'text',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('initialSpeed', text); },
+            onTextChanged: (textObject, text) => { textObject.text = text; this.setData(key, text); },
             selectAll: true,
         });
-        
-        var label2 = this.add.text(170, 360, "Velocidad Lateral:", {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 340,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
+    }
 
-        var printText2 = this.add.text(450, 360, this.data.get('horizontalSpeed'), {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 150,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        this.plugins.get('rextexteditplugin').add(printText2, {
-            type: 'text',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('horizontalSpeed', text); },
-            selectAll: true,
-        });
-
-        var label3 = this.add.text(170, 420, "Aceleración:", {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 340,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        var printText3 = this.add.text(450, 420, this.data.get('acceleration'), {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 150,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        this.plugins.get('rextexteditplugin').add(printText3, {
-            type: 'text',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('acceleration', text); },
-            selectAll: true,
-        });
-
-        var label4 = this.add.text(170, 480, "Espacio entre oleadas:", {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 340,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        var printText4 = this.add.text(450, 480, this.data.get('waveDelay'), {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 150,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        this.plugins.get('rextexteditplugin').add(printText4, {
-            type: 'text',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('waveDelay', text); },
-            selectAll: true,
-        });
-
-        var label5 = this.add.text(170, 540, "Tiempo de puntuación:", {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 340,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        var printText5 = this.add.text(450, 540, this.data.get('scoringTime'), {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 150,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        this.plugins.get('rextexteditplugin').add(printText5, {
-            type: 'text',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('scoringTime', text); },
-            selectAll: true,
-        });
-
-        var label6 = this.add.text(170, 600, "Espacio entre power up:", {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 340,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        var printText6 = this.add.text(450, 600, this.data.get('powerDelay'), {
-            color: 'yellow',
-            fontSize: '24px',
-            fixedWidth: 150,
-            fixedHeight: 50,
-            backgroundColor: '#333333',
-        }).setOrigin(0.5)
-
-        this.plugins.get('rextexteditplugin').add(printText6, {
-            type: 'text',
-            onTextChanged: (textObject, text) => { textObject.text = text; this.setData('powerDelay', text); },
-            selectAll: true,
-        });
+    exposedVariables(){
+        this.addVariable(300, "Velocidad Inicial:", 'initialSpeed');
+        this.addVariable(360, "Velocidad Lateral:", 'horizontalSpeed');
+        this.addVariable(420, "Aceleración:", 'acceleration');
+        this.addVariable(480, "Espacio entre oleadas:", 'waveDelay');
+        this.addVariable(540, "Tiempo puntuación en ms:", 'scoringTime');
+        this.addVariable(600, "Oleadas entre power up:", 'powerDelay');
+        this.addVariable(660, "Tiempo de invulnerabilidad:", 'invulnerability');
     }
 
     setData(key, speed){
