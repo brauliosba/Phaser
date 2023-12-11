@@ -315,8 +315,6 @@ export class Circuit
         var baseSegment = this.getSegment(camera.z);
         this.baseIndex = baseSegment.index;
 
-        //this.plane.uvScroll(0, 0.04);
-
         for (var i=0; i<this.visible_segments; i++){
             // get the current segment
             var currIndex = (this.baseIndex + i) % this.total_segments;
