@@ -10,6 +10,8 @@ export class Obstacle extends Sprite
         super.create(spriteSheet, offset);
         this.type = type;
         this.sprite = this.scene.physics.add.sprite(0, 0, 'staticObstacles', spriteSheet + '.png');
+        this.sprite.body.moves = false;
+        this.sprite.body.pushable = false;
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
     }
@@ -36,8 +38,8 @@ export class Obstacle extends Sprite
 
     collisionAnim()
     {
+        console.log(this.spriteSheet);
         this.sprite.play(this.spriteSheet + 'Break');
         this.sprite.on('animationcomplete', () => { this.sprite.setVisible(false); this.scene.anims.pauseAll() });
-        console.log(this.spriteSheet);
     }
 }

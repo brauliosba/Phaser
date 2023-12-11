@@ -1,8 +1,8 @@
-import {Obstacle} from './obstacle.js';
-import {Car} from './car.js';
-import {Building} from './building.js';
-import {Delivery} from './delivery.js';
-import {PowerUp} from './powerUp.js';
+import {Obstacle} from './objects/obstacle.js';
+import {Car} from './objects/car.js';
+import {Building} from './objects/building.js';
+import {Delivery} from './objects/delivery.js';
+import {PowerUp} from './objects/powerUp.js';
 
 export class Circuit
 {

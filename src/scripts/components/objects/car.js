@@ -20,6 +20,8 @@ export class Car extends Sprite
         }
 
         this.sprite.body.setCircle(300);
+        this.sprite.body.moves = false;
+        this.sprite.body.pushable = false;
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
     }
@@ -50,6 +52,7 @@ export class Car extends Sprite
     }
 
     collisionAnim(){
-        
+        this.scene.anims.pauseAll();
+        console.log(this.spriteSheet);
     }
 }

@@ -58,12 +58,12 @@ export class Player
         this.screen.x = this.scene.data.get('screen_c');
         this.screen.y = this.scene.data.get('screen') - this.screen.h/5 - 50;
 
-        this.playerBody.setDepth(3.2);
+        this.playerBody.setDepth(4);
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBody.body.setSize(150,150,true);
         this.playerBody.setVisible(false);
 
-        this.playerBox.setDepth(3.2);
+        this.playerBox.setDepth(4);
         this.playerBox.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBox.setVisible(false);
 
