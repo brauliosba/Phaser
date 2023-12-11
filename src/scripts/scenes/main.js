@@ -68,11 +68,6 @@ export class MainScene extends Phaser.Scene
         pauseButton.setDepth(9)
         pauseButton.setDisplaySize(50, 50);
 
-        // inputs
-        this.keyDelivery = this.input.keyboard.addKey('SPACE');
-        this.keyPause = this.input.keyboard.addKey('ESC');
-        this.keyRestart = this.input.keyboard.addKey('R');
-
         this.createAnimations();
         
         this.isPaused = false;
@@ -85,6 +80,14 @@ export class MainScene extends Phaser.Scene
         this.player = new Player(this);
         this.scoreboard = new Scoreboard(this);
         this.panel = new Panel(this);
+
+        // inputs
+        this.keyDelivery = this.input.keyboard.addKey('SPACE');
+        this.keyDelivery.on('down', () => { this.player.checkDelivery();})
+        this.keyPause = this.input.keyboard.addKey('ESC');
+        this.keyPause.on('down', () => { this.pauseGame();})
+        this.keyRestart = this.input.keyboard.addKey('R');
+        this.keyRestart.on('down', () => { this.scene.start('MainScene', this.data);})
     }
 
     update(time, deltaTime){
@@ -123,16 +126,6 @@ export class MainScene extends Phaser.Scene
                     this.isPaused = true;
                     break;
             }
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this.keyDelivery)){
-            this.player.checkDelivery();
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.keyPause) && !this.startAnim){
-            this.pauseGame();
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.keyRestart)){
-            this.scene.start('MainScene', this.data);
         }
     }
 
