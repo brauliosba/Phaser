@@ -5,9 +5,10 @@ export class Sprite
         this.scene = scene;
     }
 
-    create(spriteSheet, offset){
+    create(spriteSheet, offset, position){
         this.spriteSheet = spriteSheet;
-        this.offset = offset;     
+        this.offset = offset;
+        this.position = position;
     }
 
     draw(destW, destH, destX, destY){

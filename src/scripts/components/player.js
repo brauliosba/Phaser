@@ -268,6 +268,7 @@ export class Player
         this.playDeliverAnimation();
         let points = 10 * this.packageCounter * this.packageCounter;
         this.score += points;
+        this.packageCounter = 0;
     }
 
     playDeliverAnimation(alignment){

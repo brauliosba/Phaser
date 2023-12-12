@@ -7,8 +7,7 @@ export class Obstacle extends Sprite
     }
 
     create(spriteSheet, type, offset, position){
-        super.create(spriteSheet, offset);
-        this.position = position;
+        super.create(spriteSheet, offset, position);
         this.type = type;
         this.drawable = true;
 

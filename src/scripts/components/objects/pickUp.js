@@ -6,11 +6,13 @@ export class PickUp extends Sprite
         super(scene);
     }
 
-    create(spriteSheet, offset){
-        super.create(spriteSheet, offset);
+    create(spriteSheet, offset, type, position){
+        super.create(spriteSheet, offset, position);
         this.sprite = this.scene.physics.add.sprite(0, 0, spriteSheet);
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
+
+        if (type == 'power') this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
     }
 
     draw(destW, destH, destX, destY, spriteScale){
@@ -24,11 +26,19 @@ export class PickUp extends Sprite
             this.sprite.setVisible(true);
         } else {
             this.disable();
-        }    
+        }
     }
 
     disable(){
         super.disable();
         this.sprite.disableBody(false, false);
+        if (this.type == 'power') this.checkEvent.destroy();
+    }
+
+    checkPosition(){
+        if(this.position - 10 < this.scene.circuit.baseIndex && this.scene.circuit.baseIndex < this.position + 5){
+            this.scene.circuit.powerEvent.paused = false;
+            this.checkEvent.destroy();
+        }
     }
 }

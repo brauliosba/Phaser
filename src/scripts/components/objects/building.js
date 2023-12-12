@@ -6,8 +6,8 @@ export class Building extends Sprite
         super(scene);
     }
 
-    create(spriteSheet, offset){
-        super.create(spriteSheet, offset);
+    create(spriteSheet, offset, position){
+        super.create(spriteSheet, offset, position);
         this.sprite = this.scene.add.sprite(0, 0, 'buildings', spriteSheet);
         this.sprite.setVisible(false);
     }

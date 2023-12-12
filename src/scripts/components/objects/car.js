@@ -7,8 +7,7 @@ export class Car extends Sprite
     }
 
     create(spriteSheet, offset, position){
-        super.create(spriteSheet, offset);
-        this.position = position;
+        super.create(spriteSheet, offset, position);
         this.drawable = true;
 
         if (offset != 0) {

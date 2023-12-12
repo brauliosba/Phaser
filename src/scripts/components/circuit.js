@@ -54,6 +54,9 @@ export class Circuit
         this.powerDelay = this.scene.data.get('powerDelay');
         this.powersOffsets = [-0.7, 0, 0.7];
         this.createPower = false;
+
+        this.deliverDelay = this.scene.data.get('deliverDelay');
+        this.createDeliver = false;
     }
 
     create(){
@@ -78,7 +81,9 @@ export class Circuit
         }
         */
 
-        this.powerEvent = this.scene.time.addEvent({ delay: this.powerDelay, callback: () => this.createPower = true, callbackScope: this, loop: true });
+        //this.powerEvent = this.scene.time.addEvent({ delay: this.powerDelay, callback: () => 
+        //    { this.powerEvent.paused = true; this.createPower = true; }, callbackScope: this, loop: true });
+        //this.deliverEvent = this.scene.time.addEvent({ delay: this.deliverDelay, callback: () => this.createDeliver = true, callbackScope: this, loop: true });
 
         /*
         this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2 + 200, 'menuBG');
@@ -163,7 +168,7 @@ export class Circuit
     addSegmentSprite(n, spriteKey, offset){
         //let sprite = this.scene.add.sprite(0, 0, 'buildings', spriteKey);
         let building = new Building(this.scene);
-        building.create(spriteKey, offset);
+        building.create(spriteKey, offset, n);
         this.segments[n].sprites.push({ object: building, type: "bg" });
         this.segments[n].delivery = false;
     }
@@ -179,7 +184,7 @@ export class Circuit
 
     addSegmentDelivery(n, spriteKey, offset){
         let delivery = new Delivery(this.scene);
-        delivery.create(spriteKey, offset);
+        delivery.create(spriteKey, offset, n);
         this.segments[n].sprites.push({ object: delivery, type: "delivery" });
         this.currentDelivery.alignment = offset;
         this.currentDelivery.zone = "undone";
@@ -279,7 +284,7 @@ export class Circuit
 
     addSegmentPickUp(n, spriteKey, offset, type){
         var pickUp = new PickUp(this.scene);
-        pickUp.create(spriteKey, offset);
+        pickUp.create(spriteKey, offset, type, n);
         if (type == 'power')
             this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => { pickUp.disable(); this.scene.player.playerPowerUpCollision(); });
         else
