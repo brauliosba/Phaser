@@ -82,8 +82,8 @@ export class MainScene extends Phaser.Scene
         this.panel = new Panel(this);
 
         // inputs
-        this.keyDelivery = this.input.keyboard.addKey('SPACE');
-        this.keyDelivery.on('down', () => { this.player.checkDelivery();})
+        //this.keyDelivery = this.input.keyboard.addKey('SPACE');
+        //this.keyDelivery.on('down', () => { this.player.checkDelivery();})
         this.keyPause = this.input.keyboard.addKey('ESC');
         this.keyPause.on('down', () => { this.pauseGame();})
         this.keyRestart = this.input.keyboard.addKey('R');

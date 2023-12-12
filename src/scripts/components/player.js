@@ -170,7 +170,7 @@ export class Player
 
         //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
 
-        this.checkDeliveryZone();
+        this.checkDelivery();
     }
 
     movePlayerLeft(dt){
@@ -238,9 +238,8 @@ export class Player
         this.packageText.setText('x' + this.packageCounter);
     }
 
-    checkDeliveryZone(){
+    checkDeliveryZone(delivery){
         let segment = this.scene.circuit.currentDelivery.lastSegment;
-        let delivery = this.scene.circuit.currentDelivery;
 
         if (segment > 0) {
             let yPos = this.scene.circuit.segments[segment].point.screen.y;
@@ -250,16 +249,20 @@ export class Player
     }
 
     checkDelivery(){
-        let delivery = this.scene.circuit.currentDelivery
-        if (delivery.zone == "green") 
-        {
-            let rightConditional = this.screen.x >= this.scene.data.get('screen') - this.limitBound - this.screen.w/4
-            let leftConditional = this.screen.x <= this.limitBound + this.screen.w/4
-            let inPos = delivery.alignment > 0 ?  rightConditional : leftConditional
-
-            if (inPos)
+        let delivery = this.scene.circuit.currentDelivery;
+        if (delivery.zone != 'done'){
+            this.checkDeliveryZone(delivery)
+            if (delivery.zone == "green") 
             {
-                this.deliverPackages(delivery.alignment)
+                let rightConditional = this.screen.x >= this.scene.data.get('screen') - this.limitBound - this.screen.w/6
+                let leftConditional = this.screen.x <= this.limitBound + this.screen.w/6
+                let inPos = delivery.alignment > 0 ?  rightConditional : leftConditional
+
+                if (inPos)
+                {
+                    delivery.zone == "done";
+                    this.deliverPackages(delivery.alignment);
+                }
             }
         }
     }
@@ -269,6 +272,7 @@ export class Player
         let points = 10 * this.packageCounter * this.packageCounter;
         this.score += points;
         this.packageCounter = 0;
+        this.packageText.setText('x' + this.packageCounter);
     }
 
     playDeliverAnimation(alignment){

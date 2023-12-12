@@ -40,7 +40,7 @@ export class Circuit
         // exponential fog density
         this.fogDensity = 20;
 
-        this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0, nextPos:0};
+        this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0};
 
         this.buildings = [
             {name: 'casa1.png', offset1: 2.65, offset2: -1.65}, 
@@ -81,9 +81,10 @@ export class Circuit
         }
         */
 
-        //this.powerEvent = this.scene.time.addEvent({ delay: this.powerDelay, callback: () => 
-        //    { this.powerEvent.paused = true; this.createPower = true; }, callbackScope: this, loop: true });
-        //this.deliverEvent = this.scene.time.addEvent({ delay: this.deliverDelay, callback: () => this.createDeliver = true, callbackScope: this, loop: true });
+        this.powerEvent = this.scene.time.addEvent({ delay: this.powerDelay, callback: () => 
+            { this.powerEvent.paused = true; this.createPower = true; }, callbackScope: this, loop: true });
+        this.deliverEvent = this.scene.time.addEvent({ delay: this.deliverDelay, callback: () => 
+            { this.deliverEvent.paused = true; this.createDeliver = true; }, callbackScope: this, loop: true });
 
         /*
         this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2 + 200, 'menuBG');
@@ -148,7 +149,7 @@ export class Circuit
             this.segments[i].delivery = [false, '0x429352'];
         }
 
-        if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
+        //if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
         this.generateRandomBuildings(start, limit);
         this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
     }
@@ -173,13 +174,10 @@ export class Circuit
         this.segments[n].delivery = false;
     }
 
-    generateRandomDelivery(limit){
-        if (this.currentDelivery.nextPos != 0) {
-            let offset = this.currentDelivery.nextPos % 2 == 0 ? 2 : -2;
-            this.addSegmentDelivery(this.currentDelivery.nextPos, 'sjj', offset)
-        }
-
-        this.currentDelivery.nextPos = Phaser.Math.Between(limit + 50, this.total_segments - 10);
+    generateRandomDelivery(position){
+        let random =  Phaser.Math.Between(0, 1)
+        let offset = random == 0 ? -2 : 2;
+        this.addSegmentDelivery(position, 'sjj', offset)
     }
 
     addSegmentDelivery(n, spriteKey, offset){
@@ -249,7 +247,12 @@ export class Circuit
                     break;
                 default:
                     break;
-            }    
+            }
+
+            if (this.createDeliver){
+                this.createDeliver = false;
+                this.generateRandomDelivery(position + 15 >= this.total_segments ? position - 15 : position + 15)
+            }
         }
     }
 
@@ -509,5 +512,6 @@ export class Circuit
 
     pause(isPaused){
         this.powerEvent.paused = isPaused;
+        this.deliverEvent.paused = isPaused;
     }
 }

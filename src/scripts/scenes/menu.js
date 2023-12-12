@@ -40,6 +40,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('scoringTime', 100);
         this.data.set('powerDelay', 20000);
         this.data.set('invulnerability', 250);
+        this.data.set('deliverDelay', 10000);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
         this.sprBack.setDisplaySize(dim, dim);
@@ -100,8 +101,9 @@ export class MenuScene extends Phaser.Scene
         this.addVariable(420, "Aceleración:", 'acceleration');
         this.addVariable(480, "Espacio entre oleadas:", 'waveDelay');
         this.addVariable(540, "Tiempo puntuación en ms:", 'scoringTime');
-        this.addVariable(600, "Tiempo power up en ms:", 'powerDelay');
-        this.addVariable(660, "Tiempo de invulnerabilidad:", 'invulnerability');
+        this.addVariable(600, "Tiempo cliente en ms:", 'deliverDelay');
+        this.addVariable(660, "Tiempo power up en ms:", 'powerDelay');
+        this.addVariable(720, "Tiempo de invulnerabilidad:", 'invulnerability');
     }
 
     setData(key, speed){
