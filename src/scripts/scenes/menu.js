@@ -37,7 +37,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('horizontalSpeed', 1800);
         this.data.set('acceleration', 28);
         this.data.set('waveDelay', 60);
-        this.data.set('scoringTime', 1000);
+        this.data.set('scoringTime', 100);
         this.data.set('powerDelay', 20000);
         this.data.set('invulnerability', 250);
 
