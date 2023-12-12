@@ -102,8 +102,11 @@ export class Player
             */
         }
 
-        this.deliveryText = this.scene.add.text(100, 50, 'Tienes un paquete', { font: '600 50px Montserrat' });
-        this.deliveryText.setVisible(false);
+        this.packageImage = this.scene.add.image(80, 80, 'deliveryButton');
+        this.packageImage.setDisplaySize(80,80);
+        this.packageImage.setDepth(5);
+        this.packageText = this.scene.add.text(150, 50, 'x0', { font: '600 50px Montserrat' });
+        this.packageText.setDepth(5);
 
         this.speedText = this.scene.add.text(50, 200, 'Velocidad actual: ' + this.speed, { fontSize : 30, color: '0x000000' });
         this.speedText.setDepth(5);
@@ -125,6 +128,7 @@ export class Player
         let scoringTime = this.scene.data.get('scoringTime');
         this.playerBody.play('run', true);
         this.playerState = 'run';
+        this.packageCounter = 0;
 
         //Each 1000 ms call onEvent
         this.scoreEvent = this.scene.time.addEvent({ delay: scoringTime, callback: this.updateScore, callbackScope: this, loop: true });
@@ -225,6 +229,11 @@ export class Player
     playerPowerUpCollision(){
         this.shielded = true;
         console.log('shielded');
+    }
+
+    playerPackageCollision(){
+        this.packageCounter++;
+        this.packageText.setText('x' + this.packageCounter);
     }
 
     checkDeliveryZone(){

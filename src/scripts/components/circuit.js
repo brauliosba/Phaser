@@ -2,7 +2,7 @@ import {Obstacle} from './objects/obstacle.js';
 import {Car} from './objects/car.js';
 import {Building} from './objects/building.js';
 import {Delivery} from './objects/delivery.js';
-import {PowerUp} from './objects/powerUp.js';
+import {PickUp} from './objects/pickUp.js';
 
 export class Circuit
 {
@@ -52,8 +52,8 @@ export class Circuit
         this.waveDelay = this.scene.data.get('waveDelay');
 
         this.powerDelay = this.scene.data.get('powerDelay');
-        this.powerCounter = 0;
         this.powersOffsets = [-0.7, 0, 0.7];
+        this.createPower = false;
     }
 
     create(){
@@ -75,6 +75,8 @@ export class Circuit
             this.segments[this.segments.length-1-i].color.sidewalk = this.segments[i].color.road;
             this.segments[this.segments.length-1-i].color.rumble = this.segments[i].color.road;
         }
+
+        this.powerEvent = this.scene.time.addEvent({ delay: this.powerDelay, callback: () => this.createPower = true, callbackScope: this, loop: true });
 
         /*
         this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2 + 200, 'menuBG');
@@ -193,9 +195,9 @@ export class Circuit
 
     generateRandomObstacles(start, limit){
         for (var i = start; i < limit - 1; i+=this.waveDelay){
-            this.powerCounter++;
             var position = i;
             var waveType = Phaser.Math.Between(0, 1);
+            var createPackage = this.scene.player.packageCounter < 10 ? Phaser.Math.Between(0, 99) : 99;
             switch (waveType) {
                 case 0:
                     var lane = Phaser.Math.Between(0, 2);
@@ -209,12 +211,16 @@ export class Circuit
                     }
                     this.addSegmentObstacle(position, 'obstacle', lane);
 
-                    if (this.powerCounter>this.powerDelay){
+                    if (this.createPower || createPackage <= 34){
                         var myArray = [0,1,2];
                         let index = myArray.indexOf(lane);
                         myArray.splice(index, 1);
                         var powerOffset = Phaser.Math.RND.pick(myArray);
-                        this.generateRandomPower(position, powerOffset);
+                        if(this.createPower) { 
+                            this.createPower = false;
+                            this.generatePickUp(position, powerOffset, 'power');
+                        }
+                        if(createPackage <= 34) this.generatePickUp(position, powerOffset, 'package');
                     }
                     break;
                 case 1:
@@ -230,8 +236,13 @@ export class Circuit
                         if (j != lane) this.addSegmentObstacle(position, 'obstacle', j);
                     }
 
-                    if (this.powerCounter>this.powerDelay){
-                        this.generateRandomPower(position, lane);
+                    if (this.createPower>this.powerDelay){
+                        this.createPower = false;
+                        this.generatePickUp(position, lane, 'power');
+                    }
+
+                    if (createPackage <= 34) {
+                        this.generatePickUp(position, lane, 'package');
                     }
                     break;
                 default:
@@ -264,16 +275,19 @@ export class Circuit
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle"});
     }
 
-    generateRandomPower(position, offset){
+    generatePickUp(position, offset, type){
         this.powerCounter = 0;
-        this.addSegmentPower(position, 'deliveryButton', this.powersOffsets[offset]);
+        this.addSegmentPickUp(position, 'deliveryButton', this.powersOffsets[offset], type);
     }
 
-    addSegmentPower(n, spriteKey, offset){
-        var power = new PowerUp(this.scene);
-        power.create(spriteKey, offset);
-        this.scene.physics.add.overlap(power.sprite, this.scene.player.playerBody, () => { this.scene.player.playerPowerUpCollision(); power.disable(); });
-        this.segments[n].sprites.push({ object: power, type: "power"});
+    addSegmentPickUp(n, spriteKey, offset, type){
+        var pickUp = new PickUp(this.scene);
+        pickUp.create(spriteKey, offset);
+        if (type == 'power')
+            this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => { pickUp.disable(); this.scene.player.playerPowerUpCollision(); });
+        else
+            var overlap = this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => { overlap.active = false; pickUp.disable(); this.scene.player.playerPackageCollision(); });
+        this.segments[n].sprites.push({ object: pickUp, type: "pickUp"});
     }
 
     getSegment(positionZ){
@@ -382,7 +396,7 @@ export class Circuit
 
                 var clipH = currSegment.clip ? Math.max(0, destY+destH-currSegment.clip) : 0;
                 if (clipH < destH && (currIndex >= this.baseIndex || this.baseIndex >= currIndex + 10)) {
-                    if (sprite.type == "obstacle" || sprite.type == "power"){
+                    if (sprite.type == "obstacle" || sprite.type == "pickUp"){
                         sprite.object.draw(destW, destH, spriteX, spriteY, spriteScale);
                     }
                     else {
@@ -489,5 +503,9 @@ export class Circuit
 
     exponentialFog(distance, density){
         return 1 / (Math.pow(Math.E, (distance * distance * density)));
+    }
+
+    pause(isPaused){
+        this.powerEvent.paused = isPaused;
     }
 }

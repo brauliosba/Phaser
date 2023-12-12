@@ -257,6 +257,7 @@ export class MainScene extends Phaser.Scene
     pauseGame(){
         this.isPaused = !this.isPaused
         this.player.pause(this.isPaused);
+        this.circuit.pause(this.isPaused);
 
         if (this.isPaused){
             this.anims.pauseAll();

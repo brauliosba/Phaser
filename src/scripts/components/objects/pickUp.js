@@ -1,6 +1,6 @@
 import {Sprite} from './sprite.js';
 
-export class PowerUp extends Sprite
+export class PickUp extends Sprite
 {
     constructor(scene){
         super(scene);
