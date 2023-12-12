@@ -63,6 +63,7 @@ export class Circuit
         // create a road
         this.createRoad();
 
+        /*
         // colorize last segments in a finishing color
         for (var i=0; i<this.sidewalk_segments; i++){
             this.segments[this.segments.length-1-(i+this.sidewalk_segments)].color.grass =  this.segments[i].color.sidewalk;
@@ -75,6 +76,7 @@ export class Circuit
             this.segments[this.segments.length-1-i].color.sidewalk = this.segments[i].color.road;
             this.segments[this.segments.length-1-i].color.rumble = this.segments[i].color.road;
         }
+        */
 
         this.powerEvent = this.scene.time.addEvent({ delay: this.powerDelay, callback: () => this.createPower = true, callbackScope: this, loop: true });
 
@@ -142,7 +144,7 @@ export class Circuit
         }
 
         if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
-        this.generateRandomBuildings(start == 0 ? start + 10 : start, limit == 150 ?  limit - 5: limit);
+        this.generateRandomBuildings(start, limit);
         this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
     }
     
@@ -181,15 +183,10 @@ export class Circuit
         this.segments[n].sprites.push({ object: delivery, type: "delivery" });
         this.currentDelivery.alignment = offset;
         this.currentDelivery.zone = "undone";
-        this.currentDelivery.lastSegment = n+4;
+        this.currentDelivery.lastSegment = n+2;
 
-        for (var i = n-4; i <= n+4; i++){
-            if (i < n-1)
-                this.segments[i].delivery = [true,'0xF6B26B']
-            else if (i > n+1)
-                this.segments[i].delivery = [true,'0xF8C189'];
-            else
-                this.segments[i].delivery = [true,'0x429352'];
+        for (var i = n-2; i <= n+2; i++){
+            this.segments[i].delivery = [true,'0x429352'];
         }
     }
 
@@ -253,7 +250,7 @@ export class Circuit
 
     checkExistingDelivery(position){
         var deliveryZone = this.currentDelivery.lastSegment;
-        if (position < deliveryZone - 8 && position > deliveryZone){
+        if (position < deliveryZone - 5 && position > deliveryZone){
             return true
         }
         return false

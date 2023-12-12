@@ -24,7 +24,6 @@ export class Player
         this.horizontalSpeed = this.scene.data.get('horizontalSpeed');
 
         this.playerBody;
-        this.havePackage = false;
         this.currentRoadPos = 1;
         this.playerState = 'idle';
         this.score = 0;
@@ -170,6 +169,8 @@ export class Player
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
         //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
+
+        this.checkDeliveryZone();
     }
 
     movePlayerLeft(dt){
@@ -232,25 +233,25 @@ export class Player
     }
 
     playerPackageCollision(){
+        this.playPickAnimation();
         this.packageCounter++;
         this.packageText.setText('x' + this.packageCounter);
     }
 
     checkDeliveryZone(){
         let segment = this.scene.circuit.currentDelivery.lastSegment;
+        let delivery = this.scene.circuit.currentDelivery;
 
         if (segment > 0) {
             let yPos = this.scene.circuit.segments[segment].point.screen.y;
-            if (yPos >= 920) return 'lost';
-            else if (yPos >= 710) return 'orange2';
-            else if (yPos >= 645) return 'green';
-            else if (yPos >= 620) return 'orange';
+            if (yPos >= 910) delivery.zone = 'lost';
+            else if (yPos >= 660) delivery.zone = 'green';
         }
     }
 
     checkDelivery(){
         let delivery = this.scene.circuit.currentDelivery
-        if (delivery.zone == "undone") 
+        if (delivery.zone == "green") 
         {
             let rightConditional = this.screen.x >= this.scene.data.get('screen') - this.limitBound - this.screen.w/4
             let leftConditional = this.screen.x <= this.limitBound + this.screen.w/4
@@ -258,44 +259,28 @@ export class Player
 
             if (inPos)
             {
-                let zone = this.checkDeliveryZone();
-                if (zone == 'green'){
-                    this.playDeliveryAnimation(delivery.alignment);
-                    this.score += 30;
-                    this.havePackage = !this.havePackage;
-                    delivery.zone = 'done';
-                }
-                else if (zone == 'orange'){
-                    this.playDeliveryAnimation(delivery.alignment);
-                    this.score += 20;
-                    this.havePackage = !this.havePackage;
-                    delivery.zone = 'done';
-                }
-                else if (zone == 'orange2'){
-                    this.playDeliveryAnimation(delivery.alignment);
-                    this.score += 10;
-                    this.havePackage = !this.havePackage;
-                    delivery.zone = 'done';
-                }
-                else if (zone == 'lost'){
-                    delivery.zone = 'lost';
-                }
-                this.deliveryText.setVisible(this.havePackage);
+                this.deliverPackages(delivery.alignment)
             }
         }
     }
 
-    playDeliveryAnimation(alignment){
-        if (this.havePackage) {
-            this.playerBody.setFlipX(alignment > 0);
-            this.playerBody.play('send', true);
-            this.playerBox.play('boxSend', true);
-            this.playerState = 'receive';
-        } else {
-            this.playerBody.play('receive', true);
-            this.playerBox.play('boxReceive', true);
-            this.playerState = 'receive';
-        }
+    deliverPackages(){
+        this.playDeliverAnimation();
+        let points = 10 * this.packageCounter * this.packageCounter;
+        this.score += points;
+    }
+
+    playDeliverAnimation(alignment){
+        this.playerBody.setFlipX(alignment > 0);
+        this.playerBody.play('send', true);
+        this.playerBox.play('boxSend', true);
+        this.playerState = 'receive';
+    }
+
+    playPickAnimation(){
+        this.playerBody.play('receive', true);
+        this.playerBox.play('boxReceive', true);
+        this.playerState = 'receive';
     }
 
     pause(isPaused){
