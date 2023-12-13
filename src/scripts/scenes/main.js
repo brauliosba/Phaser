@@ -128,6 +128,8 @@ export class MainScene extends Phaser.Scene
                     break;
             }
         }
+
+        console.log(this.player.speed)
     }
 
     createAnimations(){

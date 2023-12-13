@@ -282,7 +282,8 @@ export class Circuit
 
     generatePickUp(position, offset, type){
         this.powerCounter = 0;
-        this.addSegmentPickUp(position, 'deliveryButton', this.powersOffsets[offset], type);
+        let sprite = type == 'power' ? 'sjj' : 'deliveryButton';
+        this.addSegmentPickUp(position, sprite, this.powersOffsets[offset], type);
     }
 
     addSegmentPickUp(n, spriteKey, offset, type){
