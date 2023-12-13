@@ -28,6 +28,7 @@ export class Player
         this.playerState = 'idle';
         this.score = 0;
         this.shielded = false;
+        this.double = false;
         this.invulnerabilityTime = this.scene.data.get('invulnerability');
     }
 
@@ -129,10 +130,12 @@ export class Player
         this.scoreEvent = this.scene.time.addEvent({ delay: scoringTime, callback: this.updateScore, callbackScope: this, loop: true });
         //Each 100 ms call onEvent
         this.speedEvent = this.scene.time.addEvent({ delay: 100, callback: this.updateSpeed, callbackScope: this, loop: true });
+        this.powerEvent = this.scene.time.addEvent({ delay: 5000, callback: this.removePower, callbackScope: this, loop: true });
+        this.powerEvent.paused = true;
     }
 
     updateScore(){
-        this.score += 1;
+        this.score += this.double ? 2 : 1;
     }
 
     updateSpeed(){
@@ -221,9 +224,26 @@ export class Player
         this.scene.time.addEvent({ delay: this.invulnerabilityTime, callback: () => this.playerBody.enableBody() , callbackScope: this});
     }
 
-    playerPowerUpCollision(){
-        this.shielded = true;
-        console.log('shielded');
+    removePower(){
+        this.shielded = false;
+        this.double = false;
+    }
+
+    playerPowerUpCollision(type){
+        switch (type){
+            case 'shield':
+                this.shielded = true;
+                console.log('shielded');
+                break;
+            case 'double':
+                this.double = true;
+                console.log('double');
+                break;
+            default:
+                break;
+        }
+        
+        this.powerEvent.paused = false;
     }
 
     playerPackageCollision(){

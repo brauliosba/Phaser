@@ -53,6 +53,7 @@ export class Circuit
 
         this.powerDelay = this.scene.data.get('powerDelay');
         this.powersOffsets = [-0.7, 0, 0.7];
+        this.powerTypes = ['shield', 'double'];
         this.createPower = false;
 
         this.deliverDelay = this.scene.data.get('deliverDelay');
@@ -167,7 +168,6 @@ export class Circuit
     }
 
     addSegmentSprite(n, spriteKey, offset){
-        //let sprite = this.scene.add.sprite(0, 0, 'buildings', spriteKey);
         let building = new Building(this.scene);
         building.create(spriteKey, offset, n);
         this.segments[n].sprites.push({ object: building, type: "bg" });
@@ -285,17 +285,28 @@ export class Circuit
 
     generatePickUp(position, offset, type){
         this.powerCounter = 0;
-        let sprite = type == 'power' ? 'sjj' : 'deliveryButton';
-        this.addSegmentPickUp(position, sprite, this.powersOffsets[offset], type);
+        if (type == 'power'){
+            let powerType = Phaser.Math.RND.pick(this.powerTypes);
+            this.addSegmentPower(position, 'ssj', this.powersOffsets[offset], type, powerType);
+        }
+        else{
+            this.addSegmentPackage(position, 'deliveryButton', this.powersOffsets[offset], type);
+        }
     }
 
-    addSegmentPickUp(n, spriteKey, offset, type){
+    addSegmentPower(n, spriteKey, offset, type, powerType){
         var pickUp = new PickUp(this.scene);
         pickUp.create(spriteKey, offset, type, n);
-        if (type == 'power')
-            this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => { pickUp.disable(); this.scene.player.playerPowerUpCollision(); });
-        else
-            var overlap = this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => { overlap.active = false; pickUp.disable(); this.scene.player.playerPackageCollision(); });
+        this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => 
+            { pickUp.disable(); this.scene.player.playerPowerUpCollision(powerType); });
+        this.segments[n].sprites.push({ object: pickUp, type: "pickUp"});
+    }
+
+    addSegmentPackage(n, spriteKey, offset, type){
+        var pickUp = new PickUp(this.scene);
+        pickUp.create(spriteKey, offset, type, n);
+        var overlap = this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => 
+            { overlap.active = false; pickUp.disable(); this.scene.player.playerPackageCollision(); });
         this.segments[n].sprites.push({ object: pickUp, type: "pickUp"});
     }
 

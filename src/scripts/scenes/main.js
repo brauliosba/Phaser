@@ -131,7 +131,7 @@ export class MainScene extends Phaser.Scene
             }
         }
 
-        console.log(this.player.speed)
+        //console.log(this.player.speed)
     }
 
     createAnimations(){
