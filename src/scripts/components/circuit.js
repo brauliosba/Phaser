@@ -213,14 +213,19 @@ export class Circuit
 
                     if (this.createPower || createPackage <= 34){
                         var myArray = [0,1,2];
-                        let index = myArray.indexOf(lane);
+                        var index = myArray.indexOf(lane);
                         myArray.splice(index, 1);
                         var powerOffset = Phaser.Math.RND.pick(myArray);
                         if(this.createPower) { 
                             this.createPower = false;
                             this.generatePickUp(position, powerOffset, 'power');
                         }
-                        if(createPackage <= 34) this.generatePickUp(position, powerOffset, 'package');
+
+                        index = myArray.indexOf(powerOffset);
+                        myArray.splice(index, 1);
+                        var packageOffset = myArray[0];
+
+                        if(createPackage <= 34) this.generatePickUp(position, packageOffset, 'package');
                     }
                     break;
                 case 1:
@@ -239,9 +244,7 @@ export class Circuit
                     if (this.createPower>this.powerDelay){
                         this.createPower = false;
                         this.generatePickUp(position, lane, 'power');
-                    }
-
-                    if (createPackage <= 34) {
+                    } else if (createPackage <= 34) {
                         this.generatePickUp(position, lane, 'package');
                     }
                     break;
