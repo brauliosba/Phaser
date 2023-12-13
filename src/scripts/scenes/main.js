@@ -27,6 +27,7 @@ export class MainScene extends Phaser.Scene
         this.load.spritesheet('playerBoxReceive', 'src/images/player/playerBoxReceive.png', { frameWidth: 1500, frameHeight: 1000});
         this.load.spritesheet('playerBoxSend', 'src/images/player/playerBoxSend.png', { frameWidth: 1500, frameHeight: 1000});
         this.load.spritesheet('playerIdle', 'src/images/player/playerIdle.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerBoxIdle', 'src/images/player/playerBoxIdle.png', { frameWidth: 1500, frameHeight: 1000});
 
         //UI
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
@@ -189,7 +190,14 @@ export class MainScene extends Phaser.Scene
 
         this.anims.create({
             key: 'idle',
-            frames: this.anims.generateFrameNumbers('playerIdle', { start: 0, end: 2, first: 0 }),
+            frames: this.anims.generateFrameNumbers('playerIdle', { start: 0, end: 11, first: 0 }),
+            frameRate: 15,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'boxIdle',
+            frames: this.anims.generateFrameNumbers('playerBoxIdle', { start: 0, end: 11, first: 0 }),
             frameRate: 15,
             repeat: -1
         });

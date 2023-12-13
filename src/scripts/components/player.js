@@ -34,6 +34,7 @@ export class Player
     init(){
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
+        //Player
         this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerIdle').play('idle');
         this.playerBody.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'receive', function () {
             this.playerBody.play('run');
@@ -42,7 +43,7 @@ export class Player
             this.playerBody.play('run');
         }, this);
 
-        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxRun');
+        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxIdle');
         this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxReceive', function () {
             this.playerBox.play('boxRun');
         }, this);
@@ -70,13 +71,7 @@ export class Player
         this.limitBound = this.screen.w/8;
 
         //mobile contorls
-        if (this.scene.data.get('IS_TOUCH')) {
-            this.deliveryButton = this.scene.add.image(0, 0,'deliveryButton').setInteractive();
-            this.deliveryButton.setDisplaySize(100, 100);
-            this.deliveryButton.setPosition(this.screen.x, this.scene.data.get('screen') - this.deliveryButton.height/2);
-            this.deliveryButton.on('pointerdown', () => this.checkDelivery());
-            this.deliveryButton.setDepth(5);
-           
+        if (this.scene.data.get('IS_TOUCH')) {          
             this.leftButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.leftButton.setDisplaySize(500, 500);
             this.leftButton.setPosition(this.screen.x / 2, this.scene.data.get('screen') - 250);
@@ -101,6 +96,7 @@ export class Player
             */
         }
 
+        //UI
         this.packageImage = this.scene.add.image(80, 80, 'deliveryButton');
         this.packageImage.setDisplaySize(80,80);
         this.packageImage.setDepth(5);
