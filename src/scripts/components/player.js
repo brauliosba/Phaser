@@ -68,7 +68,7 @@ export class Player
         this.playerBox.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBox.setVisible(false);
 
-        this.limitBound = this.screen.w/8;
+        this.limitBound = this.screen.w/10;
 
         //mobile contorls
         if (this.scene.data.get('IS_TOUCH')) {          
@@ -165,8 +165,6 @@ export class Player
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
         //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
-
-        this.checkDelivery();
     }
 
     movePlayerLeft(dt){
@@ -246,12 +244,12 @@ export class Player
 
     checkDelivery(){
         let delivery = this.scene.circuit.currentDelivery;
-        if (delivery.zone != 'done'){
+        if (delivery.zone != 'lost' && this.packageCounter > 0){
             this.checkDeliveryZone(delivery)
             if (delivery.zone == "green") 
             {
-                let rightConditional = this.screen.x >= this.scene.data.get('screen') - this.limitBound - this.screen.w/6
-                let leftConditional = this.screen.x <= this.limitBound + this.screen.w/6
+                let rightConditional = this.screen.x == this.scene.data.get('screen') - this.limitBound;
+                let leftConditional = this.screen.x == this.limitBound;
                 let inPos = delivery.alignment > 0 ?  rightConditional : leftConditional
 
                 if (inPos)
@@ -263,8 +261,8 @@ export class Player
         }
     }
 
-    deliverPackages(){
-        this.playDeliverAnimation();
+    deliverPackages(alignment){
+        this.playDeliverAnimation(alignment);
         let points = 10 * this.packageCounter * this.packageCounter;
         this.score += points;
         this.packageCounter = 0;
@@ -273,6 +271,7 @@ export class Player
 
     playDeliverAnimation(alignment){
         this.playerBody.setFlipX(alignment > 0);
+        this.playerBox.setFlipX(alignment > 0);
         this.playerBody.play('send', true);
         this.playerBox.play('boxSend', true);
         this.playerState = 'receive';

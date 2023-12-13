@@ -21,7 +21,7 @@ export class Obstacle extends Sprite
     }
 
     draw(destW, destH, destX, destY, spriteScale){
-        if (this.drawable){
+        if (this.drawable && spriteScale * 20000 <= 5) {
             super.draw(destW, destH, destX, destY);
 
             this.sprite.setDepth(spriteScale * 10000);
@@ -30,6 +30,9 @@ export class Obstacle extends Sprite
             else this.sprite.setScale((spriteScale * 2400));
             this.sprite.enableBody();
             this.sprite.setVisible(true);
+        }
+        else{
+            this.disable();
         }
     }
 

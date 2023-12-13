@@ -12,17 +12,23 @@ export class Delivery extends Sprite
         this.sprite.setVisible(false);
 
         this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
+        this.playerEvent = this.scene.time.addEvent({ delay: 10, callback: this.playerPosition, callbackScope: this, loop: true });
     }
 
     draw(destW, destH, destX, destY, spriteScale){
-        super.draw(destW, destH, destX, destY);
-        this.sprite.setDepth(spriteScale * 10000);
-        this.sprite.setScale((spriteScale * 20000));
+        if (spriteScale * 20000 <= 5) {
+            super.draw(destW, destH, destX, destY);
+            this.sprite.setDepth(spriteScale * 10000);
+            this.sprite.setScale((spriteScale * 20000));
+        } else {
+            this.disable();
+        }
     }
 
     disable(){
         super.disable();
         this.checkEvent.destroy();
+        this.playerEvent.destroy();
     }
 
     checkPosition(){
@@ -30,5 +36,9 @@ export class Delivery extends Sprite
             this.scene.circuit.deliverEvent.paused = false;
             this.checkEvent.destroy();
         }
+    }
+
+    playerPosition(){
+        this.scene.player.checkDelivery();
     }
 }

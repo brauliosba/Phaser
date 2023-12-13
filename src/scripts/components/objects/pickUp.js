@@ -16,11 +16,9 @@ export class PickUp extends Sprite
     }
 
     draw(destW, destH, destX, destY, spriteScale){
-        super.draw(destW, destH, destX, destY);
-
-        this.sprite.setDepth(spriteScale * 10000);
-
         if (spriteScale * 20000 <= 5) {
+            super.draw(destW, destH, destX, destY);
+            this.sprite.setDepth(spriteScale * 10000);
             this.sprite.setScale((spriteScale * 2400));
             this.sprite.enableBody();
             this.sprite.setVisible(true);

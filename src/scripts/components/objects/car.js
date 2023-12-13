@@ -30,7 +30,7 @@ export class Car extends Sprite
     }
 
     draw(destW, destH, destX, destY, spriteScale){
-        if (this.drawable) {
+        if (this.drawable && spriteScale * 20000 <= 5) {
             super.draw(destW, destH, destX, destY);
 
             this.sprite.setDepth(spriteScale * 20000);
@@ -44,6 +44,8 @@ export class Car extends Sprite
 
             this.sprite.flipX = (this.offset > 0);
             this.sprite.setVisible(true);
+        } else{
+            this.disable();
         }
     }
 
