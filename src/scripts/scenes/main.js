@@ -87,6 +87,8 @@ export class MainScene extends Phaser.Scene
         //this.keyDelivery.on('down', () => { this.player.checkDelivery();})
         this.keyPause = this.input.keyboard.addKey('ESC');
         this.keyPause.on('down', () => { this.pauseGame();})
+        this.keyPause2 = this.input.keyboard.addKey('P');
+        this.keyPause2.on('down', () => { this.pauseGame();})
         this.keyRestart = this.input.keyboard.addKey('R');
         this.keyRestart.on('down', () => { this.scene.start('MainScene', this.data);})
     }
