@@ -47,7 +47,14 @@ export class Circuit
             {name: 'casa2.png', offset1: 2.65, offset2: -1.65},
         ]
 
-        this.obstaclesOffsets = [[-1, 0, 1], [-0.8, 0, 0.8], [-0.8, 0, 0.8]]
+        this.obstaclesOffsets = 
+            [[-1, 0, 1], 
+            [-0.8, 0, 0.8], 
+            [-0.8, 0, 0.8],
+            [-0.8, 0, 0.8],
+            [-0.8, 0, 0.8],
+            [-0.8, 0, 0.8],
+            [-0.8, 0, 0.8]]
 
         this.waveDelay = this.scene.data.get('waveDelay');
 
@@ -269,7 +276,7 @@ export class Circuit
 
     addSegmentObstacle(n, spriteKey, offset){
         let obstacle;
-        var type = Phaser.Math.Between(0, 2);
+        var type = Phaser.Math.Between(0, 6);
         if (type != 0) { 
             obstacle = new Obstacle(this.scene);
             obstacle.create(spriteKey+type, type, this.obstaclesOffsets[type][offset], n);

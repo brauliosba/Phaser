@@ -4,6 +4,7 @@ export class Obstacle extends Sprite
 {
     constructor(scene){
         super(scene);
+        this.scales = [1800, 2400, 2800, 2800, 3500, 3500]
     }
 
     create(spriteSheet, type, offset, position){
@@ -25,9 +26,7 @@ export class Obstacle extends Sprite
             super.draw(destW, destH, destX, destY);
 
             this.sprite.setDepth(spriteScale * 10000);
-
-            if (this.type == 1) this.sprite.setScale((spriteScale * 1800));
-            else this.sprite.setScale((spriteScale * 2400));
+            this.sprite.setScale(spriteScale * this.scales[this.type - 1]);
             this.sprite.enableBody();
             this.sprite.setVisible(true);
         }
