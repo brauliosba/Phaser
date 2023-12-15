@@ -71,8 +71,7 @@ export class Player
         this.playerBox.setDisplaySize(this.screen.w/3, this.screen.h/3);
 
         this.playerShield.setDepth(4);
-        this.playerShield.setScale(.30);
-        this.playerShield.setAlpha(.7);
+        this.playerShield.setScale(1.7);
 
         this.limitBound = this.screen.w/10;
 

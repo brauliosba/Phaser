@@ -47,7 +47,7 @@ export class MainScene extends Phaser.Scene
 
         //Powers
         this.load.image('shield', 'src/images/powers/Icon19.png');
-        this.load.image('playerShield', 'src/images/powers/blueCircle.png');
+        this.load.image('playerShield', 'src/images/powers/ring.png');
         this.rt = this.add.renderTexture(0, 0, 50, 50).setVisible(false);;
         this.textTest = this.add.text(0, 0, 'x2',{font: '600 45px Montserrat'}).setVisible(false);
         this.rt.draw(this.textTest, 0, 0)
