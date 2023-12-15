@@ -36,7 +36,7 @@ export class Player
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
         //Player
-        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerIdle').play('idle');
+        this.playerBody = this.scene.physics.add.sprite(1000, 1000, 'playerIdle').play('idle').setVisible(false);
         this.playerBody.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'receive', function () {
             this.playerBody.play('run');
         }, this);
@@ -44,13 +44,16 @@ export class Player
             this.playerBody.play('run');
         }, this);
 
-        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxIdle');
+        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxIdle').setVisible(false);
         this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxReceive', function () {
             this.playerBox.play('boxRun');
         }, this);
         this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxSend', function () {
             this.playerBox.play('boxRun');
         }, this);
+
+        //Shield
+        this.playerShield = this.scene.add.sprite(1000, 1000, 'playerShield').setVisible(false);
 
         // set the player screen size
         this.screen.w = this.playerBody.width;
@@ -63,11 +66,13 @@ export class Player
         this.playerBody.setDepth(4);
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBody.body.setSize(150,150,true);
-        this.playerBody.setVisible(false);
 
         this.playerBox.setDepth(4);
         this.playerBox.setDisplaySize(this.screen.w/3, this.screen.h/3);
-        this.playerBox.setVisible(false);
+
+        this.playerShield.setDepth(4);
+        this.playerShield.setScale(.30);
+        this.playerShield.setAlpha(.7);
 
         this.limitBound = this.screen.w/10;
 
@@ -209,6 +214,7 @@ export class Player
 
     shildBreak(){
         this.shielded = false;
+        this.playerShield.setVisible(false);
         this.playerBody.disableBody(false, false);
         this.scene.tweens.add({
             targets: this.playerBody,
@@ -226,6 +232,7 @@ export class Player
 
     removePower(){
         this.shielded = false;
+        this.playerShield.setVisible(false);
         this.double = false;
     }
 
@@ -234,6 +241,7 @@ export class Player
             case 'shield':
                 this.shielded = true;
                 console.log('shielded');
+                this.playerShield.setVisible(true);
                 break;
             case 'double':
                 this.double = true;

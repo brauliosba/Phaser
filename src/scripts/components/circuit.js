@@ -398,7 +398,8 @@ export class Circuit
             player.playerBody.setPosition(player.screen.x, player.screen.y);
             player.playerBody.setVisible(true);
             player.playerBox.setPosition(player.screen.x, player.screen.y);
-            player.playerBox.setVisible(true);   
+            player.playerBox.setVisible(true);
+            player.playerShield.setPosition(player.screen.x, player.screen.y);
         }
 
         for (var i=this.visible_segments - 20; i>0; i--){

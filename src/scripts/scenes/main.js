@@ -46,7 +46,8 @@ export class MainScene extends Phaser.Scene
         this.load.spritesheet('obstacle2Break', 'src/images/obstacles/obstacle2Anim.png', { frameWidth: 900, frameHeight: 1050});
 
         //Powers
-        this.load.image('shield', 'src/images/Icon19.png');
+        this.load.image('shield', 'src/images/powers/Icon19.png');
+        this.load.image('playerShield', 'src/images/powers/blueCircle.png');
         this.rt = this.add.renderTexture(0, 0, 50, 50).setVisible(false);;
         this.textTest = this.add.text(0, 0, 'x2',{font: '600 45px Montserrat'}).setVisible(false);
         this.rt.draw(this.textTest, 0, 0)
