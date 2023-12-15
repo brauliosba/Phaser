@@ -17,7 +17,6 @@ export class MenuScene extends Phaser.Scene
         this.load.image('optionsButton', 'src/images/UI/menu_botones_options.png');
         this.load.image('panel', 'src/images/UI/panel.png');
         this.load.atlas('panelUI', 'src/images/UI/panelUI.png', 'src/images/UI/panelUI.json');
-        this.load.image('texture', 'src/images/p2.jpg');
 
         //Plugins
         this.load.scenePlugin({

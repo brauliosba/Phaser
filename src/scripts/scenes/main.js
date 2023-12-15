@@ -52,6 +52,7 @@ export class MainScene extends Phaser.Scene
         this.textTest = this.add.text(0, 0, 'x2',{font: '600 45px Montserrat'}).setVisible(false);
         this.rt.draw(this.textTest, 0, 0)
         this.rt.saveTexture('double');
+        this.load.atlas('flares', 'src/images/powers/flares.png', 'src/images/powers/flares.json');
 
         //Plugins
         this.load.scenePlugin({

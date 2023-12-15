@@ -400,6 +400,7 @@ export class Circuit
             player.playerBox.setPosition(player.screen.x, player.screen.y);
             player.playerBox.setVisible(true);
             player.playerShield.setPosition(player.screen.x, player.screen.y);
+            player.playerDoubleParticles.setPosition(player.screen.x, player.screen.y);
         }
 
         for (var i=this.visible_segments - 20; i>0; i--){

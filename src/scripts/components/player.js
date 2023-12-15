@@ -55,6 +55,15 @@ export class Player
         //Shield
         this.playerShield = this.scene.add.sprite(1000, 1000, 'playerShield').setVisible(false);
 
+        //Particles    
+        this.playerDoubleParticles = this.scene.add.particles(1000, 1000, 'flares', {
+            frame: [ 'yellow' ],
+            lifespan: 1000,
+            speed: { min: 150, max: 250 },
+            scale: { start: 0.4, end: 0 },
+            blendMode: 'ADD'
+        }).setVisible(false);
+
         // set the player screen size
         this.screen.w = this.playerBody.width;
         this.screen.h = this.playerBody.height;
@@ -230,9 +239,11 @@ export class Player
     }
 
     removePower(){
+        this.powerEvent.paused = true;
         this.shielded = false;
         this.playerShield.setVisible(false);
         this.double = false;
+        this.playerDoubleParticles.setVisible(false);
     }
 
     playerPowerUpCollision(type){
@@ -245,6 +256,7 @@ export class Player
             case 'double':
                 this.double = true;
                 console.log('double');
+                this.playerDoubleParticles.setVisible(true);
                 break;
             default:
                 break;
