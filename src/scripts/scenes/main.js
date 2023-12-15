@@ -37,7 +37,6 @@ export class MainScene extends Phaser.Scene
 
         //Buildings
         this.load.atlas('buildings', 'src/images/buildings.png', 'src/images/buildings.json');
-        this.load.image('buildTemp', 'src/images/casa1.png');
 
         //Obstacles
         this.load.atlas('obstacle0', 'src/images/obstacles/obstacle_A.png', 'src/images/obstacles/obstacle_A.json');
@@ -45,6 +44,13 @@ export class MainScene extends Phaser.Scene
         this.load.atlas('staticObstacles', 'src/images/obstacles/staticObstacles.png', 'src/images/obstacles/staticObstacles.json');
         this.load.spritesheet('obstacle1Break', 'src/images/obstacles/obstacle1Anim.png', { frameWidth: 900, frameHeight: 700});
         this.load.spritesheet('obstacle2Break', 'src/images/obstacles/obstacle2Anim.png', { frameWidth: 900, frameHeight: 1050});
+
+        //Powers
+        this.load.image('shield', 'src/images/Icon19.png');
+        this.rt = this.add.renderTexture(0, 0, 50, 50).setVisible(false);;
+        this.textTest = this.add.text(0, 0, 'x2',{font: '600 45px Montserrat'}).setVisible(false);
+        this.rt.draw(this.textTest, 0, 0)
+        this.rt.saveTexture('double');
 
         //Plugins
         this.load.scenePlugin({
@@ -267,17 +273,19 @@ export class MainScene extends Phaser.Scene
     }
 
     pauseGame(){
-        this.isPaused = !this.isPaused
-        this.player.pause(this.isPaused);
-        this.circuit.pause(this.isPaused);
+        if (this.data.get('state') == 'play'){
+            this.isPaused = !this.isPaused
+            this.player.pause(this.isPaused);
+            this.circuit.pause(this.isPaused);
 
-        if (this.isPaused){
-            this.anims.pauseAll();
-            this.panel.showPause();
-        }
-        else{ 
-            this.anims.resumeAll();
-            this.panel.hidePause();
+            if (this.isPaused){
+                this.anims.pauseAll();
+                this.panel.showPause();
+            }
+            else{ 
+                this.anims.resumeAll();
+                this.panel.hidePause();
+            }
         }
     }
 }

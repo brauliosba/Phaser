@@ -294,16 +294,16 @@ export class Circuit
         this.powerCounter = 0;
         if (type == 'power'){
             let powerType = Phaser.Math.RND.pick(this.powerTypes);
-            this.addSegmentPower(position, 'ssj', this.powersOffsets[offset], type, powerType);
+            this.addSegmentPower(position, this.powersOffsets[offset], type, powerType);
         }
         else{
             this.addSegmentPackage(position, 'deliveryButton', this.powersOffsets[offset], type);
         }
     }
 
-    addSegmentPower(n, spriteKey, offset, type, powerType){
+    addSegmentPower(n, offset, type, powerType){
         var pickUp = new PickUp(this.scene);
-        pickUp.create(spriteKey, offset, type, n);
+        pickUp.create(powerType, offset, type, n);
         this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => 
             { pickUp.disable(); this.scene.player.playerPowerUpCollision(powerType); });
         this.segments[n].sprites.push({ object: pickUp, type: "pickUp"});
