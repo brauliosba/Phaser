@@ -85,22 +85,24 @@ export class Player
         this.limitBound = this.screen.w/10;
 
         //mobile contorls
-        if (this.scene.data.get('IS_TOUCH')) {          
+        if (this.scene.data.get('IS_TOUCH')) {
+            this.stopMove = false;
+            
             this.leftButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.leftButton.setDisplaySize(500, 500);
             this.leftButton.setPosition(this.screen.x / 2, this.scene.data.get('screen') - 250);
-            this.leftButton.on('pointerdown', () => { this.playerState = 'left', console.log("izq")});
-            this.leftButton.on('pointerup', () => this.playerState = 'run');
+            this.leftButton.on('pointerdown', () => { this.stopMove = false, this.playerState = 'left', console.log("izq")});
+            this.leftButton.on('pointerup', () => this.stopMove = true);
             this.leftButton.setDepth(4.9);
             this.leftButton.alpha = 0.001;
 
             this.rightButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.rightButton.setDisplaySize(500, 500);
             this.rightButton.setPosition(3 * this.screen.x / 2, this.scene.data.get('screen') - 250);
-            this.rightButton.on('pointerdown', () => this.playerState = 'right');
-            this.rightButton.on('pointerup', () => this.playerState = 'run');
+            this.rightButton.on('pointerdown', () => { this.stopMove = false, this.playerState = 'right', console.log("der")});
+            this.rightButton.on('pointerup', () => this.stopMove = true);
             this.rightButton.setDepth(4.9);
-            this.rightButton.alpha = 0.001;  
+            this.rightButton.alpha = 0.001;
             /*
             this.scene.input.on('pointerdown', function(pointer){
                 if (Math.floor(pointer.x/(this.scene.data.get('screen')/2)) === 1) this.playerState = 'right';
@@ -164,23 +166,28 @@ export class Player
         if (this.z >= 30000 && this.currentRoadPos == 2) {this.currentRoadPos = 3; circuit.addRandomSprites(this.totalCircuitSegments / 3, 2 * this.totalCircuitSegments / 3);}
         if (this.z >= 15000 && this.currentRoadPos == 1) {this.currentRoadPos = 2; circuit.addRandomSprites(0, this.totalCircuitSegments / 3);}
 
-        if (this.cursors.left.isDown){
-            this.playerState = 'left';
-        }
-        else if (this.cursors.right.isDown){
-            this.playerState = 'right';
-        }
-        
-        if (this.cursors.left.isUp && this.cursors.right.isUp)
-        {
-            if (this.playerState != 'receive') this.playerState = 'run';
-        }
+        if (!this.scene.data.get('IS_TOUCH')) {
+            if (this.cursors.left.isDown){
+                this.playerState = 'left';
+            }
+            else if (this.cursors.right.isDown){
+                this.playerState = 'right';
+            }
+            
+            if (this.cursors.left.isUp && this.cursors.right.isUp)
+            {
+                if (this.playerState != 'receive') this.playerState = 'run';
+            }
+        } 
 
         if (this.playerState == 'run') { this.playerBody.play('run', true); this.playerBox.play('boxRun', true); }
         else if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
-        //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'idle';
+        if (this.scene.data.get('IS_TOUCH')) { 
+            if (this.stopMove) this.playerState = 'run';
+        }
+        //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'run';
     }
 
     movePlayerLeft(dt){
