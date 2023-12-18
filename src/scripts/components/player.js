@@ -184,8 +184,8 @@ export class Player
         else if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
-        if (this.scene.data.get('IS_TOUCH')) { 
-            if (this.stopMove) this.playerState = 'run';
+        if (this.scene.data.get('IS_TOUCH') && this.stopMove) { 
+            if (this.playerState != 'receive') this.playerState = 'run';
         }
         //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'run';
     }
