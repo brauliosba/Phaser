@@ -45,8 +45,19 @@ export class Obstacle extends Sprite
     collisionAnim()
     {
         console.log(this.spriteSheet);
+        if (this.spriteSheet == 'obstacle1') {
+            this.sprite.setDepth(5);
+            this.sprite.setScale(.5);
+            this.sprite.setPosition(this.sprite.x - 70, this.sprite.y - 70)
+        }
         this.sprite.play(this.spriteSheet + 'Break');
-        this.sprite.on('animationcomplete', () => { this.sprite.setVisible(false); this.scene.anims.pauseAll() });
+        this.sprite.on('animationcomplete', () => 
+            { 
+                if (this.scene.data.get('state') == "game_over") {
+                    this.sprite.setVisible(false); 
+                    this.scene.anims.pauseAll();
+                } 
+            });
     }
 
     checkPosition(){

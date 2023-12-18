@@ -15,8 +15,6 @@ export class Sprite
         this.sprite.setDisplaySize(destW, destH);
         this.sprite.setPosition(destX, destY);
 
-        if (this.offset > 0) this.sprite.flipX = true;
-        else this.sprite.flipX = false;
         this.sprite.setVisible(true);
     }
 

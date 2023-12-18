@@ -16,5 +16,6 @@ export class Building extends Sprite
         super.draw(destW, destH, destX, destY);
         this.sprite.setDepth(spriteScale);
         this.sprite.setScale((spriteScale * 18000));
+        this.sprite.flipX = (this.offset > 0);
     }
 }
