@@ -71,11 +71,11 @@ export class MainScene extends Phaser.Scene
         this.dim = this.data.get('screen');
 
         // backgrounds
-        let sprBack = this.add.image(this.dim/2, this.dim/2, 'imgBack');
-        let pauseButton = this.add.image(this.dim - 100, 130, 'pauseButton').setInteractive();
-        pauseButton.on('pointerdown', () => this.pauseGame());
-        pauseButton.setDepth(9)
-        pauseButton.setDisplaySize(50, 50);
+        //let sprBack = this.add.image(this.dim/2, this.dim/2, 'imgBack');
+        //let pauseButton = this.add.image(this.dim - 100, 130, 'pauseButton').setInteractive();
+        //pauseButton.on('pointerdown', () => this.pauseGame());
+        //pauseButton.setDepth(9)
+        //pauseButton.setDisplaySize(50, 50);
 
         this.createAnimations();
         
@@ -122,16 +122,17 @@ export class MainScene extends Phaser.Scene
                         this.panel.createOptionsPanel(this.dim);
                     }
                     if (!this.startAnim) {
-                        this.player.restart();
+                        //this.player.restart();
                         this.data.set('state', "play");
+                        this.circuit.takeScreenshot();
                     }
                     break;
                 case "play":
                     var dt = Math.min(1, deltaTime/1000);
-                    this.player.update(dt);
-                    this.scoreboard.update();
+                    //this.player.update(dt);
+                    //this.scoreboard.update();
                     this.camera.update();
-                    this.circuit.render3D();
+                    //this.circuit.render3D();
                     break;
                 case "game_over":
                     this.isPaused = true;

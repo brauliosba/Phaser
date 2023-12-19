@@ -157,8 +157,8 @@ export class Circuit
             this.segments[i].delivery = [false, '0x429352'];
         }
 
-        this.generateRandomBuildings(start, limit);
-        this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
+        //this.generateRandomBuildings(start, limit);
+        //this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
     }
     
     generateRandomBuildings(start, limit){
@@ -391,7 +391,8 @@ export class Circuit
                 clipBottomLine = currBottomLine;
             }
 
-            // draw player       
+            // draw player
+            /*   
             var player = this.scene.player;
             player.playerBody.setPosition(player.screen.x, player.screen.y);
             player.playerBody.setVisible(true);
@@ -399,6 +400,7 @@ export class Circuit
             player.playerBox.setVisible(true);
             player.playerShield.setPosition(player.screen.x, player.screen.y);
             player.playerDoubleParticles.setPosition(player.screen.x, player.screen.y);
+            */
         }
 
         for (var i=this.visible_segments - 20; i>0; i--){
@@ -498,7 +500,7 @@ export class Circuit
             else 
                 this.drawPolygon(x1-w1/1.5, y1, x1-w1, y1, x2-w2, y2, x2-w2/1.5, y2, delivery[1]);
         }
-        this.drawFog(0, y1, this.scene.data.get('screen'), y2-y1, fog)
+        //this.drawFog(0, y1, this.scene.data.get('screen'), y2-y1, fog)
     }
 
     drawPolygon(x1, y1, x2, y2, x3, y3, x4, y4, color){
@@ -533,5 +535,21 @@ export class Circuit
     pause(isPaused){
         this.powerEvent.paused = isPaused;
         this.deliverEvent.paused = isPaused;
+    }
+
+    takeScreenshot(){
+        this.graphics.generateTexture('road', 1080, 1080);
+        const g1 = this.scene.add.grid(540, 540, 1080, 1080, 32, 32, 0x057605, 0.001, 0x000000, 1);
+        //this.graphics.clear();
+        /*
+        this.scene.time.addEvent({ delay: 2000, callback: () => {
+            this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2, 'road');
+            this.plane.viewPosition.z = 1.6;
+            this.plane.rotateX = 0;
+            console.log('w: ' + this.plane.width);
+            console.log('h: ' + this.plane.height);
+            //this.plane.setScale(3.5);    
+        }, callbackScope: this, loop: false });
+        */
     }
 }

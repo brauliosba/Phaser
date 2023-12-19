@@ -113,6 +113,7 @@ export class Player
         }
 
         //UI
+        /*
         this.packageImage = this.scene.add.image(80, 80, 'deliveryButton');
         this.packageImage.setDisplaySize(80,80);
         this.packageImage.setDepth(5);
@@ -125,6 +126,7 @@ export class Player
         txt.setDepth(5);
         txt = this.scene.add.text(50, 260, 'Espacio entre oleadas: ' + this.scene.data.get('waveDelay'), { fontSize : 30, color: '0x000000' });
         txt.setDepth(5);
+        */
     }
 
     restart (){
