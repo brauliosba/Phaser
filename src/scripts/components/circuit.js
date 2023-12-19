@@ -157,7 +157,6 @@ export class Circuit
             this.segments[i].delivery = [false, '0x429352'];
         }
 
-        //if(limit == this.total_segments / 3) this.generateRandomDelivery(limit);
         this.generateRandomBuildings(start, limit);
         this.generateRandomObstacles(start == 0 ? start + 10 : start, limit);
     }
@@ -285,8 +284,7 @@ export class Circuit
             obstacle = new Car(this.scene);
             obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset], n);
         }
-        this.scene.physics.add.overlap(obstacle.sprite, this.scene.player.playerBody, () => 
-            { this.scene.player.playerCollision(); obstacle.collisionAnim(); });
+        
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle"});
     }
 
@@ -304,8 +302,8 @@ export class Circuit
     addSegmentPower(n, offset, type, powerType){
         var pickUp = new PickUp(this.scene);
         pickUp.create(powerType, offset, type, n);
-        this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => 
-            { pickUp.disable(); this.scene.player.playerPowerUpCollision(powerType); });
+        var overlap = this.scene.physics.add.overlap(pickUp.sprite, this.scene.player.playerBody, () => 
+            { overlap.active = false; pickUp.disable(); this.scene.player.playerPowerUpCollision(powerType); });
         this.segments[n].sprites.push({ object: pickUp, type: "pickUp"});
     }
 

@@ -25,6 +25,8 @@ export class Car extends Sprite
         this.sprite.body.pushable = false;
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
+        this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
+            { this.scene.player.playerCollision(); this.collisionAnim(); });
 
         this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
     }
@@ -57,8 +59,9 @@ export class Car extends Sprite
     }
 
     collisionAnim(){
-        this.scene.anims.pauseAll();
-        console.log(this.spriteSheet);
+        if (this.scene.data.get('state') == "game_over") {
+            this.scene.anims.pauseAll();
+        } 
     }
 
     checkPosition(){

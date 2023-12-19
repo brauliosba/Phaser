@@ -17,6 +17,8 @@ export class Obstacle extends Sprite
         this.sprite.body.pushable = false;
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
+        this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
+            { this.scene.player.playerCollision(); this.collisionAnim(); });
 
         this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
     }
@@ -44,7 +46,6 @@ export class Obstacle extends Sprite
 
     collisionAnim()
     {
-        console.log(this.spriteSheet);
         if (this.spriteSheet == 'obstacle1') {
             this.sprite.setDepth(5);
             this.sprite.setScale(.5);
