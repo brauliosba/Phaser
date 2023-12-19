@@ -99,6 +99,7 @@ export class Circuit
         this.plane.viewPosition.z = 1.6;
         this.plane.rotateX = 95;
         this.plane.setScale(3.5);
+        this.graphics.setDepth(2);
         */
     }
 
@@ -539,16 +540,24 @@ export class Circuit
 
     takeScreenshot(){
         this.graphics.generateTexture('road', 1080, 1080);
-        const g1 = this.scene.add.grid(540, 540, 1080, 1080, 32, 32, 0x057605, 0.001, 0x000000, 1);
+        //const g1 = this.scene.add.grid(540, 540, 1080, 1080, 32, 32, 0x057605, 0.001, 0x000000, 1);
         //this.graphics.clear();
+        this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2 + 190, 'grid', '', 25, 25);
+        //this.plane.setDisplaySize(1080, 2700);
+        console.log('w: ' + this.plane.width);
+        console.log('h: ' + this.plane.height);
+        this.plane.viewPosition.z = 1.6;
+        this.plane.rotateX = 95;
+        //this.plane.setScale(3.5);
+         
         /*
         this.scene.time.addEvent({ delay: 2000, callback: () => {
-            this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2, 'road');
+            this.plane = this.scene.add.plane(this.scene.data.get('screen')/2, this.scene.data.get('screen')/2, 'grid');
             this.plane.viewPosition.z = 1.6;
-            this.plane.rotateX = 0;
+            //this.plane.rotateX = 95;
             console.log('w: ' + this.plane.width);
             console.log('h: ' + this.plane.height);
-            //this.plane.setScale(3.5);    
+            this.plane.setScale(3.5);    
         }, callbackScope: this, loop: false });
         */
     }

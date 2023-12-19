@@ -60,6 +60,9 @@ export class MainScene extends Phaser.Scene
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
             sceneKey: 'rexUI'
         });
+
+        this.load.image('grid', 'src/images/grid.png');
+
     }
 
     init(data){
@@ -71,7 +74,7 @@ export class MainScene extends Phaser.Scene
         this.dim = this.data.get('screen');
 
         // backgrounds
-        //let sprBack = this.add.image(this.dim/2, this.dim/2, 'imgBack');
+        let sprBack = this.add.image(this.dim/2, this.dim/2, 'imgBack');
         //let pauseButton = this.add.image(this.dim - 100, 130, 'pauseButton').setInteractive();
         //pauseButton.on('pointerdown', () => this.pauseGame());
         //pauseButton.setDepth(9)
