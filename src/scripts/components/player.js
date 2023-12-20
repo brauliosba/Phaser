@@ -77,7 +77,7 @@ export class Player
         this.playerBody.body.setSize(150,150,true);
 
         this.b1 = this.scene.physics.add.image(1000, 1000);
-        this.b1.body.setSize(this.screen.w/10, this.screen.h/4, true);
+        this.b1.body.setSize(this.screen.w/15, this.screen.h/4, true);
         this.b1.disableBody(false, false);
         this.b1.setDebugBodyColor(0xffff00);
 
@@ -130,6 +130,11 @@ export class Player
         txt.setDepth(5);
         txt = this.scene.add.text(50, 260, 'Espacio entre oleadas: ' + this.scene.data.get('waveDelay'), { fontSize : 30, color: '0x000000' });
         txt.setDepth(5);
+
+        this.closeText = this.scene.add.text(150, 50, 'Perfecto', { font: '600 30px Montserrat' });
+        this.closeText.setDepth(5);
+        this.closeText.setVisible(false);
+        this.closeText.angle = -20;
     }
 
     restart (){
@@ -162,6 +167,16 @@ export class Player
     updateSpeed(){
         this.speed += this.acceleration;
         this.speedText.setText('Velocidad actual: ' + this.speed);
+    }
+
+    updatePosition(){
+        this.playerBody.setPosition(this.screen.x, this.screen.y);
+        this.playerBody.setVisible(true);
+        this.playerBox.setPosition(this.screen.x, this.screen.y);
+        this.playerBox.setVisible(true);
+        this.playerShield.setPosition(this.screen.x, this.screen.y);
+        this.playerDoubleParticles.setPosition(this.screen.x, this.screen.y);
+        this.closeText.setPosition(this.screen.x - 100, this.screen.y - 150);
     }
 
     update(dt){
@@ -293,6 +308,18 @@ export class Player
     }
 
     playerCloseCallCollision(){
+        this.score += 100;
+        this.closeText.setVisible(true);
+        this.scene.tweens.add({
+            targets: this.closeText,
+            ease: 'sine.inout',
+            duration: 500,
+            repeat: 0,
+            alpha: {
+                getStart: () => 1,
+                getEnd: () => 0
+            },
+        });
         console.log("casi");
     }
 
