@@ -76,8 +76,9 @@ export class Player
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBody.body.setSize(150,150,true);
 
-        this.b1 = this.scene.physics.add.image();
+        this.b1 = this.scene.physics.add.image(1000, 1000);
         this.b1.body.setSize(this.screen.w/10, this.screen.h/4, true);
+        this.b1.disableBody(false, false);
         this.b1.setDebugBodyColor(0xffff00);
 
         this.playerBox.setDepth(4);
@@ -144,6 +145,7 @@ export class Player
         this.playerBody.play('run', true);
         this.playerState = 'run';
         this.packageCounter = 0;
+        this.b1.enableBody();
 
         //Each 1000 ms call onEvent
         this.scoreEvent = this.scene.time.addEvent({ delay: scoringTime, callback: this.updateScore, callbackScope: this, loop: true });
@@ -222,6 +224,7 @@ export class Player
         a.position.set(b.x + b.halfWidth - a.halfWidth, b.y + b.halfHeight - a.halfHeight);
     }
 
+    //COLLISIONS
     playerCollision(){
         if (!this.shielded) {
             this.scene.data.set('state', "game_over");
@@ -231,7 +234,8 @@ export class Player
             this.playerBody.disableBody(false, false);
             this.speedEvent.remove(false);
             this.scoreEvent.remove(false);
-            console.log('colisiono')
+            console.log('colisiono');
+            this.scene.time.destroy();
         } else{
             this.shildBreak();
         }
@@ -288,6 +292,11 @@ export class Player
         this.packageText.setText('x' + this.packageCounter);
     }
 
+    playerCloseCallCollision(){
+        console.log("casi");
+    }
+
+    //DELIVERY
     checkDeliveryZone(delivery){
         let segment = this.scene.circuit.currentDelivery.lastSegment;
 
@@ -339,6 +348,7 @@ export class Player
         this.playerState = 'receive';
     }
 
+    //PAUSE
     pause(isPaused){
         this.scoreEvent.paused = isPaused;
         this.speedEvent.paused = isPaused;

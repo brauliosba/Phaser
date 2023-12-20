@@ -23,17 +23,16 @@ export class Car extends Sprite
         this.sprite.body.setCircle(300);
         this.sprite.body.moves = false;
         this.sprite.body.pushable = false;
-        this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
 
         this.b1 = this.scene.physics.add.image();
-        this.b1.body.moves = false;
-        this.b1.body.pushable = false;
-        this.b1.disableBody(false, false);
         this.b1.setDebugBodyColor(0xffff00);
 
         this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
             { this.scene.player.playerCollision(); this.collisionAnim(); });
+
+        this.scene.physics.add.overlap(this.b1, this.scene.player.b1, () => 
+            { this.scene.player.playerCloseCallCollision(); });
 
         this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
     }
@@ -42,17 +41,17 @@ export class Car extends Sprite
         if (this.drawable && spriteScale * 20000 <= 5) {
             super.draw(destW, destH, destX, destY);
 
+            this.sprite.setScale((spriteScale * 2400));
             this.sprite.setDepth(spriteScale * 20000);
 
             var number = Phaser.Math.RoundTo(destH/20, 0) <= 7 ? Phaser.Math.RoundTo(destH/25, 0) : 7;
             var spriteName = this.spriteSheet + '_0' + number + '.png'; 
             if (this.offset != 0) this.sprite.setTexture(this.spriteSheet, spriteName);
 
-            this.sprite.setScale((spriteScale * 2400));
-            this.sprite.enableBody();
-
             this.sprite.flipX = (this.offset > 0);
             this.sprite.setVisible(true);
+
+            this.centerBodyOnBody(this.b1.body, this.sprite.body);
         } else{
             this.disable();
         }
@@ -61,6 +60,7 @@ export class Car extends Sprite
     disable(){
         super.disable();
         this.sprite.disableBody(false, false);
+        this.b1.disableBody(false, false);
         this.checkEvent.destroy();
         this.drawable = false;
     }
@@ -74,9 +74,7 @@ export class Car extends Sprite
     checkPosition(){
         if(this.position - 3 < this.scene.circuit.baseIndex && this.scene.circuit.baseIndex - 3 < this.position + 20){
             this.disable();
-        }
-        
-        this.centerBodyOnBody(this.b1.body, this.sprite.body);
+        }        
     }
 
     centerBodyOnBody (a, b) {
