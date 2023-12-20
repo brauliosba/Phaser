@@ -17,6 +17,13 @@ export class Obstacle extends Sprite
         this.sprite.body.pushable = false;
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
+
+        this.b1 = this.scene.physics.add.image();
+        this.b1.body.moves = false;
+        this.b1.body.pushable = false;
+        this.b1.disableBody(false, false);
+        this.b1.setDebugBodyColor(0xffff00);
+        
         this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
             { this.scene.player.playerCollision(); this.collisionAnim(); });
 
@@ -65,5 +72,12 @@ export class Obstacle extends Sprite
         if(this.position - 3 < this.scene.circuit.baseIndex && this.scene.circuit.baseIndex - 3 < this.position + 20){
             this.disable();
         }
+
+        this.centerBodyOnBody(this.b1.body, this.sprite.body);
+    }
+
+    centerBodyOnBody (a, b) {
+        a.position.set(b.x, b.y + .7 * b.height);
+        a.setSize(b.width, b.height / 10);
     }
 }

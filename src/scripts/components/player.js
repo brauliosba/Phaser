@@ -76,6 +76,10 @@ export class Player
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
         this.playerBody.body.setSize(150,150,true);
 
+        this.b1 = this.scene.physics.add.image();
+        this.b1.body.setSize(this.screen.w/10, this.screen.h/4, true);
+        this.b1.setDebugBodyColor(0xffff00);
+
         this.playerBox.setDepth(4);
         this.playerBox.setDisplaySize(this.screen.w/3, this.screen.h/3);
 
@@ -159,6 +163,8 @@ export class Player
     }
 
     update(dt){
+        this.centerBodyOnBody(this.b1.body, this.playerBody.body);
+
         let circuit = this.scene.circuit;
 
         this.z += this.speed * dt;
@@ -210,6 +216,10 @@ export class Player
             this.playerBox.play('boxTack', true);
         }
         this.screen.x = (newPosX < this.scene.data.get('screen') - this.limitBound) ?  newPosX : this.scene.data.get('screen') - this.limitBound;
+    }
+
+    centerBodyOnBody (a, b) {
+        a.position.set(b.x + b.halfWidth - a.halfWidth, b.y + b.halfHeight - a.halfHeight);
     }
 
     playerCollision(){
