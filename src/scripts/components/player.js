@@ -150,6 +150,7 @@ export class Player
         this.playerBody.play('run', true);
         this.playerState = 'run';
         this.packageCounter = 0;
+        this.packageMultiplier = 1;
         this.b1.enableBody();
 
         //Each 1000 ms call onEvent
@@ -358,6 +359,7 @@ export class Player
         let points = 10 * this.packageCounter * this.packageCounter;
         this.score += points;
         this.packageCounter = 0;
+        this.packageMultiplier += 0.1 * this.packageCounter
         this.packageText.setText('x' + this.packageCounter);
     }
 
