@@ -40,21 +40,10 @@ export class Circuit
         // exponential fog density
         this.fogDensity = 20;
 
+        this.buildingLeftBlock = false;
+        this.buildingRightBlock = false
+
         this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0};
-
-        this.buildings = [
-            {name: 'casa1.png', offset1: 2.65, offset2: -1.65}, 
-            {name: 'casa2.png', offset1: 2.65, offset2: -1.65},
-        ]
-
-        this.obstaclesOffsets = 
-            [[-1, 0, 1], 
-            [-0.8, 0, 0.8], 
-            [-0.8, 0, 0.8],
-            [-0.8, 0, 0.8],
-            [-0.8, 0, 0.8],
-            [-0.8, 0, 0.8],
-            [-0.8, 0, 0.8]]
 
         this.waveDelay = this.scene.data.get('waveDelay');
 
@@ -162,26 +151,34 @@ export class Circuit
     }
     
     generateRandomBuildings(start, limit){
-        var value = 0;
-        var multi = -1;
-        
         for (var i = limit - 5; i >= start; i-=5){
-            this.addSegmentSprite(i, this.buildings[value].name, this.buildings[value].offset1);
-            this.addSegmentSprite(i, this.buildings[value].name, this.buildings[value].offset2);
-            multi *= -1;
-            value += multi;
+            if (!this.buildingRightBlock) {
+                var value = Phaser.Math.Between(0, 4);
+                if (value > 1) this.buildingRightBlock = true;
+                this.addSegmentSprite(i, value, 0);
+            } else {
+                this.buildingRightBlock = false;
+            }
+            if (!this.buildingLeftBlock){
+                value = Phaser.Math.Between(0, 3);
+                if (value > 1) this.buildingLeftBlock = true;
+                this.addSegmentSprite(i, value, 1);
+            } 
+            else {
+                this.buildingLeftBlock = false;
+            }
         }
     }
 
-    addSegmentSprite(n, spriteKey, offset){
+    addSegmentSprite(n, value, offset){
         let building = new Building(this.scene);
-        building.create(spriteKey, offset, n);
+        building.create(value, offset, n);
         this.segments[n].sprites.push({ object: building, type: "bg" });
         this.segments[n].delivery = false;
     }
 
     generateRandomDelivery(position){
-        let random =  Phaser.Math.Between(0, 1)
+        let random =  Phaser.Math.Between(0, 1);
         let offset = random == 0 ? -2 : 2;
         this.addSegmentDelivery(position, 'sjj', offset)
     }
@@ -278,11 +275,11 @@ export class Circuit
         var type = Phaser.Math.Between(0, 6);
         if (type != 0) { 
             obstacle = new Obstacle(this.scene);
-            obstacle.create(spriteKey+type, type, this.obstaclesOffsets[type][offset], n);
+            obstacle.create(spriteKey+type, type - 1, offset, n);
         }
         else {
             obstacle = new Car(this.scene);
-            obstacle.create(spriteKey+type, this.obstaclesOffsets[type][offset], n);
+            obstacle.create(spriteKey+type, offset, n);
         }
         
         this.segments[n].sprites.push({ object: obstacle, type: "obstacle"});

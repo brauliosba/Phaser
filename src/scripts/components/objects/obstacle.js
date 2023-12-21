@@ -5,10 +5,20 @@ export class Obstacle extends Sprite
     constructor(scene){
         super(scene);
         this.scales = [1800, 2400, 2800, 2800, 3500, 3500]
+
+        this.obstaclesOffsets = 
+        [[-0.8, 0, 0.8], 
+        [-0.8, 0, 0.8],
+        [-0.8, 0, 0.8],
+        [-0.8, 0, 0.8],
+        [-0.8, 0, 0.8],
+        [-0.8, 0, 0.8]]
     }
 
     create(spriteSheet, type, offset, position){
-        super.create(spriteSheet, offset, position);
+        var obstacleOffset = this.obstaclesOffsets[type][offset];
+
+        super.create(spriteSheet, obstacleOffset, position);
         this.type = type;
         this.drawable = true;
 
@@ -35,7 +45,7 @@ export class Obstacle extends Sprite
         if (this.drawable && spriteScale * 20000 <= 5) {
             super.draw(destW, destH, destX, destY);
             this.sprite.setDepth(spriteScale * 10000);
-            this.sprite.setScale(spriteScale * this.scales[this.type - 1]);
+            this.sprite.setScale(spriteScale * this.scales[this.type]);
             this.sprite.setVisible(true);
 
             this.centerBodyOnBody(this.b1.body, this.sprite.body);

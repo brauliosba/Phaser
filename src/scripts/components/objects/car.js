@@ -4,15 +4,18 @@ export class Car extends Sprite
 {
     constructor(scene){
         super(scene);
+
+        this.carOffsets = [-1, 0, 1];
     }
 
     create(spriteSheet, offset, position){
-        super.create(spriteSheet, offset, position);
+        var carOffset = this.carOffsets[offset];
+        super.create(spriteSheet, carOffset, position);
         this.drawable = true;
 
-        if (offset != 0) {
+        if (carOffset != 0) {
             this.sprite = this.scene.physics.add.sprite(0, 0, spriteSheet, spriteSheet + '_00.png');
-            if (offset > 0) this.sprite.body.setOffset(50, 0);
+            if (carOffset > 0) this.sprite.body.setOffset(50, 0);
             else this.sprite.body.setOffset(30, 0);
         }
         else {
