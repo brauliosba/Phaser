@@ -45,14 +45,6 @@ export class Player
             this.playerBody.play('run');
         }, this);
 
-        this.playerBox = this.scene.add.sprite(1000, 1000, 'playerBoxRun').play('boxIdle').setVisible(false);
-        this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxReceive', function () {
-            this.playerBox.play('boxRun');
-        }, this);
-        this.playerBox.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'boxSend', function () {
-            this.playerBox.play('boxRun');
-        }, this);
-
         //Shield
         this.playerShield = this.scene.add.sprite(1000, 1000, 'playerShield').setVisible(false);
 
@@ -81,9 +73,6 @@ export class Player
         this.b1.body.setSize(this.screen.w/5, this.screen.h/2.2, true);
         this.b1.disableBody(false, false);
         this.b1.setDebugBodyColor(0xffff00);
-
-        this.playerBox.setDepth(4);
-        this.playerBox.setDisplaySize(this.screen.w/3, this.screen.h/3);
 
         this.playerShield.setDepth(4);
         this.playerShield.setScale(1.7);
@@ -222,8 +211,6 @@ export class Player
     updatePosition(){
         this.playerBody.setPosition(this.screen.x, this.screen.y);
         this.playerBody.setVisible(true);
-        this.playerBox.setPosition(this.screen.x, this.screen.y);
-        this.playerBox.setVisible(false);
         this.playerShield.setPosition(this.screen.x, this.screen.y);
         this.playerDoubleParticles.setPosition(this.screen.x, this.screen.y);
         this.closeText.setPosition(this.screen.x - 100, this.screen.y - 150);
@@ -253,7 +240,7 @@ export class Player
             }
         } 
 
-        if (this.playerState == 'run') { this.playerBody.play('run', true); this.playerBox.play('boxRun', true); }
+        if (this.playerState == 'run') { this.playerBody.play('run', true); }
         else if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
@@ -268,8 +255,6 @@ export class Player
         if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
             this.playerBody.setFlipX(false);
             this.playerBody.play('tack', true);
-            this.playerBox.setFlipX(false);
-            this.playerBox.play('boxTack', true);
         }
         this.screen.x = (newPosX > this.limitBound ) ?  newPosX : this.limitBound;
     }
@@ -279,8 +264,6 @@ export class Player
         if (this.playerBody.anims.getName() != 'receive' && this.playerBody.anims.getName() != 'send'){ 
             this.playerBody.setFlipX(true); 
             this.playerBody.play('tack', true); 
-            this.playerBox.setFlipX(true);
-            this.playerBox.play('boxTack', true);
         }
         this.screen.x = (newPosX < this.data.get('screen') - this.limitBound) ?  newPosX : this.data.get('screen') - this.limitBound;
     }
@@ -295,7 +278,6 @@ export class Player
             this.scene.data.set('state', "game_over");
             this.speed = 0;
             //this.playerBody.stop();
-            this.playerBox.stop();
             this.playerBody.disableBody(false, false);
             this.playerBody.play('dead', true);
             this.playerBody.on('animationcomplete', () => 
@@ -421,15 +403,12 @@ export class Player
 
     playDeliverAnimation(alignment){
         this.playerBody.setFlipX(alignment > 0);
-        this.playerBox.setFlipX(alignment > 0);
         this.playerBody.play('send', true);
-        this.playerBox.play('boxSend', true);
         this.playerState = 'receive';
     }
 
     playPickAnimation(){
         this.playerBody.play('receive', true);
-        this.playerBox.play('boxReceive', true);
         this.playerState = 'receive';
     }
 
