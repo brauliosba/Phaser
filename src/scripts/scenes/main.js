@@ -178,7 +178,7 @@ export class MainScene extends Phaser.Scene
         this.anims.create({
             key: 'dead',
             frames: this.anims.generateFrameNumbers('playerDead', { start: 0, end: 11, first: 0 }),
-            frameRate: 20,
+            frameRate: 15,
             repeat: 0
         });
 
