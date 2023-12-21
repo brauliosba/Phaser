@@ -71,14 +71,14 @@ export class Player
         
         // set the player screen position
         this.screen.x = this.data.get('screen_c');
-        this.screen.y = this.data.get('screen') - this.screen.h/5 - 50;
+        this.screen.y = this.data.get('screen') - this.screen.h/2.5;
 
         this.playerBody.setDepth(4);
-        this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
-        this.playerBody.body.setSize(150,150,true);
+        this.playerBody.setScale(.6);
+        this.playerBody.body.setSize(100,100,true);
 
         this.b1 = this.scene.physics.add.image(1000, 1000);
-        this.b1.body.setSize(this.screen.w/15, this.screen.h/4, true);
+        this.b1.body.setSize(this.screen.w/5, this.screen.h/2.2, true);
         this.b1.disableBody(false, false);
         this.b1.setDebugBodyColor(0xffff00);
 
@@ -88,7 +88,7 @@ export class Player
         this.playerShield.setDepth(4);
         this.playerShield.setScale(1.7);
 
-        this.limitBound = this.screen.w/10;
+        this.limitBound = this.screen.w/3;
 
         //mobile contorls
         if (this.data.get('IS_TOUCH')) {
@@ -223,7 +223,7 @@ export class Player
         this.playerBody.setPosition(this.screen.x, this.screen.y);
         this.playerBody.setVisible(true);
         this.playerBox.setPosition(this.screen.x, this.screen.y);
-        this.playerBox.setVisible(true);
+        this.playerBox.setVisible(false);
         this.playerShield.setPosition(this.screen.x, this.screen.y);
         this.playerDoubleParticles.setPosition(this.screen.x, this.screen.y);
         this.closeText.setPosition(this.screen.x - 100, this.screen.y - 150);
@@ -294,9 +294,16 @@ export class Player
         if (!this.shielded) {
             this.scene.data.set('state', "game_over");
             this.speed = 0;
-            this.playerBody.stop();
+            //this.playerBody.stop();
             this.playerBox.stop();
             this.playerBody.disableBody(false, false);
+            this.playerBody.play('dead', true);
+            this.playerBody.on('animationcomplete', () => 
+            { 
+                if (this.scene.data.get('state') == "game_over") {
+                    this.scene.anims.pauseAll();
+                } 
+            });
             this.speedEvent.remove(false);
             this.scoreEvent.remove(false);
             console.log('colisiono');

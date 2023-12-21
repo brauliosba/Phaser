@@ -77,7 +77,6 @@ export class Car extends Sprite
 
     collisionAnim(){
         if (this.scene.data.get('state') == "game_over") {
-            this.scene.anims.pauseAll();
         } 
     }
 

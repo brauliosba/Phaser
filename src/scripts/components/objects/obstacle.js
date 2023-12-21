@@ -72,7 +72,6 @@ export class Obstacle extends Sprite
             { 
                 if (this.scene.data.get('state') == "game_over") {
                     this.sprite.setVisible(false); 
-                    this.scene.anims.pauseAll();
                 } 
             });
     }

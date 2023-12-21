@@ -18,16 +18,12 @@ export class MainScene extends Phaser.Scene
         this.load.image('imgBack', 'src/images/img_back.png');
 
         //player
-        this.load.spritesheet('playerRun', 'src/images/player/playerRun.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerTack', 'src/images/player/playerTack.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerReceive', 'src/images/player/playerReceive.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerSend', 'src/images/player/playerSend.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerBoxRun', 'src/images/player/playerBoxRun.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerBoxTack', 'src/images/player/playerBoxTack.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerBoxReceive', 'src/images/player/playerBoxReceive.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerBoxSend', 'src/images/player/playerBoxSend.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerIdle', 'src/images/player/playerIdle.png', { frameWidth: 1500, frameHeight: 1000});
-        this.load.spritesheet('playerBoxIdle', 'src/images/player/playerBoxIdle.png', { frameWidth: 1500, frameHeight: 1000});
+        this.load.spritesheet('playerRun', 'src/images/player/playerRun.png', { frameWidth: 400, frameHeight: 600});
+        this.load.spritesheet('playerTack', 'src/images/player/playerTack.png', { frameWidth: 400, frameHeight: 600});
+        this.load.spritesheet('playerReceive', 'src/images/player/playerReceive.png', { frameWidth: 400, frameHeight: 600});
+        this.load.spritesheet('playerSend', 'src/images/player/playerSend.png', { frameWidth: 500, frameHeight: 600});
+        this.load.spritesheet('playerIdle', 'src/images/player/playerIdle.png', { frameWidth: 400, frameHeight: 600});
+        this.load.spritesheet('playerDead', 'src/images/player/playerDead.png', { frameWidth: 900, frameHeight: 600});
 
         //UI
         this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
@@ -173,34 +169,6 @@ export class MainScene extends Phaser.Scene
         });
 
         this.anims.create({
-            key: 'boxRun',
-            frames: this.anims.generateFrameNumbers('playerBoxRun', { start: 0, end: 2, first: 0 }),
-            frameRate: 20,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'boxTack',
-            frames: this.anims.generateFrameNumbers('playerBoxTack', { start: 0, end: 2, first: 0 }),
-            frameRate: 20,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'boxReceive',
-            frames: this.anims.generateFrameNumbers('playerBoxReceive', { start: 0, end: 2, first: 0 }),
-            frameRate: 10,
-            repeat: 0
-        });
-
-        this.anims.create({
-            key: 'boxSend',
-            frames: this.anims.generateFrameNumbers('playerBoxSend', { start: 0, end: 2, first: 0 }),
-            frameRate: 10,
-            repeat: 0
-        });
-
-        this.anims.create({
             key: 'idle',
             frames: this.anims.generateFrameNumbers('playerIdle', { start: 0, end: 11, first: 0 }),
             frameRate: 15,
@@ -208,10 +176,10 @@ export class MainScene extends Phaser.Scene
         });
 
         this.anims.create({
-            key: 'boxIdle',
-            frames: this.anims.generateFrameNumbers('playerBoxIdle', { start: 0, end: 11, first: 0 }),
-            frameRate: 15,
-            repeat: -1
+            key: 'dead',
+            frames: this.anims.generateFrameNumbers('playerDead', { start: 0, end: 11, first: 0 }),
+            frameRate: 20,
+            repeat: 0
         });
 
         //Obstacles animations
