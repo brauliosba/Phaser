@@ -19,9 +19,10 @@ export class Player
         this.currentSpeed = 0;
 
         // driving contorl parameters
+        this.data = this.scene.data;
         this.speed = 0;
-        this.acceleration = this.scene.data.get('acceleration');
-        this.horizontalSpeed = this.scene.data.get('horizontalSpeed');
+        this.acceleration = this.data.get('acceleration');
+        this.horizontalSpeed = this.data.get('horizontalSpeed');
 
         this.playerBody;
         this.currentRoadPos = 1;
@@ -29,7 +30,7 @@ export class Player
         this.score = 0;
         this.shielded = false;
         this.double = false;
-        this.invulnerabilityTime = this.scene.data.get('invulnerability');
+        this.invulnerabilityTime = this.data.get('invulnerability');
     }
 
     init(){
@@ -69,8 +70,8 @@ export class Player
         this.screen.h = this.playerBody.height;
         
         // set the player screen position
-        this.screen.x = this.scene.data.get('screen_c');
-        this.screen.y = this.scene.data.get('screen') - this.screen.h/5 - 50;
+        this.screen.x = this.data.get('screen_c');
+        this.screen.y = this.data.get('screen') - this.screen.h/5 - 50;
 
         this.playerBody.setDepth(4);
         this.playerBody.setDisplaySize(this.screen.w/3, this.screen.h/3);
@@ -90,12 +91,12 @@ export class Player
         this.limitBound = this.screen.w/10;
 
         //mobile contorls
-        if (this.scene.data.get('IS_TOUCH')) {
+        if (this.data.get('IS_TOUCH')) {
             this.stopMove = false;
             
             this.leftButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.leftButton.setDisplaySize(500, 500);
-            this.leftButton.setPosition(this.screen.x / 2, this.scene.data.get('screen') - 250);
+            this.leftButton.setPosition(this.screen.x / 2, this.data.get('screen') - 250);
             this.leftButton.on('pointerdown', () => { this.stopMove = false, this.playerState = 'left', console.log("izq")});
             this.leftButton.on('pointerup', () => this.stopMove = true);
             this.leftButton.setDepth(4.9);
@@ -103,15 +104,15 @@ export class Player
 
             this.rightButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.rightButton.setDisplaySize(500, 500);
-            this.rightButton.setPosition(3 * this.screen.x / 2, this.scene.data.get('screen') - 250);
+            this.rightButton.setPosition(3 * this.screen.x / 2, this.data.get('screen') - 250);
             this.rightButton.on('pointerdown', () => { this.stopMove = false, this.playerState = 'right', console.log("der")});
             this.rightButton.on('pointerup', () => this.stopMove = true);
             this.rightButton.setDepth(4.9);
             this.rightButton.alpha = 0.001;
             /*
             this.scene.input.on('pointerdown', function(pointer){
-                if (Math.floor(pointer.x/(this.scene.data.get('screen')/2)) === 1) this.playerState = 'right';
-                if (Math.floor(pointer.x/(this.scene.data.get('screen')/2)) === 0) this.playerState = 'left';
+                if (Math.floor(pointer.x/(this.data.get('screen')/2)) === 1) this.playerState = 'right';
+                if (Math.floor(pointer.x/(this.data.get('screen')/2)) === 0) this.playerState = 'left';
             }, this);
             this.scene.input.on('pointerup', () => this.playerState = 'idle');
             */
@@ -128,13 +129,30 @@ export class Player
         this.speedText.setDepth(5);
         var txt = this.scene.add.text(50, 230, 'Velocidad horizontal: ' + this.horizontalSpeed, { fontSize : 30, color: '0x000000' });
         txt.setDepth(5);
-        txt = this.scene.add.text(50, 260, 'Espacio entre oleadas: ' + this.scene.data.get('waveDelay'), { fontSize : 30, color: '0x000000' });
+        txt = this.scene.add.text(50, 260, 'Espacio entre oleadas: ' + this.data.get('waveDelay'), { fontSize : 30, color: '0x000000' });
         txt.setDepth(5);
 
         this.closeText = this.scene.add.text(150, 50, 'Perfecto', { font: '600 30px Montserrat' });
         this.closeText.setDepth(5);
         this.closeText.setVisible(false);
         this.closeText.angle = -20;
+
+        this.sliderIndicator = this.scene.add.sprite(0,0,'panelUI','slider_relleno.png').setDisplaySize(600,35).setVisible(false);
+        this.multiplierSlider = this.scene.rexUI.add.slider({
+            x: 200,
+            y: 150,
+            width: 300,
+            height: 30,
+            orientation: 'x',
+            value:  0,
+
+            track: this.scene.rexUI.add.roundRectangle(0, 0, 0, 0, 0).setStrokeStyle(10, 0xffffff, 1),
+            indicator: this.scene.panel.addCropResizeMethod(this.sliderIndicator),
+            thumb: this.scene.rexUI.add.roundRectangle(0, 0, 10, 25, 0),
+
+            input: 'drag',
+        }).layout().setDepth(5);
+        this.multiplierText = this.scene.add.text(380, 120, 'x1', { font: '600 50px Montserrat' });
     }
 
     restart (){
@@ -142,11 +160,11 @@ export class Player
         this.y = 0;
         this.z = 0;
 
-        this.speed = this.scene.data.get('initialSpeed');
+        this.speed = this.data.get('initialSpeed');
         console.log('Velocidad Inicial: ' + this.speed);
         console.log('Velocidad Horizotal: ' + this.horizontalSpeed);
         this.totalCircuitSegments = this.scene.circuit.total_segments;
-        let scoringTime = this.scene.data.get('scoringTime');
+        let scoringTime = this.data.get('scoringTime');
         this.playerBody.play('run', true);
         this.playerState = 'run';
         this.packageCounter = 0;
@@ -161,8 +179,39 @@ export class Player
         this.powerEvent.paused = true;
     }
 
+    sliderAnim(start, end, onComplete){
+        this.scene.tweens.add({
+            targets: this.multiplierSlider,
+            ease: 'sine.inout',
+            duration: 250,
+            repeat: 0,
+            value: {
+                getStart: () => start,
+                getEnd: () => end
+            },
+            onComplete: onComplete
+        });
+    }
+
+    updateMultiplier(){
+        this.sliderIndicator.setVisible(true);
+        this.packageMultiplier += 0.1 * this.packageCounter;
+        let newValue = this.multiplierSlider.value;
+        newValue += 0.1 * this.packageCounter;
+        if (newValue >= 1) {
+            this.sliderAnim(this.multiplierSlider.value, 1, () => 
+                {
+                    this.multiplierText.setText('x' + Phaser.Math.FloorTo(this.packageMultiplier));
+                    this.multiplierSlider.value = 0;
+                    this.sliderAnim(0, newValue - 1, null);
+                });
+        } else{
+            this.sliderAnim(this.multiplierSlider.value, newValue, null);
+        }
+    }
+
     updateScore(){
-        this.score += this.double ? 2 : 1;
+        this.score += (this.double ? 2 : 1 ) * Phaser.Math.FloorTo(this.packageMultiplier);
     }
 
     updateSpeed(){
@@ -190,7 +239,7 @@ export class Player
         if (this.z >= 30000 && this.currentRoadPos == 2) {this.currentRoadPos = 3; circuit.addRandomSprites(this.totalCircuitSegments / 3, 2 * this.totalCircuitSegments / 3);}
         if (this.z >= 15000 && this.currentRoadPos == 1) {this.currentRoadPos = 2; circuit.addRandomSprites(0, this.totalCircuitSegments / 3);}
 
-        if (!this.scene.data.get('IS_TOUCH')) {
+        if (!this.data.get('IS_TOUCH')) {
             if (this.cursors.left.isDown){
                 this.playerState = 'left';
             }
@@ -208,10 +257,10 @@ export class Player
         else if(this.playerState == 'left') this.movePlayerLeft(dt);
         else if(this.playerState == 'right') this.movePlayerRight(dt);
 
-        if (this.scene.data.get('IS_TOUCH') && this.stopMove) { 
+        if (this.data.get('IS_TOUCH') && this.stopMove) { 
             if (this.playerState != 'receive') this.playerState = 'run';
         }
-        //if (!this.scene.data.get('IS_TOUCH')) this.playerState = 'run';
+        //if (!this.data.get('IS_TOUCH')) this.playerState = 'run';
     }
 
     movePlayerLeft(dt){
@@ -233,7 +282,7 @@ export class Player
             this.playerBox.setFlipX(true);
             this.playerBox.play('boxTack', true);
         }
-        this.screen.x = (newPosX < this.scene.data.get('screen') - this.limitBound) ?  newPosX : this.scene.data.get('screen') - this.limitBound;
+        this.screen.x = (newPosX < this.data.get('screen') - this.limitBound) ?  newPosX : this.data.get('screen') - this.limitBound;
     }
 
     centerBodyOnBody (a, b) {
@@ -341,7 +390,7 @@ export class Player
             this.checkDeliveryZone(delivery)
             if (delivery.zone == "green") 
             {
-                let rightConditional = this.screen.x == this.scene.data.get('screen') - this.limitBound;
+                let rightConditional = this.screen.x == this.data.get('screen') - this.limitBound;
                 let leftConditional = this.screen.x == this.limitBound;
                 let inPos = delivery.alignment > 0 ?  rightConditional : leftConditional
 
@@ -358,8 +407,8 @@ export class Player
         this.playDeliverAnimation(alignment);
         let points = 10 * this.packageCounter * this.packageCounter;
         this.score += points;
+        this.updateMultiplier();
         this.packageCounter = 0;
-        this.packageMultiplier += 0.1 * this.packageCounter
         this.packageText.setText('x' + this.packageCounter);
     }
 
