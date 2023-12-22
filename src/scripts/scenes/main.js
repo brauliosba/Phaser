@@ -37,6 +37,7 @@ export class MainScene extends Phaser.Scene
         this.load.atlas('obstacle0', 'src/images/obstacles/obstacle_A.png', 'src/images/obstacles/obstacle_A.json');
         this.load.spritesheet('obstacle0Central', 'src/images/obstacles/obstacle_A_Central.png', { frameWidth: 741, frameHeight: 597});
         this.load.atlas('staticObstacles', 'src/images/obstacles/staticObstacles.png', 'src/images/obstacles/staticObstacles.json');
+        this.load.atlas('perspectiveObstacles', 'src/images/obstacles/perspectiveObstacles.png', 'src/images/obstacles/perspectiveObstacles.json');
         this.load.spritesheet('obstacle1Break', 'src/images/obstacles/obstacle1Anim.png', { frameWidth: 900, frameHeight: 700});
         this.load.spritesheet('obstacle2Break', 'src/images/obstacles/obstacle2Anim.png', { frameWidth: 900, frameHeight: 1050});
 

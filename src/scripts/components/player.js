@@ -340,7 +340,7 @@ export class Player
     }
 
     playerCollision(type){
-        if (type != 4) {
+        if (type != 7) {
             if (!this.shielded) {
                 this.scene.data.set('state', "game_over");
                 this.speed = 0;

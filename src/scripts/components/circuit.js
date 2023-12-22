@@ -1,4 +1,5 @@
 import {Obstacle} from './objects/obstacle.js';
+import {PerspectiveObstacle} from './objects/perspectiveObstacle.js';
 import {Car} from './objects/car.js';
 import {Building} from './objects/building.js';
 import {Delivery} from './objects/delivery.js';
@@ -272,9 +273,9 @@ export class Circuit
 
     addSegmentObstacle(n, spriteKey, offset){
         let obstacle;
-        var type = Phaser.Math.Between(0, 6);
-        if (type != 0) { 
-            obstacle = new Obstacle(this.scene);
+        var type = Phaser.Math.Between(0, 8);
+        if (type != 0) {
+            obstacle = (type <= 6) ? new Obstacle(this.scene) : new PerspectiveObstacle(this.scene);       
             obstacle.create(spriteKey+type, type - 1, offset, n);
         }
         else {
