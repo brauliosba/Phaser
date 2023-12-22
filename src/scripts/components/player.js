@@ -13,14 +13,12 @@ export class Player
         // player screen coordinates
         this.screen = {x:0, y:0, w:0, h:0};
 
-        // max speed (to avoid moving for more than 1 road segment, assuming fps = 60)
-        this.maxSpeed = ((scene.circuit.segmentLength / 2) / (1/60));
-        this.playerSpeeds = [this.maxSpeed/3, 2*this.maxSpeed/3, this.maxSpeed, 2*this.maxSpeed, 3*this.maxSpeed]
-        this.currentSpeed = 0;
+        this.isGrounded = true;
 
         // driving contorl parameters
         this.data = this.scene.data;
         this.speed = 0;
+        this.maxSpeed = 50000;
         this.acceleration = this.data.get('acceleration');
         this.horizontalSpeed = this.data.get('horizontalSpeed');
 
@@ -47,6 +45,8 @@ export class Player
 
         //Shield
         this.playerShield = this.scene.add.sprite(1000, 1000, 'playerShield').setVisible(false);
+        this.playerShield.setDepth(4);
+        this.playerShield.setScale(1.7);
 
         //Particles    
         this.playerDoubleParticles = this.scene.add.particles(1000, 1000, 'flares', {
@@ -74,9 +74,6 @@ export class Player
         this.b1.disableBody(false, false);
         this.b1.setDebugBodyColor(0xffff00);
 
-        this.playerShield.setDepth(4);
-        this.playerShield.setScale(1.7);
-
         this.limitBound = this.screen.w/3;
 
         //mobile contorls
@@ -86,7 +83,7 @@ export class Player
             this.leftButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.leftButton.setDisplaySize(500, 500);
             this.leftButton.setPosition(this.screen.x / 2, this.data.get('screen') - 250);
-            this.leftButton.on('pointerdown', () => { this.stopMove = false, this.playerState = 'left', console.log("izq")});
+            this.leftButton.on('pointerdown', () => { this.stopMove = false; this.clickLeft();});
             this.leftButton.on('pointerup', () => this.stopMove = true);
             this.leftButton.setDepth(4.9);
             this.leftButton.alpha = 0.001;
@@ -94,7 +91,7 @@ export class Player
             this.rightButton = this.scene.add.image(0, 0,'imgBack').setInteractive();
             this.rightButton.setDisplaySize(500, 500);
             this.rightButton.setPosition(3 * this.screen.x / 2, this.data.get('screen') - 250);
-            this.rightButton.on('pointerdown', () => { this.stopMove = false, this.playerState = 'right', console.log("der")});
+            this.rightButton.on('pointerdown', () => { this.stopMove = false, this.clickRight();});
             this.rightButton.on('pointerup', () => this.stopMove = true);
             this.rightButton.setDepth(4.9);
             this.rightButton.alpha = 0.001;
@@ -204,7 +201,8 @@ export class Player
     }
 
     updateSpeed(){
-        this.speed += this.acceleration;
+        var newSpeed = this.speed + this.acceleration
+        this.speed = newSpeed > this.maxSpeed ? this.maxSpeed : newSpeed;
         this.speedText.setText('Velocidad actual: ' + this.speed);
     }
 
@@ -228,10 +226,10 @@ export class Player
 
         if (!this.data.get('IS_TOUCH')) {
             if (this.cursors.left.isDown){
-                this.playerState = 'left';
+                this.clickLeft();
             }
             else if (this.cursors.right.isDown){
-                this.playerState = 'right';
+                this.clickRight();
             }
             
             if (this.cursors.left.isUp && this.cursors.right.isUp)
@@ -248,6 +246,22 @@ export class Player
             if (this.playerState != 'receive') this.playerState = 'run';
         }
         //if (!this.data.get('IS_TOUCH')) this.playerState = 'run';
+    }
+
+    centerBodyOnBody (a, b) {
+        a.position.set(b.x + b.halfWidth - a.halfWidth, b.y + b.halfHeight - a.halfHeight);
+    }
+
+    clickLeft(){
+        if (this.isGrounded) {
+            this.playerState = 'left';
+        }
+    }
+
+    clickRight(){
+        if (this.isGrounded) {
+            this.playerState = 'right';
+        }
     }
 
     movePlayerLeft(dt){
@@ -268,30 +282,68 @@ export class Player
         this.screen.x = (newPosX < this.data.get('screen') - this.limitBound) ?  newPosX : this.data.get('screen') - this.limitBound;
     }
 
-    centerBodyOnBody (a, b) {
-        a.position.set(b.x + b.halfWidth - a.halfWidth, b.y + b.halfHeight - a.halfHeight);
+    jumpUp(){
+        if (this.isGrounded){
+            this.isGrounded = false;
+            this.playerBody.disableBody(false, false);
+            this.b1.disableBody(false, false);
+            console.log(this.screen)
+            this.scene.tweens.add({
+                targets: this.screen,
+                ease: 'linear',
+                duration: 500,
+                repeat: 0,
+                y: {
+                    getStart: () => 840,
+                    getEnd: () => 500
+                },
+                onComplete: () => this.scene.time.addEvent({ delay: 1000, callback: this.jumpDown, callbackScope: this, loop: false })               
+            });
+        }
+    }
+
+    jumpDown(){
+        this.scene.tweens.add({
+            targets: this.screen,
+            ease: 'linear',
+            duration: 500,
+            repeat: 0,
+            y: {
+                getStart: () => 500,
+                getEnd: () => 840
+            },
+            onComplete: () => {
+                this.isGrounded = true;
+                this.playerBody.enableBody();
+                this.b1.enableBody();
+            }
+        });
     }
 
     //COLLISIONS
-    playerCollision(){
-        if (!this.shielded) {
-            this.scene.data.set('state', "game_over");
-            this.speed = 0;
-            //this.playerBody.stop();
-            this.playerBody.disableBody(false, false);
-            this.playerBody.play('dead', true);
-            this.playerBody.on('animationcomplete', () => 
-            { 
-                if (this.scene.data.get('state') == "game_over") {
-                    this.scene.anims.pauseAll();
-                } 
-            });
-            this.speedEvent.remove(false);
-            this.scoreEvent.remove(false);
-            console.log('colisiono');
-            this.scene.time.destroy();
-        } else{
-            this.shildBreak();
+    playerCollision(type){
+        if (type != 4) {
+            if (!this.shielded) {
+                this.scene.data.set('state', "game_over");
+                this.speed = 0;
+                //this.playerBody.stop();
+                this.playerBody.disableBody(false, false);
+                this.playerBody.play('dead', true);
+                this.playerBody.on('animationcomplete', () => 
+                { 
+                    if (this.scene.data.get('state') == "game_over") {
+                        this.scene.anims.pauseAll();
+                    } 
+                });
+                this.speedEvent.remove(false);
+                this.scoreEvent.remove(false);
+                console.log('colisiono');
+                this.scene.time.destroy();
+            } else{
+                this.shildBreak();
+            }
+        }else{
+            this.jumpUp();
         }
     }
 

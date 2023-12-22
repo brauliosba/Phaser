@@ -31,8 +31,8 @@ export class Car extends Sprite
         this.b1 = this.scene.physics.add.image();
         this.b1.setDebugBodyColor(0xffff00);
 
-        this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
-            { this.scene.player.playerCollision(); this.collisionAnim(); });
+        var collision = this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
+            { collision.active = false; this.scene.player.playerCollision(); this.collisionAnim(); });
 
         //var closeCall = this.scene.physics.add.overlap(this.b1, this.scene.player.b1, () => 
         //    { closeCall.active = false; this.scene.player.playerCloseCallCollision(this.b1); });
@@ -74,8 +74,15 @@ export class Car extends Sprite
         super.disable();
         this.sprite.disableBody(false, false);
         this.b1.disableBody(false, false);
+        this.b1.setVisible(false);
         this.checkEvent.destroy();
         this.drawable = false;
+    }
+
+    destroy(){
+        super.destroy();
+        this.b1.destroy();
+        this.b1 = null;
     }
 
     collisionAnim(){

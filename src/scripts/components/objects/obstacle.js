@@ -30,8 +30,8 @@ export class Obstacle extends Sprite
         this.b1 = this.scene.physics.add.image();
         this.b1.setDebugBodyColor(0xffff00);
         
-        this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
-            { this.scene.player.playerCollision(); this.collisionAnim(); });
+        var collision = this.scene.physics.add.overlap(this.sprite, this.scene.player.playerBody, () => 
+            { collision.active = false; this.scene.player.playerCollision(this.type); this.collisionAnim(); });
 
         //var closeCall = this.scene.physics.add.overlap(this.b1, this.scene.player.b1, () => 
         //    { closeCall.active = false; this.scene.player.playerCloseCallCollision(this.b1); });
@@ -66,24 +66,33 @@ export class Obstacle extends Sprite
         super.disable();
         this.sprite.disableBody(false, false);
         this.b1.disableBody(false, false);
+        this.b1.setVisible(false);
         this.checkEvent.destroy();
         this.drawable = false;
     }
 
+    destroy(){
+        super.destroy();
+        this.b1.destroy();
+        this.b1 = null;
+    }
+
     collisionAnim()
     {
-        if (this.spriteSheet == 'obstacle1') {
-            this.sprite.setDepth(5);
-            this.sprite.setScale(.5);
-            this.sprite.setPosition(this.sprite.x - 70, this.sprite.y - 70)
+        if (this.type != 4) {
+            if (this.spriteSheet == 'obstacle1') {
+                this.sprite.setDepth(5);
+                this.sprite.setScale(.5);
+                this.sprite.setPosition(this.sprite.x - 70, this.sprite.y - 70)
+            }
+            this.sprite.play(this.spriteSheet + 'Break');
+            this.sprite.on('animationcomplete', () => 
+                { 
+                    if (this.scene.data.get('state') == "game_over") {
+                        this.sprite.setVisible(false); 
+                    } 
+                });
         }
-        this.sprite.play(this.spriteSheet + 'Break');
-        this.sprite.on('animationcomplete', () => 
-            { 
-                if (this.scene.data.get('state') == "game_over") {
-                    this.sprite.setVisible(false); 
-                } 
-            });
     }
 
     checkPosition(){
