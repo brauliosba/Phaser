@@ -106,7 +106,7 @@ export class Player
         }
 
         //UI
-        this.packageImage = this.scene.add.image(80, 80, 'deliveryButton');
+        this.packageImage = this.scene.add.image(80, 80, 'icons', 'package');
         this.packageImage.setDisplaySize(80,80);
         this.packageImage.setDepth(5);
         this.packageText = this.scene.add.text(150, 50, 'x0', { font: '600 50px Montserrat' });

@@ -8,7 +8,7 @@ export class PickUp extends Sprite
 
     create(spriteSheet, offset, type, position){
         super.create(spriteSheet, offset, position);
-        this.sprite = this.scene.physics.add.sprite(0, 0, spriteSheet);
+        this.sprite = this.scene.physics.add.sprite(0, 0, 'icons', spriteSheet);
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
         this.type = type;
@@ -19,7 +19,7 @@ export class PickUp extends Sprite
         if (spriteScale * 20000 <= 5) {
             super.draw(destW, destH, destX, destY);
             this.sprite.setDepth(spriteScale * 10000);
-            this.sprite.setScale((spriteScale * (this.type == 'power' ? 20000 : 2400)));
+            this.sprite.setScale((spriteScale * 5000));
             this.sprite.enableBody();
             this.sprite.setVisible(true);
         } else {

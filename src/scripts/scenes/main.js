@@ -26,7 +26,6 @@ export class MainScene extends Phaser.Scene
         this.load.spritesheet('playerDead', 'src/images/player/playerDead.png', { frameWidth: 900, frameHeight: 600});
 
         //UI
-        this.load.image('deliveryButton', 'src/images/UI/boton_regalo.png');
         this.load.image('pauseButton', 'src/images/UI/boton_pausa.png');
         this.load.image('panel', 'src/images/UI/panel.png');
         this.load.atlas('panelUI', 'src/images/UI/panelUI.png', 'src/images/UI/panelUI.json');
@@ -41,13 +40,11 @@ export class MainScene extends Phaser.Scene
         this.load.spritesheet('obstacle1Break', 'src/images/obstacles/obstacle1Anim.png', { frameWidth: 900, frameHeight: 700});
         this.load.spritesheet('obstacle2Break', 'src/images/obstacles/obstacle2Anim.png', { frameWidth: 900, frameHeight: 1050});
 
+        //Icons
+        this.load.atlas('icons', 'src/images/powers/icons.png', 'src/images/powers/icons.json');
+
         //Powers
-        this.load.image('shield', 'src/images/powers/Icon19.png');
         this.load.image('playerShield', 'src/images/powers/ring.png');
-        this.rt = this.add.renderTexture(0, 0, 50, 50).setVisible(false);;
-        this.textTest = this.add.text(0, 0, 'x2',{font: '600 45px Montserrat'}).setVisible(false);
-        this.rt.draw(this.textTest, 0, 0)
-        this.rt.saveTexture('double');
         this.load.atlas('flares', 'src/images/powers/flares.png', 'src/images/powers/flares.json');
 
         //Plugins

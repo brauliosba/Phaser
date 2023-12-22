@@ -292,7 +292,7 @@ export class Circuit
             this.addSegmentPower(position, this.powersOffsets[offset], type, powerType);
         }
         else{
-            this.addSegmentPackage(position, 'deliveryButton', this.powersOffsets[offset], type);
+            this.addSegmentPackage(position, 'package', this.powersOffsets[offset], type);
         }
     }
 

@@ -14,7 +14,6 @@ export class Sprite
     draw(destW, destH, destX, destY){
         this.sprite.setDisplaySize(destW, destH);
         this.sprite.setPosition(destX, destY);
-
         this.sprite.setVisible(true);
     }
 
