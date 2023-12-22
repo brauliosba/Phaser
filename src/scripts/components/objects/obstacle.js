@@ -26,6 +26,7 @@ export class Obstacle extends Sprite
         this.sprite.body.moves = false;
         this.sprite.body.pushable = false;
         this.sprite.setVisible(false);
+        if (type == 4) this.sprite.setTint(0x00ff00);
 
         this.b1 = this.scene.physics.add.image();
         this.b1.setDebugBodyColor(0xffff00);

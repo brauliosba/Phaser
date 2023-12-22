@@ -28,7 +28,8 @@ export class Player
         this.score = 0;
         this.shielded = false;
         this.double = false;
-        this.invulnerabilityTime = this.data.get('invulnerability');
+        this.shieldInviTime = this.data.get('shieldInvi');
+        this.jumpInviTime = this.data.get('jumpInvi');
     }
 
     init(){
@@ -314,13 +315,30 @@ export class Player
             },
             onComplete: () => {
                 this.isGrounded = true;
+                this.invulnerabilityAnimation(this.jumpInviTime, this.jumpInviTime/250);
+            }
+        });
+    }
+
+    //COLLISIONS
+    invulnerabilityAnimation(time){
+        this.scene.tweens.add({
+            targets: this.playerBody,
+            ease: 'sine.inout',
+            duration: time,
+            yoyo: true,
+            repeat: 0,
+            alpha: {
+                getStart: () => 1,
+                getEnd: () => 0.3
+            },
+            onComplete: () => {
                 this.playerBody.enableBody();
                 this.b1.enableBody();
             }
         });
     }
 
-    //COLLISIONS
     playerCollision(type){
         if (type != 4) {
             if (!this.shielded) {
@@ -351,18 +369,8 @@ export class Player
         this.shielded = false;
         this.playerShield.setVisible(false);
         this.playerBody.disableBody(false, false);
-        this.scene.tweens.add({
-            targets: this.playerBody,
-            ease: 'sine.inout',
-            duration: this.invulnerabilityTime,
-            yoyo: true,
-            repeat: 1,
-            alpha: {
-                getStart: () => 1,
-                getEnd: () => 0.3
-            },
-        });
-        this.scene.time.addEvent({ delay: this.invulnerabilityTime, callback: () => this.playerBody.enableBody() , callbackScope: this});
+        this.b1.disableBody(false, false);
+        this.invulnerabilityAnimation(this.shieldInviTime, this.shieldInviTime/250);
     }
 
     removePower(){
