@@ -18,7 +18,7 @@ export class Player
         // driving contorl parameters
         this.data = this.scene.data;
         this.speed = 0;
-        this.maxSpeed = 50000;
+        this.maxSpeed = this.data.get('maxSpeed');
         this.acceleration = this.data.get('acceleration');
         this.horizontalSpeed = this.data.get('horizontalSpeed');
 

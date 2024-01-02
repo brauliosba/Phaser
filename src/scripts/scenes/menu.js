@@ -33,6 +33,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('screen', dim);
         this.data.set('screen_c', dim/2);
         this.data.set('initialSpeed', 3000);
+        this.data.set('maxSpeed', 50000);
         this.data.set('horizontalSpeed', 1800);
         this.data.set('acceleration', 28);
         this.data.set('waveDelay', 60);
@@ -96,17 +97,18 @@ export class MenuScene extends Phaser.Scene
     }
 
     exposedVariables(){
-        let y = 260
+        let y = 200
         let space = 60;
         this.addVariable(y, "Velocidad Inicial:", 'initialSpeed');
-        this.addVariable(y + space * 1, "Velocidad Lateral:", 'horizontalSpeed');
-        this.addVariable(y + space * 2, "Aceleración:", 'acceleration');
-        this.addVariable(y + space * 3, "Espacio entre oleadas:", 'waveDelay');
-        this.addVariable(y + space * 4, "Tiempo puntuación en ms:", 'scoringTime');
-        this.addVariable(y + space * 5, "Tiempo cliente en ms:", 'deliverDelay');
-        this.addVariable(y + space * 6, "Tiempo power up en ms:", 'powerDelay');
-        this.addVariable(y + space * 7, "Tiempo de invi escudo:", 'shieldInvi');
-        this.addVariable(y + space * 8, "Tiempo de invi salto:", 'jumpInvi');
+        this.addVariable(y + space * 1, "Velocidad Máxima:", 'maxSpeed');
+        this.addVariable(y + space * 2, "Velocidad Lateral:", 'horizontalSpeed');
+        this.addVariable(y + space * 3, "Aceleración:", 'acceleration');
+        this.addVariable(y + space * 4, "Espacio entre oleadas:", 'waveDelay');
+        this.addVariable(y + space * 5, "Tiempo puntuación en ms:", 'scoringTime');
+        this.addVariable(y + space * 6, "Tiempo cliente en ms:", 'deliverDelay');
+        this.addVariable(y + space * 7, "Tiempo power up en ms:", 'powerDelay');
+        this.addVariable(y + space * 8, "Tiempo de invi escudo:", 'shieldInvi');
+        this.addVariable(y + space * 9, "Tiempo de invi salto:", 'jumpInvi');
     }
 
     setData(key, speed){
