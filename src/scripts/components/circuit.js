@@ -30,7 +30,7 @@ export class Circuit
         this.sidewalk_segments = 3;
 
         // number of road lanes
-        this.roadLanes = 2;
+        this.roadLanes = 3;
 
         // road width (actually half of the road)
         this.roadWidth = 4000;
@@ -425,6 +425,7 @@ export class Circuit
     }
 
     drawSegment(x1, y1, w1, x2, y2, w2, fog, color, delivery, segmentIndex){
+        /*
         // draw grass
         this.graphics.fillStyle(color.grass, 1);
         this.graphics.fillRect(0, y2, this.scene.data.get('screen'), y1 - y2);
@@ -439,6 +440,7 @@ export class Circuit
         this.drawPolygon(x1-w1-sidewalk_w1, y1, x1-w1, y1, x2-w2, y2, x2-w2-sidewalk_w2, y2, color.sidewalk);
         // right
         this.drawPolygon(x1+w1+sidewalk_w1, y1, x1+w1, y1, x2+w2, y2, x2+w2+sidewalk_w2, y2, color.sidewalk);
+        
 
         // draw rumble strips
         let rumble_w1 = w1 / 10;
@@ -455,8 +457,11 @@ export class Circuit
         newX3 = x2+w2+rumble_w2/4;
         newX4 = x2+w2+rumble_w2+rumble_w2/4;
         this.drawPolygon(newX1, y1, newX2, y1, newX3, y2, newX4, y2, color.rumble);
-
-        /*
+        
+        // draw fog
+        this.drawFog(0, y1, this.scene.data.get('screen'), y2-y1, fog)
+        */
+        
         //draw lanes
         if (color.lane){
             var line_w1 = (w1/20);
@@ -481,7 +486,7 @@ export class Circuit
                 );
             }
         }
-        */
+        
 
         //drawing delivery zone
         if (delivery[0]){
@@ -490,7 +495,6 @@ export class Circuit
             else 
                 this.drawPolygon(x1-w1/1.5, y1, x1-w1, y1, x2-w2, y2, x2-w2/1.5, y2, delivery[1]);
         }
-        this.drawFog(0, y1, this.scene.data.get('screen'), y2-y1, fog)
     }
 
     drawPolygon(x1, y1, x2, y2, x3, y3, x4, y4, color){
