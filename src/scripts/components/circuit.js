@@ -50,7 +50,7 @@ export class Circuit
 
         this.powerDelay = this.scene.data.get('powerDelay');
         this.powersOffsets = [-0.7, 0, 0.7];
-        this.powerTypes = ['shield', 'double'];
+        this.powerTypes = ['shield', 'double', 'slow'];
         this.createPower = false;
 
         this.deliverDelay = this.scene.data.get('deliverDelay');
@@ -289,10 +289,11 @@ export class Circuit
     generatePickUp(position, offset, type){
         this.powerCounter = 0;
         if (type == 'power'){
-            let powerType = Phaser.Math.RND.pick(this.powerTypes);
+            let powerLimit = this.scene.player.speed == this.scene.player.maxSpeed ? 1 : 2;
+            let powerIndex = Phaser.Math.Between(0, powerLimit);
+            let powerType = this.powerTypes[powerIndex];
             this.addSegmentPower(position, this.powersOffsets[offset], type, powerType);
-        }
-        else{
+        }else{
             this.addSegmentPackage(position, 'package', this.powersOffsets[offset], type);
         }
     }

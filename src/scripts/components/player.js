@@ -393,6 +393,9 @@ export class Player
                 console.log('double');
                 this.playerDoubleParticles.setVisible(true);
                 break;
+            case 'slow':
+                console.log('slow');
+                break;
             default:
                 break;
         }
