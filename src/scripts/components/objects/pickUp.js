@@ -12,11 +12,12 @@ export class PickUp extends Sprite
         this.sprite.disableBody(false, false);
         this.sprite.setVisible(false);
         this.type = type;
+        this.drawable = true;
         if (type == 'power') this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
     }
 
     draw(destW, destH, destX, destY, spriteScale){
-        if (spriteScale * 20000 <= 5) {
+        if (this.drawable && spriteScale * 20000 <= 5) {
             super.draw(destW, destH, destX, destY);
             this.sprite.setDepth(spriteScale * 10000);
             this.sprite.setScale((spriteScale * 5000));
@@ -29,6 +30,7 @@ export class PickUp extends Sprite
 
     disable(){
         super.disable();
+        this.drawable = false;
         this.sprite.disableBody(false, false);
         if (this.type == 'power') this.checkEvent.destroy();
     }

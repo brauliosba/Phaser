@@ -289,7 +289,7 @@ export class Circuit
     generatePickUp(position, offset, type){
         this.powerCounter = 0;
         if (type == 'power'){
-            let powerLimit = this.scene.player.speed == this.scene.player.maxSpeed ? 1 : 2;
+            let powerLimit = this.scene.player.speed == this.scene.player.maxSpeed ? 2 : 1;
             let powerIndex = Phaser.Math.Between(0, powerLimit);
             let powerType = this.powerTypes[powerIndex];
             this.addSegmentPower(position, this.powersOffsets[offset], type, powerType);

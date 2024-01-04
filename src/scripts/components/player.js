@@ -28,6 +28,7 @@ export class Player
         this.score = 0;
         this.shielded = false;
         this.double = false;
+        this.slowTime = this.data.get('slowTime');
         this.shieldInviTime = this.data.get('shieldInvi');
         this.jumpInviTime = this.data.get('jumpInvi');
     }
@@ -373,6 +374,15 @@ export class Player
         this.invulnerabilityAnimation(this.shieldInviTime, this.shieldInviTime/250);
     }
 
+    slowMotion(){
+        this.speed = 1000;
+        this.acceleration = 0;
+        this.scene.time.addEvent({ delay: this.slowTime , callback: () => {
+            this.speed = this.maxSpeed;
+            this.acceleration = this.data.get('acceleration');
+        }, callbackScope: this, loop: false })
+    }
+
     removePower(){
         this.powerEvent.paused = true;
         this.shielded = false;
@@ -394,6 +404,7 @@ export class Player
                 this.playerDoubleParticles.setVisible(true);
                 break;
             case 'slow':
+                this.slowMotion();
                 console.log('slow');
                 break;
             default:

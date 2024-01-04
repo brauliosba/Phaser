@@ -41,6 +41,7 @@ export class MenuScene extends Phaser.Scene
         this.data.set('powerDelay', 20000);
         this.data.set('shieldInvi', 250);
         this.data.set('jumpInvi', 2000);
+        this.data.set('slowTime', 5000);
         this.data.set('deliverDelay', 10000);
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG');
@@ -97,7 +98,7 @@ export class MenuScene extends Phaser.Scene
     }
 
     exposedVariables(){
-        let y = 200
+        let y = 140
         let space = 60;
         this.addVariable(y, "Velocidad Inicial:", 'initialSpeed');
         this.addVariable(y + space * 1, "Velocidad Máxima:", 'maxSpeed');
@@ -109,6 +110,7 @@ export class MenuScene extends Phaser.Scene
         this.addVariable(y + space * 7, "Tiempo power up en ms:", 'powerDelay');
         this.addVariable(y + space * 8, "Tiempo de invi escudo:", 'shieldInvi');
         this.addVariable(y + space * 9, "Tiempo de invi salto:", 'jumpInvi');
+        this.addVariable(y + space * 10, "Tiempo de duración slow:", 'slowTime');
     }
 
     setData(key, speed){
