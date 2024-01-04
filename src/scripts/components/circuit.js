@@ -161,7 +161,7 @@ export class Circuit
                 this.buildingRightBlock = false;
             }
             if (!this.buildingLeftBlock){
-                value = Phaser.Math.Between(0, 3);
+                value = Phaser.Math.Between(0, 4);
                 if (value > 1) this.buildingLeftBlock = true;
                 this.addSegmentSprite(i, value, 1);
             } 
