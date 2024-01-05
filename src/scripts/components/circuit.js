@@ -42,7 +42,9 @@ export class Circuit
         this.fogDensity = 20;
 
         this.buildingLeftBlock = false;
-        this.buildingRightBlock = false
+        this.previousLeftBuild = 0;
+        this.buildingRightBlock = false;
+        this.previousRightBuild = 0;
 
         this.currentDelivery = {alignment: 0, zone : "done", lastSegment: 0};
 
@@ -152,17 +154,22 @@ export class Circuit
     }
     
     generateRandomBuildings(start, limit){
-        for (var i = limit - 5; i >= start; i-=5){
+        for (var i = start; i <= limit - 5; i+=4){
             if (!this.buildingRightBlock) {
                 var value = Phaser.Math.Between(0, 4);
+                if (value == this.previousRightBuild) value = value - 1 >= 0 ? value - 1 : 4;
                 if (value > 1) this.buildingRightBlock = true;
+                this.previousRightBuild = value;
                 this.addSegmentSprite(i, value, 0);
             } else {
                 this.buildingRightBlock = false;
             }
+            
             if (!this.buildingLeftBlock){
                 value = Phaser.Math.Between(0, 4);
+                if (value == this.previousLeftBuild) value = value - 1 >= 0 ? value - 1 : 4;
                 if (value > 1) this.buildingLeftBlock = true;
+                this.previousLeftBuild = value;
                 this.addSegmentSprite(i, value, 1);
             } 
             else {
