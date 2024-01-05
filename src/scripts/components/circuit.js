@@ -24,7 +24,7 @@ export class Circuit
         this.total_segments = null;
 
         // number of visible segments to be drawn
-        this.visible_segments = 120;
+        this.visible_segments = 150;
 
         // number of segments that forms a sidewalk strip
         this.sidewalk_segments = 3;
@@ -360,7 +360,7 @@ export class Circuit
         var baseSegment = this.getSegment(camera.z);
         this.baseIndex = baseSegment.index;
 
-        for (var i=0; i<this.visible_segments; i++){
+        for (var i=0; i<this.visible_segments-80; i++){
             // get the current segment
             var currIndex = (this.baseIndex + i) % this.total_segments;
             var currSegment = this.segments[currIndex];
@@ -401,7 +401,7 @@ export class Circuit
             this.scene.player.updatePosition();
         }
 
-        for (var i=this.visible_segments - 20; i>0; i--){
+        for (var i=this.visible_segments; i>0; i--){
             // get the current segment
             var currIndex = (this.baseIndex + i) % this.total_segments;
             var currSegment = this.segments[currIndex];
