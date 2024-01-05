@@ -31,7 +31,7 @@ export class PerspectiveObstacle extends Sprite
 
         this.b1 = this.scene.physics.add.image();
 
-        if (type != 1) {
+        if (type != 7) {
             this.b1.setDebugBodyColor(0xffff00);
             this.scene.physics.add.overlap(this.b1, this.scene.player.b1);
         } 

@@ -35,8 +35,8 @@ export class Obstacle extends Sprite
 
         //var closeCall = this.scene.physics.add.overlap(this.b1, this.scene.player.b1, () => 
         //    { closeCall.active = false; this.scene.player.playerCloseCallCollision(this.b1); });
-
-        this.scene.physics.add.overlap(this.b1, this.scene.player.b1);
+        
+        this.scene.physics.add.overlap(this.b1, this.scene.player.b1, () => this.scene.player.preceptionSign.setVisible(true));
 
         this.checkEvent = this.scene.time.addEvent({ delay: 10, callback: this.checkPosition, callbackScope: this, loop: true });
     }

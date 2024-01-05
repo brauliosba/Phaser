@@ -72,11 +72,28 @@ export class Player
         this.playerBody.body.setSize(100,100,true);
 
         this.b1 = this.scene.physics.add.image(1000, 1000);
-        this.b1.body.setSize(this.screen.w/5, this.screen.h/2.2, true);
+        this.b1.body.setSize(this.screen.w/5, this.screen.h/2, true);
         this.b1.disableBody(false, false);
         this.b1.setDebugBodyColor(0xffff00);
 
         this.limitBound = this.screen.w/3;
+
+        this.preceptionSign = this.scene.add.text(50, 200, '!', { font: '600 120px Montserrat', color: '0x000000' });
+        this.preceptionSign.setDepth(5);
+        this.preceptionSign.setVisible(false);
+        this.preceptionSign.angle = -20;
+        this.preceptionSign.setOrigin(0.5, 0.5);
+        this.scene.tweens.add({
+            targets: this.preceptionSign,
+            ease: 'sine.inout',
+            duration: 250,
+            repeat: -1,
+            yoyo: true,
+            angle: {
+                getStart: () => -20,
+                getEnd: () => -40
+            },
+        });
 
         //mobile contorls
         if (this.data.get('IS_TOUCH')) {
@@ -214,6 +231,7 @@ export class Player
         this.playerShield.setPosition(this.screen.x, this.screen.y);
         this.playerDoubleParticles.setPosition(this.screen.x, this.screen.y);
         this.closeText.setPosition(this.screen.x - 100, this.screen.y - 150);
+        this.preceptionSign.setPosition(this.screen.x - 80, this.screen.y - 150);
     }
 
     update(dt){
@@ -345,18 +363,19 @@ export class Player
             if (!this.shielded) {
                 this.scene.data.set('state', "game_over");
                 this.speed = 0;
-                //this.playerBody.stop();
                 this.playerBody.disableBody(false, false);
+                this.b1.disableBody(false, false);
                 this.playerBody.play('dead', true);
+                this.playerState = 'dead';
                 this.playerBody.on('animationcomplete', () => 
                 { 
                     if (this.scene.data.get('state') == "game_over") {
                         this.scene.anims.pauseAll();
                     } 
                 });
+                this.preceptionSign.setVisible(false);
                 this.speedEvent.remove(false);
                 this.scoreEvent.remove(false);
-                console.log('colisiono');
                 this.scene.time.destroy();
             } else{
                 this.shildBreak();
@@ -421,19 +440,21 @@ export class Player
     }
 
     playerCloseCallCollision(){
-        this.score += 100;
-        this.closeText.setVisible(true);
-        this.scene.tweens.add({
-            targets: this.closeText,
-            ease: 'sine.inout',
-            duration: 500,
-            repeat: 0,
-            alpha: {
-                getStart: () => 1,
-                getEnd: () => 0
-            },
-        });
-        console.log("casi");
+        if (this.playerState != 'dead') {
+            this.score += 100;
+            this.preceptionSign.setVisible(false);
+            this.closeText.setVisible(true);
+            this.scene.tweens.add({
+                targets: this.closeText,
+                ease: 'sine.inout',
+                duration: 500,
+                repeat: 0,
+                alpha: {
+                    getStart: () => 1,
+                    getEnd: () => 0
+                },
+            });
+        }
     }
 
     //DELIVERY
