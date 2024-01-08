@@ -15,7 +15,9 @@ export class MainScene extends Phaser.Scene
     }
     
     preload(){
-        this.load.image('imgBack', 'src/images/img_back.png');
+        this.load.image('sky', 'src/images/background/sky.png');
+        this.load.image('mountains', 'src/images/background/mountains.png');
+        this.load.image('road', 'src/images/background/road.png');
 
         //player
         this.load.spritesheet('playerRun', 'src/images/player/playerRun.png', { frameWidth: 400, frameHeight: 600});
@@ -65,7 +67,11 @@ export class MainScene extends Phaser.Scene
         this.dim = this.data.get('screen');
 
         // backgrounds
-        let sprBack = this.add.image(this.dim/2, this.dim/2, 'imgBack');
+        let sky = this.add.image(this.dim/2, this.dim/2, 'sky');
+        let mountains = this.add.image(this.dim/2, this.dim/2, 'mountains');
+        mountains.setDepth(0.0000001);
+        let road = this.add.image(this.dim/2, this.dim/2, 'road');
+        road.setDepth(0.000002);
         let pauseButton = this.add.image(this.dim - 100, 130, 'pauseButton').setInteractive();
         pauseButton.on('pointerdown', () => this.pauseGame());
         pauseButton.setDepth(9)

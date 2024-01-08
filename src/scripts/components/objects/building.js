@@ -8,8 +8,8 @@ export class Building extends Sprite
         this.buildings = [
             {name: 'casa_1.png', offset1: 3.05, offset2: -1.43}, 
             {name: 'casa_2.png', offset1: 3.01, offset2: -1.52},
-            {name: 'casa_3.png', offset1: 2.74, offset2: -1.05},
-            {name: 'casa_4.png', offset1: 2.70, offset2: -1.05},
+            {name: 'casa_3.png', offset1: 2.64, offset2: -0.95},
+            {name: 'casa_4.png', offset1: 2.62, offset2: -1.0},
             {name: 'casa_5', offset1: 2.82, offset2: -1.20},
         ]
     }

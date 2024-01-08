@@ -13,7 +13,8 @@ export class Circuit
 
         // graphics to draw the road of polygons on it
         this.graphics = scene.add.graphics(0,0);
-
+        this.graphics.setDepth(0.00003);
+        
         // array of road segments
         this.segments = [];
 
