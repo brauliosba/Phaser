@@ -15,9 +15,11 @@ export class MainScene extends Phaser.Scene
     }
     
     preload(){
+        //background
         this.load.image('sky', 'src/images/background/sky.png');
         this.load.image('mountains', 'src/images/background/mountains.png');
         this.load.image('road', 'src/images/background/road.png');
+        this.load.atlas('clouds', 'src/images/background/clouds.png', 'src/images/background/clouds.json');
 
         //player
         this.load.spritesheet('playerRun', 'src/images/player/playerRun.png', { frameWidth: 400, frameHeight: 600});
@@ -69,9 +71,16 @@ export class MainScene extends Phaser.Scene
         // backgrounds
         let sky = this.add.image(this.dim/2, this.dim/2, 'sky');
         let mountains = this.add.image(this.dim/2, this.dim/2, 'mountains');
-        mountains.setDepth(0.0000001);
+        mountains.setDepth(0.000001);
         let road = this.add.image(this.dim/2, this.dim/2, 'road');
         road.setDepth(0.000002);
+
+        this.clouds = [];
+        this.drawCloud(0, 100, true);
+        this.drawCloud(500, 350, true);
+        this.drawCloud(800, 100, true);
+        this.cloudEvent = this.time.addEvent({ delay: 10000, callback: this.addCloud, callbackScope: this, loop: true });
+
         let pauseButton = this.add.image(this.dim - 100, 130, 'pauseButton').setInteractive();
         pauseButton.on('pointerdown', () => this.pauseGame());
         pauseButton.setDepth(9)
@@ -102,6 +111,7 @@ export class MainScene extends Phaser.Scene
     }
 
     update(time, deltaTime){
+        
         if (!this.isPaused){
             switch(this.data.get('state')){
                 case "init":
@@ -128,6 +138,7 @@ export class MainScene extends Phaser.Scene
                     break;
                 case "play":
                     var dt = Math.min(1, deltaTime/1000);
+                    this.cloudsUpdate(dt);
                     this.player.update(dt);
                     this.scoreboard.update();
                     this.camera.update();
@@ -138,8 +149,36 @@ export class MainScene extends Phaser.Scene
                     break;
             }
         }
+    }
 
-        //console.log(this.player.speed)
+    cloudsUpdate(dt){
+        for(var i = 0; i < this.clouds.length; i++){
+            var cloud = this.clouds[i];
+            var x = cloud.x;
+            var y = cloud.y;
+            cloud.setPosition(x + 30 * dt, y);
+
+            if (cloud.x >= this.dim){
+                this.clouds.splice(i,1);
+                cloud.destroy();
+            }
+        }
+    }
+
+    addCloud(){
+        var y = Phaser.Math.Between(0, 1) == 0 ? 100 : 350;
+        this.drawCloud(0, y, false);
+    }
+
+    drawCloud(x, y, lock){
+        var type = Phaser.Math.Between(1, 5);
+        var name = 'cloud' + type + '.png';
+        var cloud = this.add.image(x, y, 'clouds', name);
+        if (type == 1) cloud.setScale(.5);
+        if (!lock) cloud.setPosition(x - cloud.width, y);
+        cloud.setDepth(0.0000001);
+        cloud.setOrigin(0, .5);
+        this.clouds.push(cloud);
     }
 
     createAnimations(){
@@ -251,7 +290,8 @@ export class MainScene extends Phaser.Scene
             this.isPaused = !this.isPaused
             this.player.pause(this.isPaused);
             this.circuit.pause(this.isPaused);
-
+            this.cloudEvent.paused = this.isPaused;
+            
             if (this.isPaused){
                 this.anims.pauseAll();
                 this.panel.showPause();

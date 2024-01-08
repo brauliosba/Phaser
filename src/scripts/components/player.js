@@ -124,11 +124,9 @@ export class Player
         }
 
         //UI
-        this.packageImage = this.scene.add.image(80, 80, 'icons', 'package');
+        this.packageImage = this.scene.add.image(80, 80, 'icons', 'package').setDepth(5);
         this.packageImage.setDisplaySize(80,80);
-        this.packageImage.setDepth(5);
-        this.packageText = this.scene.add.text(150, 50, 'x0', { font: '600 50px Montserrat' });
-        this.packageText.setDepth(5);
+        this.packageText = this.scene.add.text(150, 50, 'x0', { font: '600 50px Montserrat' }).setDepth(5);
 
         this.speedText = this.scene.add.text(50, 200, 'Velocidad actual: ' + this.speed, { fontSize : 30, color: '0x000000' });
         this.speedText.setDepth(5);
@@ -157,7 +155,7 @@ export class Player
 
             input: 'drag',
         }).layout().setDepth(5);
-        this.multiplierText = this.scene.add.text(380, 120, 'x1', { font: '600 50px Montserrat' });
+        this.multiplierText = this.scene.add.text(380, 120, 'x1', { font: '600 50px Montserrat' }).setDepth(5);
     }
 
     restart (){
